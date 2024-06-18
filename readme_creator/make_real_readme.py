@@ -481,6 +481,9 @@ def readfile(fname):
         return ff.read()
 
 
+def timee(statement):
+    print(statement)
+
 
 def main(do_full_readme=False,
         files_to_include: list = [],
