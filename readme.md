@@ -1,19 +1,21 @@
+> [!IMPORTANT]
+> This is the last GPL version of PySimpleGUI
+>
+> PySimpleGUI [has moved](https://docs.pysimplegui.com/en/latest/readme/sunset/) from GPLv3
+> to a [custom license](https://github.com/PySimpleGUI/PySimpleGUI/blob/master/LICENSE.txt)
+> with a subscription model but has deleted all its previous GPL code, making
+> it dissapear from the repository.
+>
+> Goal is to preserve the library in a working state.
+>
+> Another fork worth mentioning is [andor-pierdelacabeza/PySimpleGUI-4-foss](https://github.com/andor-pierdelacabeza/PySimpleGUI-4-foss).
+
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/PySimpleGUI/PySimpleGUI/master/images/for_readme/Logo%20with%20text%20for%20GitHub%20Top.png" alt="User Interfaces for Humans">
   <h2 align="center">User Interfaces for Humans<sup>TM</sup></h2>
 </p>
 
-<table>
-  <tr>
-    <td>
-      <img src="https://www.dropbox.com/s/6wzf3ebmj97v4zs/PySimpleGUI-GitHub-Udemy-Course.png?raw=1" width=200 alt="PySimpleGUI Udemy Course">
-    </td>
-    <td>
-      <h5>apply coupon for discount:<br>522B20BF5EF123C4AB30</h6>
-      <a href="https://www.udemy.com/course/pysimplegui/?couponCode=522B20BF5EF123C4AB30">click here to visit course page</a>
-    </td>
-  </tr>
-</table>
 
 
 
