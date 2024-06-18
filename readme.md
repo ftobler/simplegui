@@ -1,3 +1,5 @@
+[![Python package](https://github.com/ftobler/PySimpleGUI_foss/actions/workflows/python-package.yml/badge.svg)](https://github.com/ftobler/PySimpleGUI_foss/actions/workflows/python-package.yml)
+
 > [!IMPORTANT]
 > This is the last GPL version of PySimpleGUI
 >
