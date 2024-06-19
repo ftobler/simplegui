@@ -2,491 +2,6 @@
 
 version = __version__ = "4.61.0.206 Unreleased"
 
-_change_log = """
-    Changelog since 4.60.0 released to PyPI on 8-May-2022
-    
-    4.61.0.1
-        main_open_github_issue - prefill the "Details" using the platform module (thank you macdeport!)
-            Fills Mac, Windows and Linux with details
-    4.61.0.2
-        Fix for the "jumping window problem on Linux".  Major credit to Chr0nic for his amazing "stick with it" work on this problem!
-    4.61.0.3
-        Removed the previous fix attempt for jumping window on linux
-        Added ability for Mac users to specify file_type in Browse and popup_get_file
-            This feature must be ENABLED by the user in the Mac control panel that can be found in the PySimpleGUI Global Settings
-            The default is this feature is OFF
-    4.61.0.4
-        New location parameter option for Windows. Setting location=None tells PySimpleGUI to not set any location when window is created. It's up to the OS to decide.
-            The docstring for Window has been changed, but not all the other places (like popup). Want to make sure this works before making all those changes.            
-    4.61.0.5
-        Added check for None invalid values parm when creating a Listbox element
-    4.61.0.6
-        Column docstring changed to add reminder to call contents_changed if changing the contents of a scrollable column
-    4.61.0.7
-        Fixed crash when horizontal_scroll=True for Listbox element
-    4.61.0.8
-        Added readonly to Input.update
-    4.61.0.9
-        Added Window.set_resizable - can change the X and Y axis resizing after window is created
-    4.61.0.10
-        Added wrap parameter to Spin element - if True, wraps back to the first value when at the end
-        Temp test code added for a new verification feature
-    4.61.0.11
-        Fixed Spin Element docstring - readonly was not correct
-    4.61.0.12
-        Output element - addition of wrap_lines and horizontal_scroll parameters
-        Multiline element -  addition of wrap_lines parameter
-    4.61.0.13
-        Added Window.unbind
-    4.61.0.14
-        Added (None, None) to the Window docstring
-    4.61.0.15
-        Fix for continuous Graph element mouse up events when reading with a timeout=0. Big thank you to @davesmivers (THANKS DAVE!!) for finding and fixing
-    4.61.0.16
-        Added platform (Windows, Mac, Linux) and platform version information to the get_versions function
-    4.61.0.17
-        Added a fix for the file_types Mac problem that doesn't require the system settings to be used... let's give it a go!
-    4.61.0.18
-        Added ubiquitious Edit Me to the right click menu
-    4.61.0.19
-        PySimpleGUI Anniversary sale on Udemy course coupon 
-    4.61.0.20
-        Fix for bind_return_key - if a button has been disabled, then the event shouldn't be generated for the return key being pressed
-    4.61.0.21
-        Added cols_justification for Table element - list or tuple of strings that indicates how each column should be justified
-    4.61.0.22
-        Better error handling for table element's new justification list. If a bad value is found, will use the default value
-    4.61.0.23
-        Additional mac filetype testing.... added more combinations that specify 
-    4.61.0.24
-        Added * *.* to the Mac filetypes to check for
-    4.61.0.25
-        New logic for checking for the * case for Mac filetypes
-    4.61.0.26
-        Docstring update - TabGroup visible parameter marked as deprecated .  Use a Column element to make a TabGroup invisible
-    4.61.0.27
-        Docstring update for the pin helper function that describes the shrinking of the container that it helps provide.  
-        Also added explanation that it's the elements you want to make visible/invisible that are what you want to pin
-    4.61.0.28
-        Applied same Mac file_types fix to popup_get_file
-        Removed filetypes setting from Mac Feature Control Panel
-    4.61.0.29
-        Addition of enable_window_config_events to the Window object. This will cause a EVENT_WIMDOW_CONFIG event to be returned
-            if the window is moved or resized.
-    4.61.0.30
-        Made upgrade from GitHub window resizable so can screencapture the entire session
-    4.61.0.31
-        Added new constant TKINTER_CURSORS which contains a list of the standard tkinter cursor names
-    4.61.0.32
-        Added erase_all parameter to cprint (like the Debug Print already has)
-    4.61.0.33
-        Fix popup_scrolled - was only adding the Sizegrip when there was no titlebar.  It should be added to all windows
-            unless the no_sizegrip parameter is set.
-        popup_scrolled - added no_buttons option. If True then there will not be a row at the bottom where the buttons normally are.
-            User will have to close the window with the "X"
-    4.61.0.34
-        popup_scrolled - added button_justification parameter. Wanted to make scrolled popups consistent with other popups which have left justified
-            buttons.  But since they've been right justified in the past, want to give users the ability to retain that look. 
-            Since the Sizegrip works correctly now, it increases the changes of accidently clicking a button if it's right justified.
-    4.61.0.35
-        Added default_color to ColorChooser button
-    4.61.0.36
-        Added to Button element error message that images must be in PNG or GIF format
-    4.61.0.37
-        Added exapnd_x and expand_y to all of the "lazy buttons" and Chooser buttons
-    4.61.0.38
-        Column element - added horizontal_scroll_only parameter (fingers crossed on this one....)
-    4.61.0.39
-        New signature testing
-    4.61.0.40
-        Exposed the Table Element's ttk style using member variable TABLE.table_ttk_style_name
-    4.61.0.41
-        New signature format
-    4.61.0.42
-        Backed out the changes from 4.61.0.38 (horizontal_scroll_only parameter).  Those changes broke code in the scrollable columns.  Need to make time to work on this feature more.
-    4.61.0.43
-        Added a print if get an exception trying to set the alpha channel after a window is created (troubleshooting a Mac problem)
-    4.61.0.44
-        Updated Menubar docstring to clarify the Menubar iself cannot have colors changed, only the submenus. Use MenubarCustom if you want full control
-        Format of file-signature changed
-    4.61.0.45
-        Further refinement of Menubar docstring
-    4.61.0.46
-        Added suggestion of using the Demo Browser to the checklist item of "Look for Demo Programs similar to your problem"
-    4.61.0.47
-        Testing some importing methods
-        Delay rerouting stdout and stderr in Output and Multiline elements until window is being built instead of when element is initialized
-    4.61.0.48
-        Additional window movement capability. If Control+Mouse movement feature is enabled, then Control+Arrow key will move the window 1 pixel
-            in the indicated direction
-    4.61.0.49
-        Added Window.set_size to match the other settings that are performed through method calls. There is also the Window.size property, but
-            since PySimpleGUI rarely uses properties, it makes sense to include a method as well as a property
-    4.61.0.50
-        Fix for ColorChooser button filling in a None value when cancel from color choise dialog box.  Nothing will be filled in target if dialog cancelled
-    4.61.0.51
-        vtop, vcenter, vbottom helper functions gets background_color parameter
-        vcenter and vbottom - added USING the expand_x and expand_y parms that were already defined.  (HOPE NOTHING BREAKS!)
-    4.61.0.52
-        justification parameter added to Listbox (default is left.. can be right and center now too)
-    4.61.0.53
-        Made settings dictionary multiline in test harness write-only.  New coupon code                
-    4.61.0.54
-        alpha_channel added to set_options.  This sets the default value for the alpha_channel for all windows both user generated and PySimpleGUI generated (such as popups).
-    4.61.0.55
-        Allow Browse/Chooser buttons (that have a target) to indicate a target key that is a tuple.
-    4.61.0.55
-        While not actually correct.... 4.60.1 was released in the middle of the development above... I'm changing the version to look as
-            if this release is based on 4.60.1.  This code DOES have the same code that's in 4.60.1 so it's more a matter of symantics.
-            Hoping this clears up confusion.  Sorry for the dot-release causing so much confusion.
-    4.61.0.56
-        Fix for Window.extend_layout.  Was not picking up the background color of the container that the rows were being added to.
-    4.61.0.57
-        Fixed Text element's update method docstring to indicate that value can be "Any" type not just strings
-    4.61.0.58
-        Addition of without_titlebar paramter to Window.current_location.  Defaults to False.  If True, then the location of the main portion of the window
-            will be returned (i.e. will not have the titlebar)
-    4.61.0.59
-        Fix for crash if COLOR_SYSTEM_DEFAULT specified in parameter disabled_readonly_background_color or disabled_readonly_text_color for Input Element.
-        Also applied similar fix for Tab element's focus color
-    4.61.0.60
-        Addition of set_option parameter hide_window_when_creating. If set to False then window will not be hidden while creating and moving
-    4.61.0.61
-        Changed the documentation location to PySimpleGUI.org (updated some comments as well as the SDK Reference Window's links)
-        New coupon code.  Make the Udemy button in the test harness now include the coupon code automatically
-    4.61.0.62
-        Removed the "NOT avoilable on the MAC" from file_types parameter in the docstrings
-        Use Withdraw to hide window during creation
-    4.61.0.63
-        Addition of checklist item when logging new issue to  GitHub - upgraded to latest version of PySimpleGUI on PyPI
-        Listbox justification parameter found to not be implemented on some early verions of tkinter so had to protect this situation. This new feature crashed on the Pi for example
-    4.61.0.64
-        Allow set_options(window_location=None) to indicate the OS should provide the window location.  
-            This will stop the Alpha channel being set to 0 when the window is created
-    4.61.0.65
-        Addition of new Mac Control Panel option and emergency patch for MacOS version 12.3+
-            If MacOS version 12.3 or greater than option is ON by default
-            When ON, the default Alpha channel for all windows is set to 0.99. 
-            This can either be turned off, or can be overridden by calling set_options in your application
-    4.61.0.65
-        Bumping version number to avoid confusion.  An emergency 4.60.2 release was posted to PyPI. This change was added to this current GitHub version of PySimpleGUI.  
-    4.61.0.66
-        Fixed bug in checking Mac OS version number that is being released as 4.60.3
-    4.61.0.67
-        Correctly check for Mac 12.3+ AND 13+ this time.
-    4.61.0.68
-        Roll in the changes being released to PyPI as 4.60.3
-    4.61.0.69
-        Test to see if the additional pack of Notebook in Tab code was causing expansion problems        
-    4.61.0.70
-        Debug Print - fix for bug caused by no_button being set with non_blocking... a lesson in thorough testing... assumption was either blocking OR no_button (or else app would
-            close without seeing the output... unless something else blocked. (DOH)
-    4.61.0.71
-        "Window closed" check added to update methods for elements. This will prevent a crash and instead show an error popup
-            Will be helpful for users that forget to check for closed window event in their event loop and try to call update after window closed. 
-    4.61.0.72
-        Output element now automatically sets auto_refresh to True.   Should this not be desired, switch to using the Multiline element.  There will likely be
-            no impact to this change as it seems like the windows are alredy refreshing OK, but adding it just to be sure.
-    4.61.0.73
-        Addition of Window.key_is_good(key) method.  Returns True if key is used in the window. Saves from having to understand the window's key dictionary.
-            Makes for easier code completion versus writing  "if key in window.key_dict"
-    4.61.0.74
-        Combo - if readonly, then set the select colors to be "transparent" (text=text color, background=background color)
-    4.61.0.75
-        Better description of bar_color parm for the ProgressMeter element and the one_line_progress_meter function
-        Combo element - addition of select parameter to enable easier selection of the contents of clearing of the selection of the contents.
-    4.61.0.76
-        Changed the _this_elements_window_closed to use a flag "quick_check" for cheking is the window is closed.  Found that calling tkinter.update takes over 500ms sometimes!
-            For appllications that call update frequently, this caused a catestrophic slowdown for complex windows.
-    4.61.0.77
-        New Window method - get_scaling - gets the scaling value from tkinter.  Returns DEFAULT_SCALING if error.
-    4.61.0.78
-        Custom Titlebar - Support added to Window.minimize, Window.maximize, and Window.normal
-    4.61.0.79
-        Fix for Mulitline showing constant error messages after a Window is closed. 
-        Fix for correctly restoring stdout, stderr after they've been rerouted. THIS CODE IS NOT YET COMPLETE! Shooting for this weekend to get it done!
-        Image element - more speicific with tkinter when chaning to a new image so that pypy would stop crashing due to garbage collect not running. 
-            This change didn't fix the pypy problem but it also didn't hurt the code to have it
-    4.61.0.80
-        Quick and dirty addition of Alt-shortcuts for Buttons (like exists for Menus)
-            For backward compatablity, must be enabled using set_options with use_button_shortcuts=True
-        Fixed docstring errors in set_options docstring
-    4.61.0.81
-        Completed restoration of stdout & stderr
-            If an Output Element is used or a Multline element to reroute stdout and/or stderr, then this hasn't worked quite right in the past
-            Hopefuly now, it does.  A LIFO list (stack) is used to keep track of the current output device and is scrubbed for closed windows and restored if one is closed
-    4.61.0.82
-        Addition of Style Names for horizontaland vertical ttk scrollbars - hsb_style_name and vsb_style_name so that scrollbar colors can be changed in user code
-    4.61.0.83
-        Output element - now automatically reroutes cprint to here as well. Assumption is that you want stuff to go here without
-            needing to specify each thing.  If want more control, then use the Multiline directly
-    4.61.0.84
-        Output element - updated docstring
-    4.61.0.85
-        Combo Element - new parameter enable_per_char_events.  When True will get an event when individual characters are entered.
-    4.61.0.86
-        Added path to the interpreter to the get_versions information for better debugging
-    4.61.0.87
-        Dark Gray 16 theme added
-    4.61.0.88
-        New batch of Emojis!
-    4.61.0.89
-        Addition of TITLEBAR_TEXT_KEY to provide access to custom titlebar titles
-    4.61.0.90
-        Implemented the visible parameter for TabGroup.  Was not being honored when creating element. Added TabGroup.update so it can be made visible.
-    4.61.0.91
-        Added support for Custom Titlebar to the Window.set_title method
-    4.61.0.92
-        Addition of starting_row_number parameter to the Table element.  Sets the value for the first row in the table.
-    4.61.0.93
-        Added 2 parameters to popup - drop_whitespace is passed to the wraptext.fill method. right_justify_buttons will "push" buttons to
-            the right side if set to True
-    4.61.0.94
-        Added Element.save_element_screenshot_to_disk - uses the same PIL integration that the save window screenshot to disk uses but applied to a single element
-    4.61.0.95
-        Changed popup again - replaced right_justify_buttons with button_justification.  Also removed the extra padding that was being added to the buttons.  This
-            matches a changed made to popup_scrolled earlier
-    4.61.0.96
-        More emojis?  Yes... more emojis...
-    4.61.0.97
-        The main test harness now shows the python interpreter used to launch the test harness to make clearer what's running
-    4.61.0.98
-        Better alignment of text in test harness
-        Fixed mispelling in SystemTray.show_message - crashed if an int was passed in as the time value
-    4.61.0.99
-        popup_get_text - Addition of history feature to bring up to same level as other popup_get_ functions.
-    4.61.0.100
-        Set the "Active" foreground and background colors for Menu and ButtonMenu items.  Automatically uses the swapped foreground and background colors.
-            This impacts both inside the menus themseleves as well as the ButtonMenus so that when they are used in a MenubarCustom they mouseover nicely now.
-    4.61.0.101
-        Added Window.is_hidden method.  Returns True if the window is currently hidden
-    4.61.0.102
-        Fixed error in the main test harness "not modal" popup test.  Was setting the "Force Modal" setting to true after the popup test. 
-    4.61.0.103
-        Trinket is detected using a new mechansim now.  The previous one was waayyy too simnple and as a result has broken in the past week.  
-    4.61.0.104
-        Version bump to keep up with the PyPI emergency 4.60.4 release 
-    4.61.0.105
-        Added SYMBOL_BULLET character
-    4.61.0.106
-        Neon Green, Blue, Yellow themes... was writing some tests using them and thought why not start a new theme color category... "neon"
-    4.61.0.107
-        Fixed an unreported problem perhaps...  Added saving new menu into the Menu.Widget memeber variable in the Menu.update method.
-    4.61.0.108
-        Added drop_whitespace to the docstring for popup.  Parm has been in the code for quite some time but forgot the docstring so it's not in the SDK reference.
-    4.61.0.109
-        Changed error message in error window when an element reuse has been detected in a layout.  Previous message wasn't clear why there was an error.
-    4.61.0.110
-        Added very detailed information to popup_error_with_traceback if the Exception information is passed in as one of the arguments
-    4.61.0.111
-        Menu Element - delete all items in existing Menu widget rather than making a new one when the Menu definition changes
-    4.61.0.112
-        Input.update - added font parameter
-    4.61.0.113
-        Dark Blue 18 theme, a materially kinda theme, added - tip - experiment like PySimpleGUI does when "computing" colors. Grab a color of a part of a theme and use it as a background or a secondary button color.  In other words, mix and match since the colors should all work together by design.
-    4.61.0.114
-        Added execute_py_get_running_interpreter to differentiate between the one in the settings file versus currently running interpreter
-    4.61.0.115
-        Image Element... added Zooooooooommmmm parameter
-    4.61.0.116
-        Proliferiation/infection of the zoom parameter to more elements with images - Button, ButtonMenu
-            Note that zoom and subsample can BOTH be used. This enables fractional scaling. Want 2/3 the size of the image? subsample=3, zoom=2
-            Tab is the remaining element this is being added to
-            The Buttons implemented as functions need this addition as well
-        Addition of the image_source parameter to Button and Button.update. This way of specifying images is commonly used in other elements 
-        Fixed ButtonMenu bug - subsample was not being applied to initial image in the layout
-    4.61.0.117
-        Fix for set_vscroll_position not working correctly for a scrollable Column
-    4.61.0.118
-        Completed addition of zoom options for images by adding image_zoom parameter to Tab element
-    4.61.0.119
-        Fixed Neon Yellow theme.  Had an extra "#" in a color.
-    4.61.0.120
-        New coupon code
-    4.61.0.121
-        New Jedi emoji
-    4.61.0.122
-        Swapped Push and Stretch, VPush and VStretch.  Made Push and VPush the function and Stratch and VStresth the aliases. Did this because
-            Push is used almost universally, not Stretch.
-    4.61.0.123
-        Fix for incorrect values for Element.ttk_style and Element.ttk_style_name. Some elements had values overwritten if a scrollbar, etc, was used
-        Changed a number of the ttk elements (Button for example) to use the base name as the parm to creating the custom style to achieve
-            a more predictable naming style (relies on the formula used in the create style function rather than ad hoc adding "custom" onto name)
-    4.61.0.124
-        Multiline Element docstring fixes
-    4.61.0.125
-        Addition of 2 overrides to Window.find_element so that more control is available to applications wishing to perform special key lookups 
-    4.61.0.126
-        Made button_color parameter's docstring value consistent across all calls.  Now set to - (str, str) | str
-    4.61.0.127
-        User settings delete calls - aded silent_on_error option so deletes of non-existant entries can uappen silently if desired.
-        popup_quick_message - now defaults to keep-on-top to True
-    4.61.0.128
-        Cleaned up User Settings API code for porting
-    4.61.0.129
-        button_color parm added to ButtonMenu.update
-    4.61.0.130
-        New coupon
-    4.61.0.131
-        Window timers feature added.  Get a single or repeating timer events for your Window by calling window.timer_start
-    4.61.0.132
-        Added the Window.stop_all method to stop all timers for a window 
-    4.61.0.133
-        Added Window.timer_get_active_timers to get a list of the active timers for the window
-    4.61.0.134
-        popup_get_date - exposed the fonts as parameters so that the user code and modify them (specifically to get around a Mac font bug)
-    4.61.0.135
-        Renamed QuickMeter to _QuickMeter so that it's clear that it's not an object meant to be used by users
-    4.61.0.136
-        Tree element - if headings is set to None, no headings area is shown
-    4.61.0.137
-        "Take me to error" button is disabled in error traceback popup if not editor is configured. Also adds instructions if no editor.
-    4.61.0.138
-        Added begin_at_sunday_plus to the CalendarButton docstring
-    4.61.0.139
-        Moved debugger constants to inside of the debugger class. Simplified the locals and globals popups.
-    4.61.0.140
-        Experimental change.... Table.get now returns the values from the widget's selection method
-    4.61.0.141
-        Made the Debugger's use of popups change the theme to the same dark gray theme used in the rest of the debugger windows.
-    4.61.0.142
-        Added selected_text_color & selected_background_color to Input element. Will override the default values
-    4.61.0.143
-        Fixed bug in Combo.update - the width of the element wasn't getting updated to match new values
-    4.61.0.144
-        Added selected_text_color & selected_background_color to Multiline element. Will override the default values
-    4.61.0.145
-        Fixed bind_return_key docstrings in the pre-defined buttons. Made the Button bind_return_key docstring more descriptive
-    4.61.0.146
-        Changed version numbers to 4.61.0 to try and fix the confusion about what's been released to PyPI.
-    4.61.0.147
-        New Udemy coupon code
-    4.61.0.148
-        Removed the print when the Mac Alpha Channel 0.99 patch is applied
-    4.61.0.149
-        Removed second print when Mac patch applied
-    4.61.0.150
-        Tree Element new parameter - click_toggles_select - if True then clicking a selected item will unselect it
-    4.61.0.151
-        Fixed problem with TabGroups when the text was blank for a Tab. Was not correctly identifying the active tab in the Values dictionary
-    4.61.0.152
-        Updated TabGroup.get to use the same method to find the currently active tab that was just added above. 
-    4.61.0.153
-        Updated layout error messages to include "sometimes" in the description of what may be causing error
-    4.61.0.154
-        Updated Window.start_timer docstring to include the constants EVENT_TIMER and TIMER_KEY since the call reference doesn't show the variable names but rather the string value. 
-    4.61.0.155
-        Multiline new parameter autoscroll_only_at_bottom. When True, the element will autoscroll (keep scrollbar at the bottom) only if the scrollbar is already at the bottom.
-    4.61.0.156
-        Added the new Multiline parameter autoscroll_only_at_bottom so that the Output element can also use this option
-    4.61.0.157
-        Added the _optional_window_data function that is used to help with local PySimpleGUI testing of release candidates. Not meant to be used by end-users.
-    4.61.0.158
-        Changed Checkbox activeforeground to be the same as the text so mouseover doesn't change color
-    4.61.0.159
-        New Global Settings feature - Window watermarking. Can be forced on temporarily by settings watermark=True in your Window creation
-    4.61.0.160
-        Fix "Bold" crash from watermarking feature
-    4.61.0.161
-        New set_options to control user-defined watermarks
-    4.61.0.162
-        Addition of new parms to Combo.update - text color, background color.  Also font now applied correctly to dropdown list
-    4.61.0.163
-        Checkbox - added highlight thickness parm to control how thick the focus ring is. Defaults to 1 still but now changable
-    4.61.0.164
-        Input element - fixed problem where the input 'cursor' (the I-beam) was being set to the THEME'S color, not the color indicated by the individual element
-    4.61.0.165
-        Multiline & Spin - Applied same fix for input "cursor" (I-Beam) color that was added to the Input element.
-        Added new method - set_ibeam_color to Input, Multiline and Spin elements.  Combo is a ttk element so it's not available using this call yet
-    4.61.0.166
-        New Udemy coupon
-    4.61.0.167
-        New Udemy coupon
-        Fix for bad user settings key for user watermark. Added Python version to watermark
-    4.61.0.168
-       Changed Radio activeforeground to be the same as the text so mouseover doesn't change color
-    4.61.0.169
-        Allow no end-key to be specified for perform_long_operation/start_thread.  Careful with backward compatibility! If you skip adding parm on old versions of PySimpleGUI then it'll not work.
-    4.61.0.170
-        Possible fix for Mac Input Element issue that's been happening with no-titlebar windows on MacOS 13.2.1 Ventura
-    4.61.0.171
-        Added formatted_datetime_now function for easy timestamps for logging
-    4.61.0.172
-        Added upgrade service - No notification popups should be shown yet.  Don't want to SPAM users while testing
-    4.61.0.173
-        Made changing the "Show only critical" setting in global settings take effect immediately rather than waiting until closed settings window
-        Added timer_stop_usec to return timer value in microseconds
-    4.61.0.174
-        Overwrite upgrade data if any portion has changed
-    4.61.0.175
-        Notification window - added countdown counter. Added hand cursor if message is a link and enable clicking of link to open the browser to that link
-    4.61.0.176
-        Improved linux distro detection
-    4.61.0.177
-        Custom Titlebar - Support for disabling resizing (maximizing too), support for disable minimize and disable close
-    4.61.0.178
-        Input element - fix for bug with text color & logic wasn't quite right with the "read for disabled" stuff in the update as well as when making window
-    4.61.0.179
-        New Udemy coupon
-    4.61.0.180
-        Removed Security tab from system settings
-    4.61.0.181
-        Added check for None and COLOR_SYSTEM_DEFAULT before any colors being set in Input.update
-    4.61.0.182
-        Only enable the Mac alpha channel 0.99 patch when tkinter version is 8.6.12. Have learned this is not needed for any other tkinter version
-    4.61.0.183
-        Show Critical upgrade service messages.  Removed the extra upgrade from github button from tab.
-    4.61.0.184
-        Fix for Combo.update background color changing incorrect widget setting.
-    4.61.0.185
-        Fix for crash when no headings specified for a table by casting values into strings
-    4.61.0.186
-        Fix for popup_get_file when using no_window=True. Now returns None if cancelled or window closed
-    4.61.0.187
-        Corrected the Table.get docstring to reflect that it returns a list of ints
-    4.61.0.188
-        Finished correcting the Table.get docstring.... think I got it right this time....
-    4.61.0.189
-        Changed Table click events to be generated on Button Release instead of Button (down). Was not getting the
-            correct selected rows in the values dictionary when the click event was generated using down. Now the selected rows is correct
-    4.61.0.190
-        Addition of black2 theme
-        Fix typo of text in _widget_was_created
-    4.61.0.191
-        Fixed bug in Button.update.  Was setting the activeforeground and activebackground which broke the mouseover or mouse press colors
-    4.61.0.192
-        Fixed bug in Button.update.  Corrected when activeforeground and activebackground are set.  Removing them in version above was a mistake
-    4.61.0.193
-        Fixed spelling errors... resuse should have been reuse
-    4.61.0.194
-        Added Listbox.select_index and Listbox.set_index_color
-    4.61.0.195
-        New Udemy Coupon
-    4.61.0.196
-        Added highlight colors to the set_index_color method. Parms highlight_text_color & highlight_background_color control changing the highlight colors 
-    4.61.0.197
-        Made Table Element Header mouse-over and clicked be the inverse of the normal header colors. Makes for a much nicer experience
-    4.61.0.198
-        Added no_buffering option to popup_animated
-    4.61.0.199
-        Updated Udemy coupon code
-    4.61.0.200
-        Fix for grab anywhere window movement and control+left_mouse_drag.  Window move smoother, including the Move-All-Windows feature. Thank you JASON for the help!
-    4.61.0.201
-        Added init for _mouse_offset_x and y in case tkinter doesn't call the mouse down callback
-    4.61.0.202
-        Added doctring and destroy previous right click menu to set_right_click_menu
-    4.61.0.203
-        Changed Sizer element to use Canvas instead of Column element
-    4.61.0.204
-        One more change to sizer so that it uses pad instead of size.
-    4.61.0.205
-        Fixed docstring for execute_command_subprocess.  The command description was incorrect
-    4.61.0.206
-        New Udemy Coupon code
-    
-
-    """
 
 __version__ = version.split()[0]  # For PEP 396 and PEP 345
 
@@ -496,16 +11,6 @@ try:
 except:
     ver = ''
 
-# __version__ = version
-
-port = 'PySimpleGUI'
-
-# 8""""8        8""""8                             8""""8 8   8 8
-# 8    8 e    e 8      e  eeeeeee eeeee e     eeee 8    " 8   8 8
-# 8eeee8 8    8 8eeeee 8  8  8  8 8   8 8     8    8e     8e  8 8e
-# 88     8eeee8     88 8e 8e 8  8 8eee8 8e    8eee 88  ee 88  8 88
-# 88       88   e   88 88 88 8  8 88    88    88   88   8 88  8 88
-# 88       88   8eee88 88 88 8  8 88    88eee 88ee 88eee8 88ee8 88
 
 
 """
@@ -530,14 +35,8 @@ port = 'PySimpleGUI'
     4. Support - Issues.PySimpleGUI.org
     5. eCookbook - eCookbook.PySimpleGUI.org
 
-
-    Now available - "The Official PySimpleGUI Course" on Udemy!
-    https://www.udemy.com/pysimplegui
-    
-    Watch for a coupon codes in the documentation on PySimpleGUI.org
-
     Please consider sponsoring all open source developers that make software you or your business use. They need your help.
-    
+
 
     This software is available for your use under a LGPL3+ license
 
@@ -545,14 +44,14 @@ port = 'PySimpleGUI'
 
 
 
-    888      .d8888b.  8888888b.  888      .d8888b.          
-    888     d88P  Y88b 888   Y88b 888     d88P  Y88b         
+    888      .d8888b.  8888888b.  888      .d8888b.
+    888     d88P  Y88b 888   Y88b 888     d88P  Y88b
     888     888    888 888    888 888          .d88P
-    888     888        888   d88P 888         8888"    888   
-    888     888  88888 8888888P"  888          "Y8b. 8888888 
-    888     888    888 888        888     888    888   888   
-    888     Y88b  d88P 888        888     Y88b  d88P         
-    88888888 "Y8888P88 888        88888888 "Y8888P"          
+    888     888        888   d88P 888         8888"    888
+    888     888  88888 8888888P"  888          "Y8b. 8888888
+    888     888    888 888        888     888    888   888
+    888     Y88b  d88P 888        888     Y88b  d88P
+    88888888 "Y8888P88 888        88888888 "Y8888P"
 
 
     In addition to the normal publishing requirements of LGPL3+, these also apply:
@@ -561,7 +60,7 @@ port = 'PySimpleGUI'
        1. GitHub - (http://www.PySimpleGUI.com) currently pointing at:
           https://github.com/PySimpleGUI/PySimpleGUI
        2. PyPI - pip install PySimpleGUI is the customary way of obtaining the latest release
-    
+
        THE official documentation location is:
           https://www.PySimpleGUI.org - Main documentation
        There are also a lot of subdomains... many of which you can guess..
@@ -577,20 +76,20 @@ port = 'PySimpleGUI'
           https://Issues.PySimpleGUI.org - Open a new issue on GitHub
           https://Bugs.PySimpleGUI.org - Open a new issue on GitHub
           etc.....
-                
+
        If you've obtained this software in any other way, then those listed here, then SUPPORT WILL NOT BE PROVIDED.
     3. If you use PySimpleGUI in your project/product, a notice of its use needs to be displayed in your readme file as per the license agreement
 
     -----------------------------------------------------------------------------------------------------------------
 
 
-    The first bit of good news for you is that literally 100s of pages of documentation await you. 
+    The first bit of good news for you is that literally 100s of pages of documentation await you.
     300 Demo Programs have been written as a "jump start" mechanism to get your running as quickly as possible.
 
     Some general bits of advice:
     Upgrade your software!  python -m pip install --upgrade --no-cache-dir PySimpleGUI
     If you're thinking of filing an Issue or posting a problem, Upgrade your software first
-    There are constantly something new and interesting coming out of this project so stay current if you can 
+    There are constantly something new and interesting coming out of this project so stay current if you can
 
     The FASTEST WAY to learn PySimpleGUI is to begin to use it in conjunction with the materials provided by the project.
     http://www.PySimpleGUI.org
@@ -600,14 +99,14 @@ port = 'PySimpleGUI'
     The User Manual and the Cookbook are both designed to paint some nice looking GUIs on your screen within 5 minutes of you deciding to PySimpleGUI out.
 
     A final note from mike...
-    
-        “Don’t aim at success. The more you aim at it and make it a target, the more you are going to miss it. 
+
+        “Don’t aim at success. The more you aim at it and make it a target, the more you are going to miss it.
         For success, like happiness, cannot be pursued; it must ensue, and it only does so as the unintended side effect of one’s personal dedication to a cause greater.”
             — Viktor Frankl
-    
+
         I first saw this quote in a truncated format:
-            "Happiness, cannot be pursued; it must ensue, and it only does so as the unintended side effect of one’s personal dedication to a cause greater."    
-    
+            "Happiness, cannot be pursued; it must ensue, and it only does so as the unintended side effect of one’s personal dedication to a cause greater."
+
         Everyone is different, but my experience with the PySimpleGUI project matches this theory.  It's taken a lifetime of trying and "failing" and trying
         to find happiness before I finally figured this truth-for-me out.  If I do a long list of things, and live life in a kind & loving way, then the
         result is happiness.  It's a biproduct, not a directly produced thing.  This should be taught in school.  Or maybe it can't.
@@ -636,7 +135,7 @@ import calendar
 import datetime
 import textwrap
 
-import socket
+# import socket
 from hashlib import sha256 as hh
 import inspect
 import traceback
@@ -667,7 +166,6 @@ import queue
 
 try:
     import webbrowser
-
     webbrowser_available = True
 except:
     webbrowser_available = False
@@ -879,8 +377,8 @@ def running_replit():
 
     It's a mess.... really... it's a mess internally... it's the external-facing interfaces that
     are not a mess.  The Elements and the methods for them are well-designed.
-    PEP8 - this code is far far from PEP8 compliant. 
-    It was written PRIOR to learning that PEP8 existed. 
+    PEP8 - this code is far far from PEP8 compliant.
+    It was written PRIOR to learning that PEP8 existed.
 
     I'll be honest.... started learning Python in Nov 2017, started writing PySimpleGUI in Feb 2018.
     Released PySimpleGUI in July 2018.  I knew so little about Python that my parameters were all named
@@ -888,14 +386,14 @@ def running_replit():
     parameters to lower case.  Unfortunately, the internal naming conventions have been set.  Mixing them
     with PEP8 at this moment would be even MORE confusing.
 
-    Code I write now, outside PySimpleGUI, IS PEP8 compliant.  
+    Code I write now, outside PySimpleGUI, IS PEP8 compliant.
 
     The variable and function naming in particular are not compliant.  There is
     liberal use of CamelVariableAndFunctionNames, but for anything externally facing, there are aliases
     available for all functions.  If you've got a serious enough problem with 100% PEP8 compliance
     that you'll pass on this package, then that's your right and I invite you to do so.  However, if
     perhaps you're a practical thinker where it's the results that matter, then you'll have no
-    trouble with this code base.  There is consisency however.  
+    trouble with this code base.  There is consisency however.
 
     I truly hope you get a lot of enjoyment out of using PySimpleGUI.  It came from good intentions.
 """
@@ -7284,7 +6782,7 @@ class Graph(Element):
         Not called by the user.  It's called from another method/function that tkinter calledback
 
         :param event: (event) event info from tkinter. Contains the x and y coordinates of a click
-        :type event:  
+        :type event:
         """
 
         self.ClickPosition = self._convert_canvas_xy_to_xy(event.x, event.y)
@@ -12965,8 +12463,8 @@ class Window:
         You can provide your own key or a default key will be used.  The default key is defined
         with the constants EVENT_TIMER or TIMER_KEY.  They both equal the same value.
         The values dictionary will contain the timer ID that is returned from this function.
-        
-        :param frequency_ms:    How often to generate timer events in milliseconds 
+
+        :param frequency_ms:    How often to generate timer events in milliseconds
         :type frequency_ms:     int
         :param key:             Key to be returned as the timer event
         :type key:              str | int | tuple | object
@@ -23675,14 +23173,14 @@ def user_settings_object():
  ##:::::::: ##:. ##:: ##::::::: ##::: ##: ##:::: ##:::: ##:::: ##:::::::
  ########: ##:::. ##: ########:. ######::. #######::::: ##:::: ########:
 ........::..:::::..::........:::......::::.......::::::..:::::........::
-:::'###::::'########::'####::'######::                                  
-::'## ##::: ##.... ##:. ##::'##... ##:                                  
-:'##:. ##:: ##:::: ##:: ##:: ##:::..::                                  
-'##:::. ##: ########::: ##::. ######::                                  
- #########: ##.....:::: ##:::..... ##:                                  
- ##.... ##: ##::::::::: ##::'##::: ##:                                  
- ##:::: ##: ##::::::::'####:. ######::                                  
-..:::::..::..:::::::::....:::......:::        
+:::'###::::'########::'####::'######::
+::'## ##::: ##.... ##:. ##::'##... ##:
+:'##:. ##:: ##:::: ##:: ##:: ##:::..::
+'##:::. ##: ########::: ##::. ######::
+ #########: ##.....:::: ##:::..... ##:
+ ##.... ##: ##::::::::: ##::'##::: ##:
+ ##:::: ##: ##::::::::'####:. ######::
+..:::::..::..:::::::::....:::......:::
 
 
 
@@ -24008,7 +23506,7 @@ def execute_get_editor():
 '''
 The Mac problems have been significant enough to warrant the addition of a series of settings that allow
 users to turn specific patches and features on or off depending on their setup.  There is not enough information
-available to make this process more atuomatic.  
+available to make this process more atuomatic.
 
 '''
 
@@ -24135,7 +23633,7 @@ def main_mac_feature_control():
  ##:::: ##: ##...:::: ##.... ##: ##:::: ##: ##::: ##:: ##::: ##:: ##...:::: ##.. ##:::
  ##:::: ##: ##::::::: ##:::: ##: ##:::: ##: ##::: ##:: ##::: ##:: ##::::::: ##::. ##::
  ########:: ########: ########::. #######::. ######:::. ######::: ########: ##:::. ##:
-........:::........::........::::.......::::......:::::......::::........::..:::::..::                                                                    
+........:::........::........::::.......::::......:::::......::::........::..:::::..::
 '''
 
 #####################################################################################################
@@ -24413,7 +23911,7 @@ class _Debugger:
         #       #    # #####  #    # #####     #  #  # # #  # # #    # #    # # ## #
         #       #    # #      #    # #         #  #  # # #   ## #    # #    # ##  ##
         #        ####  #       ####  #          ## ##  # #    # #####   ####  #    #
-    
+
         ######                                    #                     #     #
         #     # #    # #    # #####   ####       # #   #      #         #     #   ##   #####   ####
         #     # #    # ##  ## #    # #          #   #  #      #         #     #  #  #  #    # #
@@ -24459,7 +23957,7 @@ class _Debugger:
        #       #    # #    # #    #      # #         #  #  # ######   #   #      #    #
        #     # #    # #    # #    # #    # #         #  #  # #    #   #   #    # #    #
         #####  #    #  ####   ####   ####  ######     ## ##  #    #   #    ####  #    #
-    
+
         #     #                                                       #     #
         #     #   ##   #####  #   ##   #####  #      ######  ####     #  #  # # #    #
         #     #  #  #  #    # #  #  #  #    # #      #      #         #  #  # # ##   #
@@ -24534,7 +24032,7 @@ class _Debugger:
         #     # #    # # #      #    #    #       #      #    # ######   #   # #  # # #  ###
         #     # #    # # #      #    #    #       #      #    # #    #   #   # #   ## #    #
         ######   ####  # ###### #####     #       ######  ####  #    #   #   # #    #  ####
-    
+
         #     #
         #  #  # # #    # #####   ####  #    #
         #  #  # # ##   # #    # #    # #    #
@@ -24607,7 +24105,7 @@ class _Debugger:
         #   #   #      #      #####  #           # #    #
         #    #  #      #      #   #  #      #    # #    #
         #     # ###### #      #    # ######  ####  #    #
-    
+
         #######
         #       #       ####    ##   ##### # #    #  ####
         #       #      #    #  #  #    #   # ##   # #    #
@@ -24615,7 +24113,7 @@ class _Debugger:
         #       #      #    # ######   #   # #  # # #  ###
         #       #      #    # #    #   #   # #   ## #    #
         #       ######  ####  #    #   #   # #    #  ####
-    
+
         #     #
         #  #  # # #    # #####   ####  #    #
         #  #  # # ##   # #    # #    # #    #
@@ -24981,29 +24479,29 @@ def _random_happy_emoji():
 
 
 '''
-M"""""`'"""`YM                            
-M  mm.  mm.  M                            
-M  MMM  MMM  M .d8888b. 88d888b. .d8888b. 
-M  MMM  MMM  M 88'  `88 88'  `88 88ooood8 
-M  MMM  MMM  M 88.  .88 88       88.  ... 
-M  MMM  MMM  M `88888P' dP       `88888P' 
-MMMMMMMMMMMMMM                            
-                                          
-M#"""""""'M                             .d8888P dP   dP 
-##  mmmm. `M                            88'     88   88 
-#'        .M .d8888b. .d8888b. .d8888b. 88baaa. 88aaa88 
-M#  MMMb.'YM 88'  `88 Y8ooooo. 88ooood8 88` `88      88 
-M#  MMMM'  M 88.  .88       88 88.  ... 8b. .d8      88 
-M#       .;M `88888P8 `88888P' `88888P' `Y888P'      dP 
-M#########M                                             
-                                                        
-M""M                                                
-M  M                                                
-M  M 88d8b.d8b. .d8888b. .d8888b. .d8888b. .d8888b. 
-M  M 88'`88'`88 88'  `88 88'  `88 88ooood8 Y8ooooo. 
-M  M 88  88  88 88.  .88 88.  .88 88.  ...       88 
-M  M dP  dP  dP `88888P8 `8888P88 `88888P' `88888P' 
-MMMM                          .88                   
+M"""""`'"""`YM
+M  mm.  mm.  M
+M  MMM  MMM  M .d8888b. 88d888b. .d8888b.
+M  MMM  MMM  M 88'  `88 88'  `88 88ooood8
+M  MMM  MMM  M 88.  .88 88       88.  ...
+M  MMM  MMM  M `88888P' dP       `88888P'
+MMMMMMMMMMMMMM
+
+M#"""""""'M                             .d8888P dP   dP
+##  mmmm. `M                            88'     88   88
+#'        .M .d8888b. .d8888b. .d8888b. 88baaa. 88aaa88
+M#  MMMb.'YM 88'  `88 Y8ooooo. 88ooood8 88` `88      88
+M#  MMMM'  M 88.  .88       88 88.  ... 8b. .d8      88
+M#       .;M `88888P8 `88888P' `88888P' `Y888P'      dP
+M#########M
+
+M""M
+M  M
+M  M 88d8b.d8b. .d8888b. .d8888b. .d8888b. .d8888b.
+M  M 88'`88'`88 88'  `88 88'  `88 88ooood8 Y8ooooo.
+M  M 88  88  88 88.  .88 88.  .88 88.  ...       88
+M  M dP  dP  dP `88888P8 `8888P88 `88888P' `88888P'
+MMMM                          .88
                           d8888P
 '''
 
@@ -25032,994 +24530,6 @@ GREEN_CHECK_BASE64 = b'iVBORw0KGgoAAAANSUhEUgAAAFoAAABaCAYAAAA4qEECAAAJV0lEQVR4n
 
 
 
-'''
-M""MMMMM""M                                           dP          
-M  MMMMM  M                                           88          
-M  MMMMM  M 88d888b. .d8888b. 88d888b. .d8888b. .d888b88 .d8888b. 
-M  MMMMM  M 88'  `88 88'  `88 88'  `88 88'  `88 88'  `88 88ooood8 
-M  `MMM'  M 88.  .88 88.  .88 88       88.  .88 88.  .88 88.  ... 
-Mb       dM 88Y888P' `8888P88 dP       `88888P8 `88888P8 `88888P' 
-MMMMMMMMMMM 88            .88                                     
-            dP        d8888P                                      
-MP""""""`MM                            oo                   
-M  mmmmm..M                                                 
-M.      `YM .d8888b. 88d888b. dP   .dP dP .d8888b. .d8888b. 
-MMMMMMM.  M 88ooood8 88'  `88 88   d8' 88 88'  `"" 88ooood8 
-M. .MMM'  M 88.  ... 88       88 .88'  88 88.  ... 88.  ... 
-Mb.     .dM `88888P' dP       8888P'   dP `88888P' `88888P' 
-MMMMMMMMMMM
-'''
-
-__upgrade_server_ip = 'upgradeapi.PySimpleGUI.com'
-__upgrade_server_port = '5353'
-
-
-def __send_dict(ip, port, dict_to_send):
-    """
-    Send a dictionary to the upgrade server and get back a dictionary in response
-    :param ip:           ip address of the upgrade server
-    :type ip:            str
-    :param port:         port number
-    :type port:          int | str
-    :param dict_to_send: dictionary of items to send
-    :type dict_to_send:  dict
-    :return:             dictionary that is the reply
-    :rtype:              dict
-    """
-
-    # print(f'sending dictionary to ip {ip} port {port}')
-    try:
-        # Create a socket object
-        s = socket.socket()
-
-        s.settimeout(5.0)       # set a 5 second timeout
-
-        # connect to the server on local computer
-        s.connect((ip , int(port)))
-        # send a python dictionary
-        s.send(json.dumps(dict_to_send).encode())
-
-        # receive data from the server
-        reply_data = s.recv(1024).decode()
-        # close the connection
-        s.close()
-    except Exception as e:
-        # print(f'Error sending to server:', e)
-        # print(f'payload:\n', dict_to_send)
-        reply_data = e
-    try:
-        data_dict = json.loads(reply_data)
-    except Exception as e:
-        # print(f'UPGRADE THREAD - Error decoding reply {reply_data} as a dictionary. Error = {e}')
-        data_dict = {}
-    return data_dict
-
-def __show_previous_upgrade_information():
-    """
-    Shows information about upgrades if upgrade information is waiting to be shown
-
-    :return:
-    """
-
-    # if nothing to show, then just return
-    if pysimplegui_user_settings.get('-upgrade info seen-', True) and not pysimplegui_user_settings.get('-upgrade info available-', False):
-        return
-    if pysimplegui_user_settings.get('-upgrade show only critical-', False) and pysimplegui_user_settings.get('-severity level-', '') != 'Critical':
-        return
-
-    message1 = pysimplegui_user_settings.get('-upgrade message 1-', '')
-    message2 = pysimplegui_user_settings.get('-upgrade message 2-', '')
-    recommended_version = pysimplegui_user_settings.get('-upgrade recommendation-', '')
-    severity_level = pysimplegui_user_settings.get('-severity level-', '')
-
-    if severity_level != 'Critical':
-        return
-
-    layout = [[Image(EMOJI_BASE64_HAPPY_THUMBS_UP), T('An upgrade is available & recommended', font='_ 14')],
-              [T('It is recommended you upgrade to version {}'.format(recommended_version))],
-              [T(message1, enable_events=True, k='-MESSAGE 1-')],
-              [T(message2, enable_events=True, k='-MESSAGE 2-')],
-              [CB('Do not show this message again in the future', default=True, k='-SKIP IN FUTURE-')],
-              [B('Close'), T('This window auto-closes in'), T('30', k='-CLOSE TXT-', text_color='white', background_color='red'), T('seconds')]]
-
-    window = Window('PySimpleGUI Intelligent Upgrade', layout, finalize=True)
-    if 'http' in message1:
-        window['-MESSAGE 1-'].set_cursor('hand1')
-    if 'http' in message2:
-        window['-MESSAGE 2-'].set_cursor('hand1')
-
-    seconds_left=30
-    while True:
-        event, values = window.read(timeout=1000)
-        if event in ('Close', WIN_CLOSED) or seconds_left < 1:
-            break
-        if values['-SKIP IN FUTURE-']:
-            if not running_trinket():
-                pysimplegui_user_settings['-upgrade info available-'] = False
-                pysimplegui_user_settings['-upgrade info seen-'] = True
-        if event == '-MESSAGE 1-' and 'http' in message1 and webbrowser_available:
-            webbrowser.open_new_tab(message1)
-        elif event == '-MESSAGE 2-' and 'http' in message2 and webbrowser_available:
-            webbrowser.open_new_tab(message2)
-        window['-CLOSE TXT-'].update(seconds_left)
-        seconds_left -= 1
-
-    window.close()
-
-
-def __get_linux_distribution():
-    line_tuple = ('Linux Distro', 'Unknown', 'No lines Found in //etc//os-release')
-    try:
-        with open('/etc/os-release') as f:
-            data = f.read()
-        lines = data.split('\n')
-        for line in lines:
-            if line.startswith('PRETTY_NAME'):
-                line_split = line.split('=')[1].strip('"')
-                line_tuple = tuple(line_split.split(' '))
-                return line_tuple
-    except:
-        line_tuple = ('Linux Distro', 'Exception','Error reading//processing //etc//os-release')
-
-    return line_tuple
-
-
-def __perform_upgrade_check_thread():
-    # print(f'Upgrade thread...seen = {pysimplegui_user_settings.get("-upgrade info seen-", False)}')
-    try:
-        if running_trinket():
-            os_name = 'Trinket'
-            os_ver = __get_linux_distribution()
-        elif running_replit():
-            os_name = 'REPL.IT'
-            os_ver = __get_linux_distribution()
-        elif running_windows():
-            os_name = 'Windows'
-            os_ver = platform.win32_ver()
-        elif running_linux():
-            os_name = 'Linux'
-            os_ver = __get_linux_distribution()
-        elif running_mac():
-            os_name = 'Mac'
-            os_ver = platform.mac_ver()
-        else:
-            os_name = 'Other'
-            os_ver = ''
-
-        psg_ver = version
-        framework_ver = framework_version
-        python_ver = sys.version
-
-        upgrade_dict = {
-            'OSName' : str(os_name),
-            'OSVersion' : str(os_ver),
-            'PythonVersion' : str(python_ver),
-            'PSGVersion' : str(psg_ver),
-            'FrameworkName' : 'tkinter',
-            'FrameworkVersion' : str(framework_ver),
-        }
-        reply_data = __send_dict(__upgrade_server_ip, __upgrade_server_port, upgrade_dict)
-
-        recommended_version = reply_data.get('SuggestedVersion', '')
-        message1 = reply_data.get('Message1', '')
-        message2 = reply_data.get('Message2', '')
-        severity_level = reply_data.get('SeverityLevel', '')
-        # If any part of the reply has changed from the last reply, overwrite the data and set flags so user will be informed
-        if (message1 or message2) and not running_trinket():
-            if pysimplegui_user_settings.get('-upgrade message 1-', '') != message1 or \
-               pysimplegui_user_settings.get('-upgrade message 2-', '') != message2 or \
-               pysimplegui_user_settings.get('-upgrade recommendation-', '') != recommended_version or \
-               pysimplegui_user_settings.get('-severity level-', '') != severity_level:
-                # Save the data to the settings file
-                pysimplegui_user_settings['-upgrade info seen-'] = False
-                pysimplegui_user_settings['-upgrade info available-'] = True
-                pysimplegui_user_settings['-upgrade message 1-'] = message1
-                pysimplegui_user_settings['-upgrade message 2-'] = message2
-                pysimplegui_user_settings['-upgrade recommendation-'] = recommended_version
-                pysimplegui_user_settings['-severity level-'] = severity_level
-    except Exception as e:
-        reply_data = {}
-        # print('Upgrade server error', e)
-    # print(f'Upgrade Reply = {reply_data}')
-
-def __perform_upgrade_check():
-    # For now, do not show data returned. Still testing and do not want to "SPAM" users with any popups
-    __show_previous_upgrade_information()
-    threading.Thread(target=lambda: __perform_upgrade_check_thread(), daemon=True).start()
-
-
-# =========================================================================#
-# MP""""""`MM                                                                dP                  dP
-# M  mmmmm..M                                                                88                  88
-# M.      `YM .d8888b. 88d888b. .d8888b. .d8888b. .d8888b. 88d888b. .d8888b. 88d888b. .d8888b. d8888P
-# MMMMMMM.  M 88'  `"" 88'  `88 88ooood8 88ooood8 88ooood8 88'  `88 Y8ooooo. 88'  `88 88'  `88   88
-# M. .MMM'  M 88.  ... 88       88.  ... 88.  ... 88.  ... 88    88       88 88    88 88.  .88   88
-# Mb.     .dM `88888P' dP       `88888P' `88888P' `88888P' dP    dP `88888P' dP    dP `88888P'   dP
-# MMMMMMMMMMM
-#
-# M"""""`'"""`YM                   oo
-# M  mm.  mm.  M
-# M  MMM  MMM  M .d8888b. .d8888b. dP .d8888b.
-# M  MMM  MMM  M 88'  `88 88'  `88 88 88'  `""
-# M  MMM  MMM  M 88.  .88 88.  .88 88 88.  ...
-# M  MMM  MMM  M `88888P8 `8888P88 dP `88888P'
-# MMMMMMMMMMMMMM               .88
-#                          d8888P
-# M#"""""""'M                    oo                      M""MMMMM""MM
-# ##  mmmm. `M                                           M  MMMMM  MM
-# #'        .M .d8888b. .d8888b. dP 88d888b. .d8888b.    M         `M .d8888b. 88d888b. .d8888b.
-# M#  MMMb.'YM 88ooood8 88'  `88 88 88'  `88 Y8ooooo.    M  MMMMM  MM 88ooood8 88'  `88 88ooood8
-# M#  MMMM'  M 88.  ... 88.  .88 88 88    88       88    M  MMMMM  MM 88.  ... 88       88.  ...
-# M#       .;M `88888P' `8888P88 dP dP    dP `88888P'    M  MMMMM  MM `88888P' dP       `88888P'
-# M#########M                .88                         MMMMMMMMMMMM
-#                        d8888P
-# =========================================================================#
-
-
-
-# =========================================================================#
-
-# MP""""""`MM   dP                       dP               .8888b
-# M  mmmmm..M   88                       88               88   "
-# M.      `YM d8888P .d8888b. 88d888b. d8888P    .d8888b. 88aaa
-# MMMMMMM.  M   88   88'  `88 88'  `88   88      88'  `88 88
-# M. .MMM'  M   88   88.  .88 88         88      88.  .88 88
-# Mb.     .dM   dP   `88888P8 dP         dP      `88888P' dP
-# MMMMMMMMMMM
-#
-# dP dP                     oo          dP dP
-# dP dP                                 dP dP
-#       88d8b.d8b. .d8888b. dP 88d888b.
-#       88'`88'`88 88'  `88 88 88'  `88
-#       88  88  88 88.  .88 88 88    88
-#       dP  dP  dP `88888P8 dP dP    dP
-#
-#
-# MM""""""""`M            dP
-# MM  mmmmmmmM            88
-# M`      MMMM 88d888b. d8888P 88d888b. dP    dP
-# MM  MMMMMMMM 88'  `88   88   88'  `88 88    88
-# MM  MMMMMMMM 88    88   88   88       88.  .88
-# MM        .M dP    dP   dP   dP       `8888P88
-# MMMMMMMMMMMM                               .88
-#                                        d8888P
-# MM"""""""`YM          oo            dP
-# MM  mmmmm  M                        88
-# M'        .M .d8888b. dP 88d888b. d8888P .d8888b.
-# MM  MMMMMMMM 88'  `88 88 88'  `88   88   Y8ooooo.
-# MM  MMMMMMMM 88.  .88 88 88    88   88         88
-# MM  MMMMMMMM `88888P' dP dP    dP   dP   `88888P'
-# MMMMMMMMMMMM
-
-# ==========================================================================#
-
-
-# M"""""`'"""`YM          oo
-# M  mm.  mm.  M
-# M  MMM  MMM  M .d8888b. dP 88d888b.
-# M  MMM  MMM  M 88'  `88 88 88'  `88
-# M  MMM  MMM  M 88.  .88 88 88    88
-# M  MMM  MMM  M `88888P8 dP dP    dP
-# MMMMMMMMMMMMMM
-#
-# MM"""""""`YM                     dP      MM'"""""`MM oo   dP   M""MMMMM""MM          dP
-# MM  mmmmm  M                     88      M' .mmm. `M      88   M  MMMMM  MM          88
-# M'        .M .d8888b. .d8888b. d8888P    M  MMMMMMMM dP d8888P M         `M dP    dP 88d888b.
-# MM  MMMMMMMM 88'  `88 Y8ooooo.   88      M  MMM   `M 88   88   M  MMMMM  MM 88    88 88'  `88
-# MM  MMMMMMMM 88.  .88       88   88      M. `MMM' .M 88   88   M  MMMMM  MM 88.  .88 88.  .88
-# MM  MMMMMMMM `88888P' `88888P'   dP      MM.     .MM dP   dP   M  MMMMM  MM `88888P' 88Y8888'
-# MMMMMMMMMMMM                             MMMMMMMMMMM           MMMMMMMMMMMM
-#
-# M""M
-# M  M
-# M  M .d8888b. .d8888b. dP    dP .d8888b.
-# M  M Y8ooooo. Y8ooooo. 88    88 88ooood8
-# M  M       88       88 88.  .88 88.  ...
-# M  M `88888P' `88888P' `88888P' `88888P'
-# MMMM
-
-
-def _github_issue_post_make_markdown(issue_type, operating_system, os_ver, psg_port, psg_ver, gui_ver, python_ver,
-                                     python_exp, prog_exp, used_gui, gui_notes,
-                                     cb_docs, cb_demos, cb_demo_port, cb_readme_other, cb_command_line, cb_issues, cb_latest_pypi, cb_github,
-                                     detailed_desc, code, project_details, where_found):
-    body = \
-"""
-## Type of Issue (Enhancement, Error, Bug, Question)
-
-{}
-
-----------------------------------------
-
-## Environment 
-
-#### Operating System
-
-{}  version {}
-
-#### PySimpleGUI Port (tkinter, Qt, Wx, Web)
-
-{}
-
-----------------------------------------
-
-## Versions
-
-
-#### Python version (`sg.sys.version`)
-
-{}
-
-#### PySimpleGUI Version (`sg.__version__`)
-
-{}
-
-#### GUI Version  (tkinter (`sg.tclversion_detailed`), PySide2, WxPython, Remi)
-
-{}
-""".format(issue_type, operating_system,os_ver, psg_port,python_ver, psg_ver, gui_ver, project_details)
-
-    body2 = \
-"""
-
-
----------------------
-
-## Your Experience In Months or Years (optional)
-
-{} Years Python programming experience
-{} Years Programming experience overall
-{} Have used another Python GUI Framework? (tkinter, Qt, etc) (yes/no is fine)
-{}
-
----------------------
-
-## Troubleshooting
-
-These items may solve your problem. Please check those you've done by changing - [ ] to - [X]
-
-- [{}] Searched main docs for your problem  www.PySimpleGUI.org
-- [{}] Looked for Demo Programs that are similar to your goal. It is recommend you use the Demo Browser! Demos.PySimpleGUI.org
-- [{}] If not tkinter - looked for Demo Programs for specific port
-- [{}] For non tkinter - Looked at readme for your specific port if not PySimpleGUI (Qt, WX, Remi)
-- [{}] Run your program outside of your debugger (from a command line)
-- [{}] Searched through Issues (open and closed) to see if already reported Issues.PySimpleGUI.org
-- [{}] Upgraded to the latest official release of PySimpleGUI on PyPI
-- [{}] Tried using the PySimpleGUI.py file on GitHub. Your problem may have already been fixed but not released
-
-## Detailed Description
-
-{}
-
-#### Code To Duplicate
-
-
-```python
-{}
-
-
-```
-
-#### Screenshot, Sketch, or Drawing
-
-
-
-""".format(python_exp, prog_exp, used_gui, gui_notes,
-                cb_docs, cb_demos, cb_demo_port, cb_readme_other, cb_command_line, cb_issues, cb_latest_pypi, cb_github,
-                detailed_desc, code if len(code) > 10 else '# Paste your code here')
-
-
-    if project_details or where_found:
-        body2 +=  '------------------------'
-
-    if project_details:
-        body2 +=  \
-"""
-## Watcha Makin?
-{}
-""".format(str(project_details))
-
-    if where_found:
-        body2 += \
-"""
-## How did you find PySimpleGUI?
-{}
-""".format(str(where_found))
-    return body + body2
-
-
-def _github_issue_post_make_github_link(title, body):
-    pysimplegui_url = "https://github.com/PySimpleGUI/PySimpleGUI"
-    pysimplegui_issues = "{}/issues/new?".format(pysimplegui_url)
-
-    # Fix body cuz urllib can't do it smfh
-    getVars = {'title': str(title), 'body': str(body)}
-    return (pysimplegui_issues + urllib.parse.urlencode(getVars).replace("%5Cn", "%0D"))
-
-
-#########################################################################################################
-
-def _github_issue_post_validate(values, checklist, issue_types):
-    issue_type = None
-    for itype in issue_types:
-        if values[itype]:
-            issue_type = itype
-            break
-    if issue_type is None:
-        popup_error('Must choose issue type', keep_on_top=True)
-        return False
-    if values['-OS WIN-']:
-        os_ver = values['-OS WIN VER-']
-    elif values['-OS LINUX-']:
-        os_ver = values['-OS LINUX VER-']
-    elif values['-OS MAC-']:
-        os_ver = values['-OS MAC VER-']
-    elif values['-OS OTHER-']:
-        os_ver = values['-OS OTHER VER-']
-    else:
-        popup_error('Must choose Operating System', keep_on_top=True)
-        return False
-
-    if os_ver == '':
-        popup_error('Must fill in an OS Version', keep_on_top=True)
-        return False
-
-    checkboxes = any([values[('-CB-', i)] for i in range(len(checklist))])
-    if not checkboxes:
-        popup_error('None of the checkboxes were checked.... you need to have tried something...anything...', keep_on_top=True)
-        return False
-
-    title = values['-TITLE-'].strip()
-    if len(title) == 0:
-        popup_error("Title can't be blank", keep_on_top=True)
-        return False
-    elif title[1:len(title) - 1] == issue_type:
-        popup_error("Title can't be blank (only the type of issue isn't enough)", keep_on_top=True)
-        return False
-
-    if len(values['-ML DETAILS-']) < 4:
-        popup_error("A little more details would be awesome", keep_on_top=True)
-        return False
-
-    return True
-
-
-def _github_issue_help():
-    heading_font = '_ 12 bold underline'
-    text_font = '_ 10'
-
-    def HelpText(text):
-        return Text(text, size=(80, None), font=text_font)
-
-    help_why = \
-""" Let's start with a review of the Goals of the PySimpleGUI project
-1. To have fun
-2. For you to be successful
-
-This form is as important as the documentation and the demo programs to meeting those goals.
-
-The GitHub Issue GUI is here to help you more easily log issues on the PySimpleGUI GitHub Repo. """
-
-    help_goals = \
-""" The goals of using GitHub Issues for PySimpleGUI question, problems and suggestions are:
-* Give you direct access to engineers with the most knowledge of PySimpleGUI
-* Answer your questions in the most precise and correct way possible
-* Provide the highest quality solutions possible
-* Give you a checklist of things to try that may solve the problem
-* A single, searchable database of known problems and their workarounds
-* Provide a place for the PySimpleGUI project to directly provide support to users
-* A list of requested enhancements
-* An easy to use interface to post code and images
-* A way to track the status and have converstaions about issues
-* Enable multiple people to help users """
-
-    help_explain = \
-""" GitHub does not provide a "form" that normal bug-tracking-databases provide. As a result, a form was created specifically for the PySimpleGUI project.
-
-The most obvious questions about this form are
-* Why is there a form? Other projects don't have one?
-* My question is an easy one, why does it still need a form?
-
-The answer is:
-I want you to get your question answered with the highest quality answer possible as quickly as possible.
-
-The longer answer - For quite a while there was no form. It resulted the same back and forth, multiple questions comversation.  "What version are you running?"  "What OS are you using?"  These waste precious time.
-
-If asking nicely helps... PLEASE ... please fill out the form.
-
-I can assure you that this form is not here to punish you. It doesn't exist to make you angry and frustrated.  It's not here for any purpose than to try and get you support and make PySimpleGUI better. """
-
-    help_experience = \
-""" Not many Bug-tracking systems ask about you as a user. Your experience in programming, programming in Python and programming a GUI are asked to provide you with the best possible answer.  Here's why it's helpful.  You're a human being, with a past, and a some amount of experience.  Being able to taylor the reply to your issue in a way that fits you and your experience will result in a reply that's efficient and clear.  It's not something normally done but perhaps it should be. It's meant to provide you with a personal response.
-
-If you've been programming for a month, the person answering your question can answer your question in a way that's understandable to you.  Similarly, if you've been programming for 20 years and have used multiple Python GUI frameworks, then you are unlikely to need as much explanation.  You'll also have a richer GUI vocabularly. It's meant to try and give you a peronally crafted response that's on your wavelength. Fun & success... Remember those are our shared goals"""
-
-    help_steps = \
-""" The steps to log an issue are:
-1. Fill in the form
-2. Click Post Issue """
-
-    # layout = [  [T('Goals', font=heading_font, pad=(0,0))],
-    #             [HelpText(help_goals)],
-    #             [T('Why?', font=heading_font, pad=(0,0))],
-    #             [HelpText(help_why)],
-    #             [T('FAQ', font=heading_font, pad=(0,0))],
-    #             [HelpText(help_explain)],
-    #             [T('Experience (optional)', font=heading_font)],
-    #             [HelpText(help_experience)],
-    #             [T('Steps', font=heading_font, pad=(0,0))],
-    #             [HelpText(help_steps)],
-    #             [B('Close')]]
-
-    t_goals = Tab('Goals', [[HelpText(help_goals)]])
-    t_why = Tab('Why', [[HelpText(help_why)]])
-    t_faq = Tab('FAQ', [[HelpText(help_explain)]])
-    t_exp = Tab('Experience', [[HelpText(help_experience)]])
-    t_steps = Tab('Steps', [[HelpText(help_steps)]])
-
-    layout = [[TabGroup([[t_goals, t_why, t_faq, t_exp, t_steps]])],
-              [B('Close')]]
-
-    Window('GitHub Issue GUI Help', layout, keep_on_top=True).read(close=True)
-
-    return
-
-
-def main_open_github_issue():
-    font_frame = '_ 14'
-    issue_types = ('Question', 'Bug', 'Enhancement', 'Error Message')
-    frame_type = [[Radio(t, 1, size=(10, 1), enable_events=True, k=t)] for t in issue_types]
-
-    v_size = (15, 1)
-    frame_versions = [[T('Python', size=v_size), In(sys.version, size=(20, 1), k='-VER PYTHON-')],
-                      [T('PySimpleGUI', size=v_size), In(ver, size=(20, 1), k='-VER PSG-')],
-                      [T('tkinter', size=v_size), In(tclversion_detailed, size=(20, 1), k='-VER TK-')]]
-
-    frame_platforms = [[T('OS                 '), T('Details')],
-                       [Radio('Windows', 2, running_windows(), size=(8, 1), k='-OS WIN-'), In(size=(8, 1), k='-OS WIN VER-')],
-                       [Radio('Linux', 2, running_linux(), size=(8, 1), k='-OS LINUX-'), In(size=(8, 1), k='-OS LINUX VER-')],
-                       [Radio('Mac', 2, running_mac(), size=(8, 1), k='-OS MAC-'), In(size=(8, 1), k='-OS MAC VER-')],
-                       [Radio('Other', 2, size=(8, 1), k='-OS OTHER-'), In(size=(8, 1), k='-OS OTHER VER-')]]
-
-    col_experience = [[T('Optional Experience Info')],
-                      [In(size=(4, 1), k='-EXP PROG-'), T('Years Programming')],
-                      [In(size=(4, 1), k='-EXP PYTHON-'), T('Years Writing Python')],
-                      [CB('Previously programmed a GUI', k='-CB PRIOR GUI-')],
-                      [T('Share more if you want....')],
-                      [In(size=(25, 1), k='-EXP NOTES-', expand_x=True)]]
-
-    checklist = (('Searched main docs for your problem', 'www.PySimpleGUI.org'),
-                 ('Looked for Demo Programs that are similar to your goal.\nIt is recommend you use the Demo Browser!', 'https://Demos.PySimpleGUI.org'),
-                 ('If not tkinter - looked for Demo Programs for specific port', ''),
-                 ('For non tkinter - Looked at readme for your specific port if not PySimpleGUI (Qt, WX, Remi)', ''),
-                 ('Run your program outside of your debugger (from a command line)', ''),
-                 ('Searched through Issues (open and closed) to see if already reported', 'https://Issues.PySimpleGUI.org'),
-                 ('Upgraded to the latest official release of PySimpleGUI on PyPI', 'https://Upgrading.PySimpleGUI.org'),
-                 ('Tried using the PySimpleGUI.py file on GitHub. Your problem may have already been fixed but not released.', ''))
-
-    checklist_col1 = Col([[CB(c, k=('-CB-', i)), T(t, k='-T{}-'.format(i), enable_events=True)] for i, (c, t) in enumerate(checklist[:4])], k='-C FRAME CBs1-')
-    checklist_col2 = Col([[CB(c, k=('-CB-', i + 4)), T(t, k='-T{}-'.format(i + 4), enable_events=True)] for i, (c, t) in enumerate(checklist[4:])], pad=(0, 0),
-                         k='-C FRAME CBs2-')
-    checklist_tabgropup = TabGroup(
-        [[Tab('Checklist 1 *', [[checklist_col1]], expand_x=True, expand_y=True), Tab('Checklist 2  *', [[checklist_col2]]), Tab('Experience', col_experience, k='-Tab Exp-', pad=(0, 0))]], expand_x=True, expand_y=True)
-
-    frame_details = [[Multiline(size=(65, 10), font='Courier 10', k='-ML DETAILS-', expand_x=True, expand_y=True)]]
-
-    tooltip_project_details = 'If you care to share a little about your project,\nthen by all means tell us what you are making!'
-    frame_project_details = [[Multiline(size=(65, 10), font='Courier 10', k='-ML PROJECT DETAILS-', expand_x=True, expand_y=True, tooltip=tooltip_project_details)]]
-
-    tooltip_where_find_psg = 'Where did you learn about PySimpleGUI?'
-    frame_where_you_found_psg = [[Multiline(size=(65, 10), font='Courier 10', k='-ML FOUND PSG-', expand_x=True, expand_y=True, tooltip=tooltip_where_find_psg)]]
-
-    tooltip_code = 'A short program that can be immediately run will considerably speed up getting you quality help.'
-    frame_code = [[Multiline(size=(80, 10), font='Courier 8', k='-ML CODE-', expand_x=True, expand_y=True, tooltip=tooltip_code)]]
-
-    frame_markdown = [[Multiline(size=(80, 10), font='Courier 8', k='-ML MARKDOWN-', expand_x=True, expand_y=True)]]
-
-    top_layout = [[Col([[Text('Open A GitHub Issue (* = Required Info)', font='_ 15')]], expand_x=True),
-                   Col([[B('Help')]])
-                   ],
-                  [Frame('Title *', [[Input(k='-TITLE-', size=(50, 1), font='_ 14', focus=True)]], font=font_frame)],
-                  # Image(data=EMOJI_BASE64_WEARY)],
-                  vtop([
-                      Frame('Platform *', frame_platforms, font=font_frame),
-                      Frame('Type of Issue *', frame_type, font=font_frame),
-                      Frame('Versions *', frame_versions, font=font_frame),
-                  ])]
-
-    middle_layout = [
-        [Frame('Checklist * (note that you can click the links)', [[checklist_tabgropup]], font=font_frame, k='-CLIST FRAME-', expand_x=True, expand_y=True)],
-        [HorizontalSeparator()],
-        [T(SYMBOL_DOWN + ' If you need more room for details grab the dot and drag to expand', background_color='red', text_color='white')]]
-
-    bottom_layout = [[TabGroup([[Tab('Details *\n', frame_details, pad=(0, 0)),
-                                 Tab('SHORT Program\nto duplicate problem *', frame_code, pad=(0, 0)),
-                                 Tab('Your Project Details\n(optional)', frame_project_details, pad=(0, 0)),
-                                 Tab('Where you found us?\n(optional)', frame_where_you_found_psg, pad=(0, 0)),
-                                 Tab('Markdown Output\n', frame_markdown, pad=(0, 0)),
-                                 ]], k='-TABGROUP-', expand_x=True, expand_y=True),
-                      ]]
-
-
-    layout_pane = Pane([Col(middle_layout), Col(bottom_layout)], key='-PANE-', expand_x=True, expand_y=True)
-
-    layout = [
-        [pin(B(SYMBOL_DOWN, pad=(0, 0), k='-HIDE CLIST-', tooltip='Hide/show upper sections of window')), pin(Col(top_layout, k='-TOP COL-'))],
-        [layout_pane],
-        [Col([[B('Post Issue'), B('Create Markdown Only'), B('Quit')]])]]
-
-    window = Window('Open A GitHub Issue', layout, finalize=True, resizable=True, enable_close_attempted_event=True, margins=(0, 0))
-
-
-
-    # for i in range(len(checklist)):
-    [window['-T{}-'.format(i)].set_cursor('hand1') for i in range(len(checklist))]
-    # window['-TABGROUP-'].expand(True, True, True)
-    # window['-ML CODE-'].expand(True, True, True)
-    # window['-ML DETAILS-'].expand(True, True, True)
-    # window['-ML MARKDOWN-'].expand(True, True, True)
-    # window['-PANE-'].expand(True, True, True)
-
-    if running_mac():
-        window['-OS MAC VER-'].update(platform.mac_ver())
-    elif running_windows():
-        window['-OS WIN VER-'].update(platform.win32_ver())
-    elif running_linux():
-        window['-OS LINUX VER-'].update(platform.libc_ver())
-
-
-    window.bring_to_front()
-    while True:  # Event Loop
-        event, values = window.read()
-        # print(event, values)
-        if event in (WINDOW_CLOSE_ATTEMPTED_EVENT, 'Quit'):
-            if popup_yes_no('Do you really want to exit?',
-                            'If you have not clicked Post Issue button and then clicked "Submit New Issue" button '
-                            'then your issue will not have been submitted to GitHub.\n'
-                            'If you are having trouble with PySimpleGUI opening your browser, consider generating '
-                            'the markdown, copying it to a text file, and then using it later to manually paste into a new issue '
-                            '\n'
-                            'Are you sure you want to quit?',
-                            image=EMOJI_BASE64_PONDER, keep_on_top=True
-                            ) == 'Yes':
-                break
-        if event == WIN_CLOSED:
-            break
-        if event in ['-T{}-'.format(i) for i in range(len(checklist))]:
-            webbrowser.open_new_tab(window[event].get())
-        if event in issue_types:
-            title = str(values['-TITLE-'])
-            if len(title) != 0:
-                if title[0] == '[' and title.find(']'):
-                    title = title[title.find(']') + 1:]
-                    title = title.strip()
-            window['-TITLE-'].update('[{}] {}'.format(event, title))
-        if event == '-HIDE CLIST-':
-            window['-TOP COL-'].update(visible=not window['-TOP COL-'].visible)
-            window['-HIDE CLIST-'].update(text=SYMBOL_UP if window['-HIDE CLIST-'].get_text() == SYMBOL_DOWN else SYMBOL_DOWN)
-        if event == 'Help':
-            _github_issue_help()
-        elif event in ('Post Issue', 'Create Markdown Only'):
-            issue_type = None
-            for itype in issue_types:
-                if values[itype]:
-                    issue_type = itype
-                    break
-            if issue_type is None:
-                popup_error('Must choose issue type', keep_on_top=True)
-                continue
-            if values['-OS WIN-']:
-                operating_system = 'Windows'
-                os_ver = values['-OS WIN VER-']
-            elif values['-OS LINUX-']:
-                operating_system = 'Linux'
-                os_ver = values['-OS LINUX VER-']
-            elif values['-OS MAC-']:
-                operating_system = 'Mac'
-                os_ver = values['-OS MAC VER-']
-            elif values['-OS OTHER-']:
-                operating_system = 'Other'
-                os_ver = values['-OS OTHER VER-']
-            else:
-                popup_error('Must choose Operating System', keep_on_top=True)
-                continue
-            checkboxes = ['X' if values[('-CB-', i)] else ' ' for i in range(len(checklist))]
-
-            if not _github_issue_post_validate(values, checklist, issue_types):
-                continue
-
-            cb_dict = {'cb_docs': checkboxes[0], 'cb_demos': checkboxes[1], 'cb_demo_port': checkboxes[2], 'cb_readme_other': checkboxes[3],
-                       'cb_command_line': checkboxes[4], 'cb_issues': checkboxes[5], 'cb_latest_pypi': checkboxes[6], 'cb_github': checkboxes[7], 'detailed_desc': values['-ML DETAILS-'],
-                       'code': values['-ML CODE-'],
-                       'project_details': values['-ML PROJECT DETAILS-'].rstrip(),
-                       'where_found': values['-ML FOUND PSG-']}
-
-            markdown = _github_issue_post_make_markdown(issue_type, operating_system, os_ver, 'tkinter', values['-VER PSG-'], values['-VER TK-'],
-                                                        values['-VER PYTHON-'],
-                                                        values['-EXP PYTHON-'],values['-EXP PROG-'], 'Yes' if values['-CB PRIOR GUI-'] else 'No',
-                                                        values['-EXP NOTES-'],
-                                                        **cb_dict)
-            window['-ML MARKDOWN-'].update(markdown)
-            link = _github_issue_post_make_github_link(values['-TITLE-'], window['-ML MARKDOWN-'].get())
-            if event == 'Post Issue':
-                webbrowser.open_new_tab(link)
-            else:
-                popup('Your markdown code is in the Markdown tab', keep_on_top=True)
-
-    window.close()
-
-
-'''
-MM'"""""`MM oo   dP   M""MMMMM""MM          dP       
-M' .mmm. `M      88   M  MMMMM  MM          88       
-M  MMMMMMMM dP d8888P M         `M dP    dP 88d888b. 
-M  MMM   `M 88   88   M  MMMMM  MM 88    88 88'  `88 
-M. `MMM' .M 88   88   M  MMMMM  MM 88.  .88 88.  .88 
-MM.     .MM dP   dP   M  MMMMM  MM `88888P' 88Y8888' 
-MMMMMMMMMMM           MMMMMMMMMMMM                   
-                                                     
-M""MMMMM""M                                           dP          
-M  MMMMM  M                                           88          
-M  MMMMM  M 88d888b. .d8888b. 88d888b. .d8888b. .d888b88 .d8888b. 
-M  MMMMM  M 88'  `88 88'  `88 88'  `88 88'  `88 88'  `88 88ooood8 
-M  `MMM'  M 88.  .88 88.  .88 88       88.  .88 88.  .88 88.  ... 
-Mb       dM 88Y888P' `8888P88 dP       `88888P8 `88888P8 `88888P' 
-MMMMMMMMMMM 88            .88                                     
-            dP        d8888P
-
-'''
-
-
-'''
-M""""""""M dP                                        dP 
-Mmmm  mmmM 88                                        88 
-MMMM  MMMM 88d888b. 88d888b. .d8888b. .d8888b. .d888b88 
-MMMM  MMMM 88'  `88 88'  `88 88ooood8 88'  `88 88'  `88 
-MMMM  MMMM 88    88 88       88.  ... 88.  .88 88.  .88 
-MMMM  MMMM dP    dP dP       `88888P' `88888P8 `88888P8 
-MMMMMMMMMM
-'''
-
-def _the_github_upgrade_thread(window, sp):
-    """
-    The thread that's used to run the subprocess so that the GUI can continue and the stdout/stderror is collected
-
-    :param window:
-    :param sp:
-    :return:
-    """
-
-    window.write_event_value('-THREAD-', (sp, '===THEAD STARTING==='))
-    window.write_event_value('-THREAD-', (sp, '----- STDOUT & STDERR Follows ----'))
-    for line in sp.stdout:
-        oline = line.decode().rstrip()
-        window.write_event_value('-THREAD-', (sp, oline))
-
-    # DO NOT CHECK STDERR because it won't exist anymore. The subprocess code now combines stdout and stderr
-    # window.write_event_value('-THREAD-', (sp, '----- STDERR ----'))
-
-    # for line in sp.stderr:
-    #     oline = line.decode().rstrip()
-    #     window.write_event_value('-THREAD-', (sp, oline))
-    window.write_event_value('-THREAD-', (sp, '===THEAD DONE==='))
-
-
-
-def _copy_files_from_github():
-    """Update the local PySimpleGUI installation from Github"""
-
-    github_url = 'https://raw.githubusercontent.com/PySimpleGUI/PySimpleGUI/master/'
-    #files = ["PySimpleGUI.py", "setup.py"]
-    files = ["PySimpleGUI.py"]
-
-    # add a temp directory
-    temp_dir = tempfile.TemporaryDirectory()
-    psg_dir = os.path.join(temp_dir.name, 'PySimpleGUI')
-    path = psg_dir
-
-
-    os.mkdir(path)
-    # path = os.path.abspath('temp')
-
-    # download the files
-    downloaded = []
-    for file in files:
-        with request.urlopen(github_url + file) as response:
-            with open(os.path.join(path, file), 'wb') as f:
-                f.write(response.read())
-                downloaded.append(file)
-
-    # get the new version number if possible
-    with open(os.path.join(path, files[0]), encoding='utf-8') as f:
-        text_data = f.read()
-
-    package_version = "Unknown"
-    match = re.search(r'__version__ = \"([\d\.]+)', text_data)
-    if match:
-        package_version = match.group(1)
-
-    # create a setup.py file from scratch
-    setup_text = ''.join([
-            "import setuptools\n",
-            "setuptools.setup(",
-            "name='PySimpleGUI',",
-            "author='PySimpleGUI',"
-            "author_email='PySimpleGUI@PySimpleGUI.org',",
-            "description='Unreleased Development Version',",
-            "url='https://github.com/PySimpleGUI/PySimpleGUI',"
-            "packages=setuptools.find_packages(),",
-            "version='", package_version, "',",
-            "entry_points={",
-            "'gui_scripts': [",
-            "'psgissue=PySimpleGUI.PySimpleGUI:main_open_github_issue',",
-            "'psgmain=PySimpleGUI.PySimpleGUI:_main_entry_point',",
-            "'psgupgrade=PySimpleGUI.PySimpleGUI:_upgrade_entry_point',",
-            "'psghelp=PySimpleGUI.PySimpleGUI:main_sdk_help',",
-            "'psgver=PySimpleGUI.PySimpleGUI:main_get_debug_data',",
-            "'psgsettings=PySimpleGUI.PySimpleGUI:main_global_pysimplegui_settings',",
-            "],",
-            "},)"
-            ])
-
-    with open(os.path.join(temp_dir.name, 'setup.py'), 'w', encoding='utf-8') as f:
-        f.write(setup_text)
-
-    # create an __init__.py file
-    with open(os.path.join(path, '__init__.py'), 'w', encoding='utf-8') as f:
-        f.writelines([
-            'name="PySimpleGUI"\n',
-            'from .PySimpleGUI import *\n',
-            'from .PySimpleGUI import __version__'
-        ])
-
-    # install the pysimplegui package from local dist
-    # https://pip.pypa.io/en/stable/user_guide/?highlight=subprocess#using-pip-from-your-program
-    # subprocess.check_call([sys.executable, '-m', 'pip', 'install', path])
-    # python_command = execute_py_get_interpreter()
-    python_command = sys.executable         # always use the currently running interpreter to perform the pip!
-    if 'pythonw' in python_command:
-        python_command = python_command.replace('pythonw', 'python')
-
-    layout = [[Text('Pip Upgrade Progress')],
-              [Multiline(s=(90,15), k='-MLINE-', reroute_cprint=True, write_only=True, expand_x=True, expand_y=True)],
-              [Button('Downloading...', k='-EXIT-'), Sizegrip()]]
-
-    window = Window('Pip Upgrade', layout, finalize=True, keep_on_top=True, modal=True, disable_close=True, resizable=True)
-
-    window.disable_debugger()
-
-    cprint('The value of sys.executable = ', sys.executable, c='white on red')
-
-    # if not python_command:
-    #     python_command = sys.executable
-
-    cprint('Installing with the Python interpreter =', python_command, c='white on purple')
-
-    sp = execute_command_subprocess(python_command, '-m pip install', temp_dir.name,  pipe_output=True)
-
-    threading.Thread(target=_the_github_upgrade_thread, args=(window, sp), daemon=True).start()
-
-    while True:
-        event, values = window.read()
-        if event == WIN_CLOSED or (event == '-EXIT-' and window['-EXIT-'].ButtonText == 'Done'):
-            break
-        if event == '-THREAD-':
-            cprint(values['-THREAD-'][1])
-            if values['-THREAD-'][1] == '===THEAD DONE===':
-                window['-EXIT-'].update(text='Done', button_color='white on red')
-    window.close()
-    # cleanup and remove files
-    temp_dir.cleanup()
-
-
-    return package_version
-
-
-def _upgrade_from_github():
-    mod_version = _copy_files_from_github()
-
-    popup("*** SUCCESS ***", "PySimpleGUI.py installed version:", mod_version,
-          "For python located at:", os.path.dirname(sys.executable), keep_on_top=True, background_color='red',
-          text_color='white')
-
-
-def _upgrade_gui():
-    try:
-        cur_ver = version[:version.index('\n')]
-    except:
-        cur_ver = version
-
-    if popup_yes_no('* WARNING *',
-                    'You are about to upgrade your PySimpleGUI package previously installed via pip to the latest version location on the GitHub server.',
-                    'You are running verrsion {}'.format(cur_ver),
-                    '',
-                    'Are you sure you want to overwrite this release?', title='Are you sure you want to overwrite?',
-                    keep_on_top=True) == 'Yes':
-        _upgrade_from_github()
-    else:
-        popup_quick_message('Cancelled upgrade\nNothing overwritten', background_color='red', text_color='white', keep_on_top=True, non_blocking=False)
-
-# main_upgrade_from_github = _upgrade_gui
-
-def _upgrade_entry_point():
-    """
-    This function is entered via the psgupgrade.exe file.
-
-    It is needed so that the exe file will exit and thus allow itself to be overwritten which
-        is what the upgrade will do.
-    It simply runs the PySimpleGUI.py file with a command line argument "upgrade" which will
-        actually do the upgrade.
-    """
-    interpreter = sys.executable
-    if 'pythonw' in interpreter:
-        interpreter = interpreter.replace('pythonw', 'python')
-    execute_py_file(__file__, 'upgrade', interpreter_command=interpreter)
-
-
-
-def _main_entry_point():
-    # print('Restarting main as a new process...(needed in case you want to GitHub Upgrade)')
-    # Relaunch using the same python interpreter that was used to run this function
-    interpreter = sys.executable
-    if 'pythonw' in interpreter:
-        interpreter = interpreter.replace('pythonw', 'python')
-    execute_py_file(__file__, interpreter_command=interpreter)
-
-main_upgrade_from_github = _upgrade_entry_point
-
-####################################################################################################
-
-# M"""""`'"""`YM          oo
-# M  mm.  mm.  M
-# M  MMM  MMM  M .d8888b. dP 88d888b.
-# M  MMM  MMM  M 88'  `88 88 88'  `88
-# M  MMM  MMM  M 88.  .88 88 88    88
-# M  MMM  MMM  M `88888P8 dP dP    dP
-# MMMMMMMMMMMMMM
-#
-# MM'"""""`MM            dP
-# M' .mmm. `M            88
-# M  MMMMMMMM .d8888b. d8888P
-# M  MMM   `M 88ooood8   88
-# M. `MMM' .M 88.  ...   88
-# MM.     .MM `88888P'   dP
-# MMMMMMMMMMM
-#
-# M""""""'YMM          dP
-# M  mmmm. `M          88
-# M  MMMMM  M .d8888b. 88d888b. dP    dP .d8888b.
-# M  MMMMM  M 88ooood8 88'  `88 88    88 88'  `88
-# M  MMMM' .M 88.  ... 88.  .88 88.  .88 88.  .88
-# M       .MM `88888P' 88Y8888' `88888P' `8888P88
-# MMMMMMMMMMM                                 .88
-#                                         d8888P
-# M""""""'YMM            dP
-# M  mmmm. `M            88
-# M  MMMMM  M .d8888b. d8888P .d8888b.
-# M  MMMMM  M 88'  `88   88   88'  `88
-# M  MMMM' .M 88.  .88   88   88.  .88
-# M       .MM `88888P8   dP   `88888P8
-# MMMMMMMMMMM
-
-
-def main_get_debug_data(suppress_popup=False):
-    """
-    Collect up and display the data needed to file GitHub issues.
-    This function will place the information on the clipboard.
-    You MUST paste the information from the clipboard prior to existing your application (except on Windows).
-    :param suppress_popup: If True no popup window will be shown. The string will be only returned, not displayed
-    :type suppress_popup:  (bool)
-    :returns:              String containing the information to place into the GitHub Issue
-    :rtype:                (str)
-    """
-    message = get_versions()
-    clipboard_set(message)
-
-    if not suppress_popup:
-        popup_scrolled('*** Version information copied to your clipboard. Paste into your GitHub Issue. ***\n',
-                       message, title='Select and copy this info to your GitHub Issue', keep_on_top=True, size=(100, 10))
-
-    return message
 
 
 # ..######...##........#######..########.....###....##.........
@@ -26995,7 +25505,7 @@ if _mac_should_set_alpha_to_99():
     set_options(alpha_channel=0.99)
 
 
-__perform_upgrade_check()
+# __perform_upgrade_check()
 
 
 # -------------------------------- ENTRY POINT IF RUN STANDALONE -------------------------------- #
@@ -27003,11 +25513,11 @@ if __name__ == '__main__':
     # To execute the upgrade from command line, type:
     # python -m PySimpleGUI.PySimpleGUI upgrade
     if len(sys.argv) > 1 and sys.argv[1] == 'upgrade':
-        _upgrade_gui()
+        # _upgrade_gui()
+        print("function was removed from this port")
         exit(0)
     elif len(sys.argv) > 1 and sys.argv[1] == 'help':
         main_sdk_help()
         exit(0)
     main()
     exit(0)
-#25424909a31c4fa789f5aa4e210e7e07d412560195dc21abe678b68a3b4bdb2a8a78651d8613daaded730bc2a31adc02ba8b99717fff701cda8ae13c31f1dcee9da8837908626f1c5cc81e7a34d3b9cd032dba190647564bba72d248ad6b83e30c8abc057f3f1b1fb3a2ca853069de936f3f53522fd4732b743268e0fcde54577a05880f2057efe6bbd6349f77d6c002544f38e24db40ab84f3dde4a4b8b31e84480db31656fb74ae0c01a7af0b35ac66cf8a0fbb8ca85685fea075608c7862da6635511d0e5403c4a637138324ce1fb1308b765cba53863ddf7b01ca4fc988932b03c4a8403a72b8105f821913f02925218dbecf1e089bd32e78667939503f2abfd89b37fa293927e30550d441f21dc68273d2d07ed910f6a69bc8c792015eb623ada7e65347cf0389cf2a1696a7ccf88098a4fb4bfa44e88fac2a94a44e25b010355e48d483d896c58eb771ef47e01066156f9344750b487e176ca0642601951f096d4c03045aa8f912d475dbe04b82c6ddf1ac3adbf815aef4ca2c6add058c2789b66a9abd875f334752ec1bde11b9b56e334823304b6cc3fadf7daae277c982ebc7eadb726a33e2740d075ad082b9c20304c4a53228d6f05357c40903a78113aea4e6169e1a5351866f7a9ffc6666eb08a31bfb84d90cb3002f7ebf87871988b88a7b8a52d36a1a7dd826360b5c6ad922829d9f73d204f09d1b9ad9ffd8d
