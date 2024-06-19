@@ -135,7 +135,7 @@ import calendar
 import datetime
 import textwrap
 
-# import socket
+import socket
 from hashlib import sha256 as hh
 import inspect
 import traceback
