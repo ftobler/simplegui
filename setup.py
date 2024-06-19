@@ -33,6 +33,12 @@ setuptools.setup(
         "Topic :: Multimedia :: Graphics",
         "Operating System :: OS Independent"
     ),
+    install_requires=[
+        "psgtray"
+        # Add your dependencies here.
+        # example:
+        # 'numpy>=1.21.0,<2.0.0',
+    ],
     entry_points={
         'gui_scripts': [
             'psgissue=PySimpleGUI.PySimpleGUI:main_open_github_issue',
