@@ -1,4 +1,4 @@
-import PySimpleGUI as sg
+import simpleui as sg
 
 """
     Simple template window that saves position.

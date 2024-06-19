@@ -1,4 +1,4 @@
-import PySimpleGUI as sg
+import simpleui as sg
 
 """
     Demo - Fill a listbox with list of files FilesBrowse button

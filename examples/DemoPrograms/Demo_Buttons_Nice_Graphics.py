@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import PySimpleGUI as sg
+import simpleui as sg
 import io
 from PIL import Image
 import base64

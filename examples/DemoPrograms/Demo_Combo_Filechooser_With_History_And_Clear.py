@@ -1,4 +1,4 @@
-import PySimpleGUI as sg
+import simpleui as sg
 
 """
     Demo Combo File Chooser - with clearable history

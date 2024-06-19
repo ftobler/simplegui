@@ -1,3 +1,3 @@
-name = "PySimpleGUI"
-from .PySimpleGUI import *
-from .PySimpleGUI import __version__
+name = "simpleui"
+from .simpleui import *
+from .simpleui import __version__

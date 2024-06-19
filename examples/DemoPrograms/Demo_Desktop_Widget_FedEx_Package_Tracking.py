@@ -1,5 +1,5 @@
 import requests
-import PySimpleGUI as sg
+import simpleui as sg
 import datetime
 
 """

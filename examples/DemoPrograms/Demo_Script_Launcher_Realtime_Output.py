@@ -1,4 +1,4 @@
-import PySimpleGUI as sg
+import simpleui as sg
 
 """
 	Demo Program - Realtime output of a shell command in the window

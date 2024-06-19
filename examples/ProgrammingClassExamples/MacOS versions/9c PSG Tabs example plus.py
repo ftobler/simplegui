@@ -2,7 +2,7 @@
 #Tony Crewe
 #Oct 2018 MacOs
 
-import PySimpleGUI as sg
+import simpleui as sg
 import os
 
 #sg.ChangeLookAndFeel('BlueMono')

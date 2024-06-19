@@ -1,4 +1,4 @@
-import PySimpleGUI as sg
+import simpleui as sg
 
 """
     Demo - Graph Element Rescale Figures When Window Resizes

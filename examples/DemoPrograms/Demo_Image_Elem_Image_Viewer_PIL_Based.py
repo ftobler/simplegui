@@ -1,4 +1,4 @@
-import PySimpleGUI as sg
+import simpleui as sg
 # import PySimpleGUIQt as sg
 import os.path
 import PIL.Image

@@ -1,4 +1,4 @@
-import PySimpleGUI as sg
+import simpleui as sg
 
 """
     Demonstrates that using a Column Element to make groups of Elements appear and disappear

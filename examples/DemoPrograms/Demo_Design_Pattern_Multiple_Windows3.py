@@ -1,4 +1,4 @@
-import PySimpleGUI as sg
+import simpleui as sg
 
 '''
     Example of wizard-like PySimpleGUI windows

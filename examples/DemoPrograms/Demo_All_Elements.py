@@ -14,7 +14,7 @@
     Copyright 2021, 2022, 2023 PySimpleGUI
 """
 
-import PySimpleGUI as sg
+import simpleui as sg
 
 def make_window(theme):
     sg.theme(theme)

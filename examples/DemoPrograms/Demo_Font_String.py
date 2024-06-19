@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import PySimpleGUI as sg
+import simpleui as sg
 
 '''
     App that shows "how fonts work in PySimpleGUI".

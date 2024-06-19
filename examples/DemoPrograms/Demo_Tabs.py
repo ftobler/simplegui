@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import sys
-import PySimpleGUI as sg
+import simpleui as sg
 # import PySimpleGUIWeb as sg
 
 # Usage of Tabs in PSG

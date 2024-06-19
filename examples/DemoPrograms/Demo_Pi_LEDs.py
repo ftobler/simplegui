@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import sys
-import PySimpleGUI as sg
+import simpleui as sg
 import time
 
 # App for Raspberry Pi.

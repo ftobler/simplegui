@@ -1,4 +1,4 @@
-import PySimpleGUI as sg
+import simpleui as sg
 
 '''
     IP Address entry window with digit validation and auto advance

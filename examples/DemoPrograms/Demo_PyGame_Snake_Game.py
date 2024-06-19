@@ -1,5 +1,5 @@
 import pygame
-import PySimpleGUI as sg
+import simpleui as sg
 import os
 
 """

@@ -1,4 +1,4 @@
-import PySimpleGUI as sg
+import simpleui as sg
 
 layout = [[sg.Text('What is your name?')],
           [sg.InputText()],

@@ -2,7 +2,7 @@
 #Tony Crewe
 #Sep 2018
 
-import PySimpleGUI as sg
+import simpleui as sg
 
 sg.ChangeLookAndFeel('SandyBeach')    
 sg.SetOptions (font = ('Calibri', 12, 'bold'))

@@ -1,4 +1,4 @@
-import PySimpleGUI as sg
+import simpleui as sg
 
 """
     Allows you to "browse" through the theme settings.  Click on one and you'll see a 

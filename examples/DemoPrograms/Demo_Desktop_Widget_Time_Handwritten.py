@@ -1,4 +1,4 @@
-import PySimpleGUI as sg
+import simpleui as sg
 import datetime
 
 sg.SYMBOL_CHECK_SMALL = '✓'     # can remove line if using later PySimpleGUI version that has this symbol defined

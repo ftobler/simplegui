@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import PySimpleGUI as sg
+import simpleui as sg
 
 layout = [[sg.Text("Hold down a key")],
           [sg.Button("OK")]]

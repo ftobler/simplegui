@@ -1,5 +1,5 @@
 import time
-import PySimpleGUI as sg
+import simpleui as sg
 
 """
     Demo Long Operations

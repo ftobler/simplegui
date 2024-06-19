@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import PySimpleGUI as sg
+import simpleui as sg
 
 """
     Demo of Menu element, ButtonMenu element and right-click menus

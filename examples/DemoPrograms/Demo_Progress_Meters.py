@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import PySimpleGUI as sg
+import simpleui as sg
 from time import sleep
 
 sg.theme('Dark Blue 3')

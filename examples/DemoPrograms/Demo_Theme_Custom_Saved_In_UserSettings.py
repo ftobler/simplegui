@@ -1,4 +1,4 @@
-import PySimpleGUI as sg
+import simpleui as sg
 
 """
     Demo of using User Settings to create and store your own personal PySimpleGUI themes

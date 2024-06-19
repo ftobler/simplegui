@@ -2,7 +2,7 @@
 #Tony Crewe
 #Sep 2018
 
-import PySimpleGUI as sg
+import simpleui as sg
 
 #Set formatting options for all elements rather than individually.
 sg.SetOptions (background_color = 'LightBlue',

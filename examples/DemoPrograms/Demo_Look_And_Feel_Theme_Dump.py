@@ -1,4 +1,4 @@
-import PySimpleGUI as sg; web=False
+import simpleui as sg; web=False
 # import PySimpleGUIWeb as sg; web=True
 # import PySimpleGUIQT as sg; web=False
 

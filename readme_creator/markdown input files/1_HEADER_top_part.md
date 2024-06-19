@@ -116,7 +116,7 @@ pip3 install pysimplegui
 ### This Code
 
 ```python
-import PySimpleGUI as sg
+import simpleui as sg
 
 sg.theme('DarkAmber')	# Add a touch of color
 # All the stuff inside your window.
@@ -400,7 +400,7 @@ Now look at the `layout` variable and then look at the window graphic below.  De
 This makes the coding process extremely quick and the amount of code very small
 
 ```python
-import PySimpleGUI as sg
+import simpleui as sg
 sg.theme('DarkAmber')   # Add a little color to your windows
 # All the stuff inside your window. This is the PSG magic code compactor...
 layout = [  [sg.Text('Some text on Row 1')],
@@ -861,7 +861,7 @@ The high-level calls are those that perform a lot of work for you. These are not
 Let's use one of these high level calls, the `popup` and use it to create our first window, the obligatory "Hello World".  It's a single line of code.  You can use these calls like print statements, adding as many parameters and types as you desire.
 
 ```python
-import PySimpleGUI as sg
+import simpleui as sg
 
 sg.popup('Hello From PySimpleGUI!', 'This is the shortest GUI program ever!')
 ```
@@ -873,7 +873,7 @@ Or how about a ***custom GUI*** in 1 line of code?  No kidding this is a valid p
 
 
 ```python
-import PySimpleGUI as sg
+import simpleui as sg
 
 event, values = sg.Window('Get filename example', [[sg.Text('Filename')], [sg.Input(), sg.FileBrowse()], [sg.OK(), sg.Cancel()] ]).read(close=True)
 ```
@@ -896,7 +896,7 @@ Creating and reading the user's inputs for the window occupy the last 2 lines of
 
 
 ```python
-import PySimpleGUI as sg
+import simpleui as sg
 
 sg.theme('Dark Grey 13')
 
@@ -1455,7 +1455,7 @@ Sometimes when debugging, questions arise as to exactly which PySimpleGUI you ar
 
 
 ```python3
->>> import PySimpleGUI as sg
+>>> import simpleui as sg
 >>> sg
 ```
 
@@ -1467,7 +1467,7 @@ When you type sg, Python will tell you the full patch to your PySimpleGUI file /
 If you continue to have troubles with getting the right version of PySimpleGUI loaded, THE ***definitive*** way to determine where your program is getting PySimpleGUI from is to add a print to your program.  It's that *simple*!  You can also get the version you are running by also printing
 
 ```python
-import PySimpleGUI as sg
+import simpleui as sg
 
 print(sg)
 print(sg.version)
@@ -1547,7 +1547,7 @@ Pay attention when you're working with PyCharm and you'll see where you may have
 ## Using  - Python 3
 
 To use in your code, simply import....
-`import PySimpleGUI as sg`
+`import simpleui as sg`
 
 Then use either "high level" API calls or build your own windows.
 

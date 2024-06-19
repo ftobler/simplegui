@@ -2,7 +2,7 @@
 #Tony Crewe
 #Oct 2018 MacOs
 
-import PySimpleGUI as sg
+import simpleui as sg
 
 sg.SetOptions(background_color = 'LightBlue',
             element_background_color = 'LightBlue',
