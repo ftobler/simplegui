@@ -9,11 +9,11 @@ def readme():
 
 
 setuptools.setup(
-    name="PySimpleGUI",
+    name="simpleui",
     version="4.60.4",
-    author="PySimpleGUI",
-    author_email="PySimpleGUI@PySimpleGUI.org",
-    description="Python GUIs for Humans. Launched in 2018. It's 2022 & PySimpleGUI is an ACTIVE & supported project. Super-simple to create custom GUI's. 325+ Demo programs & Cookbook for rapid start. Extensive documentation. Main docs at www.PySimpleGUI.org. Fun & your success are the focus. Examples using Machine Learning (GUI, OpenCV Integration), Rainmeter Style Desktop Widgets, Matplotlib + Pyplot, PIL support, add GUI to command line scripts, PDF & Image Viewers. Great for beginners & advanced GUI programmers.",
+    author="PySimpleGUI",  # alternative author
+    author_email="PySimpleGUI@PySimpleGUI.org",  # alternative maintainer_email
+    description="Fork of the LGPL3 version of PySimpleGUI",
     long_description=readme(),
     long_description_content_type="text/markdown",
     keywords="GUI UI tkinter Qt WxPython Remi wrapper simple easy beginner novice student graphics progressbar progressmeter",

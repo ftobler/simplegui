@@ -3,3 +3,5 @@ readme_creator/psg_gui.py
 *.egg-info
 *.pyc
 .vscode
+.pytest_cache
+__pycache__
