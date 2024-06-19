@@ -11,77 +11,26 @@
 >
 > Goal is to preserve the library in a working state.
 
-Another fork worth mentioning is [andor-pierdelacabeza/PySimpleGUI-4-foss](https://github.com/andor-pierdelacabeza/PySimpleGUI-4-foss).
+```diff
+# migrate
+- import PySimpleGUI as sg
++ import simplegui as sg
+```
+
+
+Other forks worth mentioning are [andor-pierdelacabeza/PySimpleGUI-4-foss](https://github.com/andor-pierdelacabeza/PySimpleGUI-4-foss) and [spyoungtech/FreeSimpleGUI](https://github.com/spyoungtech/FreeSimpleGUI).
+
+
 
 
 
 ---
 
-<p align="center">
-  <img src="./images/for_readme/Logo%20with%20text%20for%20GitHub%20Top.png" alt="User Interfaces for Humans">
-  <h2 align="center">User Interfaces for Humans<sup>TM</sup></h2>
-</p>
-
-
-
-
-Transforms the tkinter, Qt, WxPython, and Remi (browser-based) GUI frameworks into a simpler interface.  The window definition is simplified by using Python core data types understood by beginners (lists and dictionaries). Further simplification happens by changing event handling from a callback-based model to a message passing one.  
-
-Your code is not _required_ to have an object oriented architecture which makes the package usable by a larger audience. While the architecture is simple to understand, it does not *necessarily* limit you to only simple problems.  
-
-Some programs are not well-suited for PySimpleGUI however.  By definition, PySimpleGUI implements a subset of the underlying GUI frameworks' capabilities.  It's difficult to define exactly which programs are well suited for PySimpleGUI and which are not.  It depends on the details of your program.  Duplicating Excel in every detail is an example of something not well suited for PySimpleGUI.
-
-[Japanese version of this readme](https://github.com/PySimpleGUI/PySimpleGUI/blob/master/readme.ja.md).
-  
-PySimpleGUI needs your support.  If you find PySimpleGUI useful, please consider sponsoring the project on GitHub or BuyMeACoffee.  It's expensive working full-time on PySimpleGUI and also paying for ongoing expenses (domains, artists, software, consultants, sponsoring open source projects).  
-
-<a href="https://www.buymeacoffee.com/PySimpleGUI" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/arial-yellow.png" alt="Buy Me A Coffee" width="217px" ></a>
-
-<a href="https://github.com/sponsors/PySimpleGUI" target="_blank"><img src="https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&link=%3Curl%3E&color=f88379"></a>
-
-
-<hr>
-
-# Statistics  📈
-
-
-## PyPI Statistics & Versions
-
-| TK | TK 2.7 | Qt| WxPython | Web (Remi) |
-| -- | -- | -- | -- | -- |
-| ![tkinter](https://img.shields.io/pypi/dm/pysimplegui?label=tkinter) | ![tkinter 2.7 downloads](https://img.shields.io/pypi/dm/pysimplegui27?label=tkinter%202.7) | ![qt](https://img.shields.io/pypi/dm/pysimpleguiqt?label=qt) | ![wx](https://img.shields.io/pypi/dm/pysimpleguiwx?label=wx) | ![web](https://img.shields.io/pypi/dm/pysimpleguiweb?label=web) |
-| [![tkinter](http://pepy.tech/badge/pysimplegui)](http://pepy.tech/project/pysimplegui) | [![tkinter27](https://pepy.tech/badge/pysimplegui27)](https://pepy.tech/project/pysimplegui27) | [![Downloads](https://pepy.tech/badge/pysimpleguiqt)](https://pepy.tech/project/pysimpleguiqt) | [![Downloads](https://pepy.tech/badge/pysimpleguiwx)](https://pepy.tech/project/pysimpleguiWx) | [![Downloads](https://pepy.tech/badge/pysimpleguiweb)](https://pepy.tech/project/pysimpleguiWeb) |
-| ![tkinter](https://img.shields.io/pypi/v/pysimplegui.svg?label=tkinter%20PyPI%20Ver&color=red) | ![tkinter 2.7](https://img.shields.io/pypi/v/pysimplegui27.svg?label=tkinter%202.7%20PyPI%20Ver&color=red) | ![qt](https://img.shields.io/pypi/v/pysimpleguiqt.svg?label=qt%20PyPI%20Ver&color=red) | ![wx](https://img.shields.io/pypi/v/pysimpleguiwx.svg?label=wx%20PyPI%20Ver&color=red) | ![web](https://img.shields.io/pypi/v/pysimpleguiweb.svg?label=web%20PyPI%20Ver&color=red) | 
-|  [![PyPI pyversions](https://img.shields.io/pypi/pyversions/PySimpleGUI)](https://pypi.python.org/pypi/PySimpleGUI/)  |  [![PyPI pyversions](https://img.shields.io/pypi/pyversions/PySimpleGUI27)](https://pypi.python.org/pypi/PySimpleGUI27/)  | [![PyPI pyversions](https://img.shields.io/pypi/pyversions/PySimpleGUIQt)](https://pypi.python.org/pypi/PySimpleGUIQt/) | [![PyPI pyversions](https://img.shields.io/pypi/pyversions/PySimpleGUIWx)](https://pypi.python.org/pypi/PySimpleGUIWx/) | [![PyPI pyversions](https://img.shields.io/pypi/pyversions/PySimpleGUIWeb)](https://pypi.python.org/pypi/PySimpleGUIWeb/) |
-
-
---------------------------
-
-## GitHub Statistics
-
-
-
-
-|  Issues | Commit Activity | Stars | Docs | 
-| -- | -- | -- | -- |
-| ![GitHub issues](https://img.shields.io/github/issues-raw/PySimpleGUI/PySimpleGUI?color=blue)  | ![commit activity](https://img.shields.io/github/commit-activity/m/PySimpleGUI/PySimpleGUI.svg?color=blue) | ![stars](https://img.shields.io/github/stars/PySimpleGUI/PySimpleGUI.svg?label=stars&maxAge=2592000) | ![Documentation Status](https://readthedocs.org/projects/pysimplegui/badge/?version=latest) |
-|  ![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/PySimpleGUI/PySimpleGUI?color=blue) | ![last commit](https://img.shields.io/github/last-commit/PySimpleGUI/PySimpleGUI.svg?color=blue)  |  |
 
 
 
 
 
-
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api/?username=PySimpleGUI&bg_color=3e7bac&title_color=ffdd55&icon_color=ffdd55&text_color=ffdd55&show_icons=true&count_private=true">
-  
-  
-</p>
-
-
-<hr>
-
-<!-- Interesting stats but kinda cluttered [Alt](https://repobeats.axiom.co/api/embed/90d8cdfa8cb37d70903aa52f5b3592035330c3d6.svg "Repobeats analytics image") -->
 
 # What Is PySimpleGUI ❓
 
