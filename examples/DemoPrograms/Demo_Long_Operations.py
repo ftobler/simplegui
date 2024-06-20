@@ -1,5 +1,5 @@
 import time
-import simpleui as sg
+import simplegui as sg
 
 """
     Demo Long Operations

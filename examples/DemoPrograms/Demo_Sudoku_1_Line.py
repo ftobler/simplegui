@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 
 """
     Demo 1-line Sudoku Board

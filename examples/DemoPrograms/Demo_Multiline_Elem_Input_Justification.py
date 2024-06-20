@@ -16,7 +16,7 @@
     Copyright 2021 PySimpleGUI
 """
 
-import simpleui as sg
+import simplegui as sg
 
 def main():
     justification = 'l'     # start left justified

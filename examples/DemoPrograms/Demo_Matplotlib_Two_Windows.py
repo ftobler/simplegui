@@ -1,5 +1,5 @@
 from matplotlib import use
-import simpleui as sg
+import simplegui as sg
 # import PySimpleGUIQt as sg; use('qt5agg')
 import matplotlib.pyplot as plt
 

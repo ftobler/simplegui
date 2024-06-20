@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 
 """
     Demo of Base64 Buttons (that have gradients)

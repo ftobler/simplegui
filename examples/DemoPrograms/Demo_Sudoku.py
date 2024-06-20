@@ -1,4 +1,4 @@
-import simpleui as sg, random
+import simplegui as sg, random
 import numpy as np
 from typing import List, Any, Union, Tuple, Dict
 

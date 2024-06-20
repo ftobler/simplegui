@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 
 """
     Demo - Add and "Delete" Rows from a window

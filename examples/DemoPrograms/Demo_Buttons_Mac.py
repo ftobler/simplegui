@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import sys
 import time
-import simpleui as sg
+import simplegui as sg
 
 
 def show_win():

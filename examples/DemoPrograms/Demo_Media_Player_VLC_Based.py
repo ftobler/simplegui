@@ -7,7 +7,7 @@
         pip install python-vlc
         pip install youtube-dl
 """
-import simpleui as sg
+import simplegui as sg
 import vlc
 from sys import platform as PLATFORM
 

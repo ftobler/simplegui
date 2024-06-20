@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 
 """
     Center a column in a window

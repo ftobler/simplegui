@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import simpleui as sg
+import simplegui as sg
 
 """
 Demonstrates using a "tight" layout with a Dark theme.

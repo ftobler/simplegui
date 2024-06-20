@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 
 names = ['Roberta', 'Kylie', 'Jenny', 'Helen',
          'Andrea', 'Meredith', 'Deborah', 'Pauline',

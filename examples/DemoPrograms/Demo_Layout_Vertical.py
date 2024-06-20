@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 
 """
     Demo of using the vertical layout parameters and layout helper functions.

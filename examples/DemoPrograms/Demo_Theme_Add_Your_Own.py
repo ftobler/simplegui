@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 
 """
     Demo showing how to add your own theme.

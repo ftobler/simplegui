@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 
 """
     Creates a grid of buttons include of a column for scrolling

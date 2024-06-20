@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 # import PySimpleGUIWeb as sg
 import pymunk
 import random

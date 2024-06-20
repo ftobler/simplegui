@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 
 """
     Simple Form (a one-shot data entry window)

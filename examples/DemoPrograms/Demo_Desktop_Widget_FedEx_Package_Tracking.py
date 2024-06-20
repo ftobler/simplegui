@@ -1,5 +1,5 @@
 import requests
-import simpleui as sg
+import simplegui as sg
 import datetime
 
 """

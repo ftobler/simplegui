@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 
 """
     Oh yes, the classic "Hello World". The problem is that you

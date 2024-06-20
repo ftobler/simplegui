@@ -1,5 +1,5 @@
 
-import simpleui as sg
+import simplegui as sg
 
 
 DarkGreyFig = {'BACKGROUND': '#232429',

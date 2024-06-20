@@ -4,7 +4,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 import numpy as np
 import inspect
-import simpleui as sg
+import simplegui as sg
 import matplotlib
 matplotlib.use('TkAgg')
 

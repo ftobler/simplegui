@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import sys
-import simpleui as sg
+import simplegui as sg
 
 if not sys.platform.startswith('win'):
     sg.popup_error('Sorry, you gotta be on Windows')

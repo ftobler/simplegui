@@ -8,7 +8,7 @@
     Copyright 2021 PySimpleGUI
 """
 
-import simpleui as sg
+import simplegui as sg
 
 sg.set_options(font='_ 18')
 

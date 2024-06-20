@@ -2,7 +2,7 @@
 #Tony Crewe
 #Sep 2018
 
-import simpleui as sg
+import simplegui as sg
 
 #use of Column to help with layout - vertical sliders take up space
 

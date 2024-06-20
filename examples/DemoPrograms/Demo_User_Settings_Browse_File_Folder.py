@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 
 """
     Demo of a Better File / Folder Input Window
@@ -25,7 +25,7 @@ import simpleui as sg
 """
 
 # ------------------- The Old Way -------------------
-import simpleui as sg
+import simplegui as sg
 
 layout = [[sg.Text('My Window')],
           [sg.InputText(size=(50, 1), key='-FILENAME-'), sg.FileBrowse()],
@@ -34,7 +34,7 @@ layout = [[sg.Text('My Window')],
 event1, values1 = sg.Window('Normal Filename', layout).read(close=True)
 
 # ------------------- The New Way with history -------------------
-import simpleui as sg
+import simplegui as sg
 
 layout = [[sg.Text('My Window')],
           [sg.Combo(sg.user_settings_get_entry('-filenames-', []), default_value=sg.user_settings_get_entry('-last filename-', ''), size=(50, 1), key='-FILENAME-'),
@@ -49,7 +49,7 @@ if event == 'Go':
 
 
 # ------------------- The New Way with history and clear -------------------
-import simpleui as sg
+import simplegui as sg
 
 layout = [[sg.Text('My Window')],
           [sg.Combo(sg.user_settings_get_entry('-filenames-', []), default_value=sg.user_settings_get_entry('-last filename-', ''), size=(50, 1), key='-FILENAME-'),

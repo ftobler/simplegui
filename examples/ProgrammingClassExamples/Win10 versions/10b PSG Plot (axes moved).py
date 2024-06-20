@@ -2,7 +2,7 @@
 #Tony Crewe
 #Oct 2018
 
-import simpleui as sg
+import simplegui as sg
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasAgg
 import matplotlib.backends.tkagg as tkagg

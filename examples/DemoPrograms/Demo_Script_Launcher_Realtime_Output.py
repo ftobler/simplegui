@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 
 """
 	Demo Program - Realtime output of a shell command in the window

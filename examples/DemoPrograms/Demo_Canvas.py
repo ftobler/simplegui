@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import simpleui as sg
+import simplegui as sg
 
 layout = [
     [sg.Canvas(size=(150, 150), background_color='red', key='canvas')],

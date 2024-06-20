@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 import PIL
 import PIL.Image
 import io

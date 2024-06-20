@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 
 '''
     Learn how to send emails from PySimpleGUI using the smtplib and email modules

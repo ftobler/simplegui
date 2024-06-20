@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 
 """
     Columns with a hard coded size that can have elements justified within it.

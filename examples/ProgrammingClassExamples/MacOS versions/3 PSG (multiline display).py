@@ -3,7 +3,7 @@
 #Tony Crewe
 #Oct 2018 MacOS
 
-import simpleui as sg
+import simplegui as sg
 
 #sg.ChangeLookAndFeel('GreenTan')
 

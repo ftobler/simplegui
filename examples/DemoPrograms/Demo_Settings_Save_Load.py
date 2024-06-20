@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 from json import (load as jsonload, dump as jsondump)
 from os import path
 

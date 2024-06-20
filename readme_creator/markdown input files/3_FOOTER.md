@@ -9,7 +9,7 @@ Be sure and check out the EasyPrint (Print) function described in the high-level
 For a fun time, add these lines to the top of your script
 
 ```python
-    import simpleui as sg
+    import simplegui as sg
     print = sg.Print
 ```
 This will turn all of your print statements into prints that display in a window on your screen rather than to the terminal.

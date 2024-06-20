@@ -1,6 +1,6 @@
 import threading
 import time
-import simpleui as sg
+import simplegui as sg
 
 """
     Threaded Demo - Uses Window.write_event_value to communicate from thread to GUI

@@ -2,7 +2,7 @@
 #Tony Crewe
 #Oct 2018
 
-import simpleui as sg
+import simplegui as sg
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 from matplotlib.backends.backend_tkagg import FigureCanvasAgg

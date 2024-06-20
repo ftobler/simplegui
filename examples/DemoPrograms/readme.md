@@ -70,7 +70,7 @@ Not all of the programs presented here are limited to the tkinter port of PySimp
 
 ```python
 from matplotlib import use
-# import simpleui as sg
+# import simplegui as sg
 import PySimpleGUIQt as sg; use('qt5agg')
 ```
 

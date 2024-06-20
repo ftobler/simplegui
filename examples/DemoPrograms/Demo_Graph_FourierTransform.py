@@ -1,6 +1,6 @@
 import math
 import numpy as np
-import simpleui as sg
+import simplegui as sg
 import time
 
 """

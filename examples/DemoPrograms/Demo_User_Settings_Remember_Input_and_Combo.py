@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 
 """
     Demo - Save previously entered strings for Input and Combo elements by using user_settings calls

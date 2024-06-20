@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 from notifypy import Notify
 import tempfile
 import base64

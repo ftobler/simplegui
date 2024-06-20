@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 # import PySimpleGUIWx as sg
 # import PySimpleGUIQt as sg
 

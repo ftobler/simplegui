@@ -3,7 +3,7 @@
 
 from sys import exit as exit
 from threading import Thread
-import simpleui as sg
+import simplegui as sg
 import time
 
 """

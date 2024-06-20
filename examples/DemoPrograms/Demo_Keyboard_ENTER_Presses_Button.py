@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 """
     tkinter and Qt do not "activate" buttons by pressing the ENTER key with the button highlighted / in focus
     This demo will enable the application to click on a button if the button has focus (is highlighted) and the

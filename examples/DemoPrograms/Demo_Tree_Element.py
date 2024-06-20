@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import sys
 import os
-import simpleui as sg
+import simplegui as sg
 
 sg.theme('light brown 8')
 

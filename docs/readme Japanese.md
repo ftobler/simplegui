@@ -121,7 +121,7 @@ PySimpleGUIプログラムには5つのセクションがあります
 
 
 ```python
-import simpleui as sg                                 # パート 1 - インポート
+import simplegui as sg                                 # パート 1 - インポート
 
 # ウィンドウの内容を定義する
 layout = [  [sg.Text("お名前は何ですか？")],     # パート 2 - レイアウト
@@ -154,7 +154,7 @@ window.close()                                  #パート 5 - ウィンドウ�
 この例では、ユーザーがウィンドウを閉じるか、または [終了] ボタンをクリックするまで、ウィンドウは画面上に残ります。先ほど見たワンショットウィンドウとインタラクティブウィンドウの主な違いは、「イベントループ」の追加です。イベントループはウィンドウからイベントと入力を読み込みます。アプリケーションの中心はイベントループになります。
 
 ```python
-import simpleui as sg
+import simplegui as sg
 
 # ウィンドウの内容を定義する
 layout = [[sg.Text("お名前は何ですか？")],
@@ -278,7 +278,7 @@ layout = [  [sg.Text('ライン 1'), sg.Text("お名前は何ですか")],
 次の3行のコードです。
 
 ```python
-import simpleui as sg
+import simplegui as sg
 
 layout = [[sg.Button(f'{row}, {col}') for col in range(4)] for row in range(4)]
 
@@ -445,7 +445,7 @@ https://raw.githubusercontent.com/PySimpleGUI/PySimpleGUI/master/PySimpleGUI.py
 
 
 ```python
-import simpleui as sg
+import simplegui as sg
 
 filename = sg.popup_get_file('処理したいファイルを入力してください')
 sg.popup('入力した', filename)
@@ -648,7 +648,7 @@ PySimpleGUIはPython 3.4に対応しているため、Raspberry Piのプロジ�
 
 テーマを使用するには、ウィンドウを作成する前にテーマ名を指定して`theme`関数を呼び出します。読みやすくするためにスペースを追加できます。 テーマを「dark grey 9」に設定するには
 ```python
-import simpleui as sg
+import simplegui as sg
 
 sg.theme('dark grey 9')
 ```

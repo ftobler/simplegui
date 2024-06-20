@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 
 """
     Allows you to "browse" through the theme settings.  Click on one and you'll see a 

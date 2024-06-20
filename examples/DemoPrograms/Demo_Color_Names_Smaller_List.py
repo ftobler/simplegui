@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import simpleui as sg
+import simplegui as sg
 
 """
     Color names courtesy of Big Daddy's Wiki-Python

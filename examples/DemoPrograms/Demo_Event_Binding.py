@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 
 """
     Extending PySimpleGUI using the tkinter event bindings

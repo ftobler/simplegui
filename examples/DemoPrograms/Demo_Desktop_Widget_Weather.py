@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 import datetime
 import base64
 from urllib import request

@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 
 """
     The basic PySimpleGUI design pattern for a persistent window that is

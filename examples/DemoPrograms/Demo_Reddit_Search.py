@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 import praw  # The Reddit APIs
 from webbrowser import open_new_tab
 

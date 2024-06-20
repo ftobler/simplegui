@@ -2,7 +2,7 @@
 import threading
 import time
 import itertools
-import simpleui as sg
+import simplegui as sg
 
 """
     DESIGN PATTERN - Multithreaded GUI

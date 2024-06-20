@@ -1,5 +1,5 @@
 import tkinter
-import simpleui as sg
+import simplegui as sg
 from random import randint
 
 def Battleship():

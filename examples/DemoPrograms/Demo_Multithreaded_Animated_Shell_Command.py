@@ -1,5 +1,5 @@
 import subprocess
-import simpleui as sg
+import simplegui as sg
 import threading
 
 

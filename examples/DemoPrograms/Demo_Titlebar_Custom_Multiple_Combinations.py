@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 
 """
     Demo Titlebar Multiple Combintions - how to make a custom titlebar with different color options

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import simpleui as sg
+import simplegui as sg
 import matplotlib
 import pylab
 matplotlib.use('TkAgg')

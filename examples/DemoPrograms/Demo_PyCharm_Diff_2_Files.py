@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 import sys
 """
     Compare 2 .py files using PyCharm's compare utility

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import simpleui as sg
+import simplegui as sg
 import cv2 as cv
 # from PIL import Image
 # import io

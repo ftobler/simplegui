@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 
 """
     Simple template window that saves position.

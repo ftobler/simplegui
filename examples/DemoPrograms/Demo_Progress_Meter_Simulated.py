@@ -9,7 +9,7 @@
     Copyright 2020 PySimpleGUI.org
 """
 
-import simpleui as sg
+import simplegui as sg
 
 sg.theme('DarkBlue')
 

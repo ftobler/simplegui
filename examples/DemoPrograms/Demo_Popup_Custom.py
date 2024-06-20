@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import simpleui as sg
+import simplegui as sg
 
 '''
    Use this code as a starting point for creating your own Popup functions.  

@@ -3,7 +3,7 @@ import sys
 import mmap, re
 import warnings
 
-import simpleui as sg
+import simplegui as sg
 
 __version__ = '1.12.2'
 

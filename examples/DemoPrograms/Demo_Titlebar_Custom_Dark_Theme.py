@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 """
     Demo showing how to remove the titlebar and replace with your own
     Unlike previous demos that lacked a titlebar, this one provides a way for you

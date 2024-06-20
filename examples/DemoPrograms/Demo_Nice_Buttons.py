@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 import os
 import io
 from PIL import Image, ImageDraw, ImageTk, ImageFont

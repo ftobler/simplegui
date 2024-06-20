@@ -1,6 +1,6 @@
 from io import BytesIO
 from PIL import Image, ImageDraw, ImageFont
-import simpleui as sg
+import simplegui as sg
 
 """
     Demo Toggle Buttons created using PIL

@@ -23,7 +23,7 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import numpy
-import simpleui as sg
+import simplegui as sg
 
 BOX_SIZE = 15
 

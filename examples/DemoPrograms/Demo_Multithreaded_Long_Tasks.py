@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 import time
-import simpleui as sg
+import simplegui as sg
 
 
 """

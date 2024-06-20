@@ -9,7 +9,7 @@ def readme():
 
 
 setuptools.setup(
-    name="simpleui",
+    name="simplegui",
     version="4.60.4",
     author="PySimpleGUI",  # alternative author
     author_email="PySimpleGUI@PySimpleGUI.org",  # alternative maintainer_email
@@ -41,11 +41,14 @@ setuptools.setup(
     ],
     entry_points={
         'gui_scripts': [
-            'psgissue=PySimpleGUI.PySimpleGUI:main_open_github_issue',
-            'psgmain=PySimpleGUI.PySimpleGUI:_main_entry_point',
-            'psgupgrade=PySimpleGUI.PySimpleGUI:_upgrade_entry_point',
-            'psghelp=PySimpleGUI.PySimpleGUI:main_sdk_help',
-            'psgver=PySimpleGUI.PySimpleGUI:main_get_debug_data',
-            'psgsettings=PySimpleGUI.PySimpleGUI:main_global_pysimplegui_settings',
-        ],},
+        ],
+        'console_scripts': [
+            # 'command=simpleui.main:main_func',
+            # a^      b^      c^    d^
+            # a => the command line argument
+            # b => the package name
+            # c => the file name in the package (same as imports)
+            # d => the function to call
+        ],
+    },
 )

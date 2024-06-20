@@ -176,7 +176,7 @@ This type of program is called a "one-shot" window because the window is display
 There are 5 sections to a PySimpleGUI program
 
 ```python
-import simpleui as sg                        # Part 1 - The import
+import simplegui as sg                        # Part 1 - The import
 
 # Define the window's contents
 layout = [  [sg.Text("What's your name?")],     # Part 2 - The Layout
@@ -211,7 +211,7 @@ In this example, our window will remain on the screen until the user closes the 
 
 
 ```python
-import simpleui as sg
+import simplegui as sg
 
 # Define the window's contents
 layout = [[sg.Text("What's your name?")],
@@ -355,7 +355,7 @@ Using lists to define your GUI has some huge advantages over how GUI programming
 These 3 lines of code:
 
 ```python
-import simpleui as sg
+import simplegui as sg
 
 layout = [[sg.Button(f'{row}, {col}') for col in range(4)] for row in range(4)]
 
@@ -523,7 +523,7 @@ Adding a single line to get a filename instead of specifying a filename on the c
 
 
 ```python
-import simpleui as sg
+import simplegui as sg
 
 filename = sg.popup_get_file('Enter the file you wish to process')
 sg.popup('You entered', filename)
@@ -739,7 +739,7 @@ With most GUI frameworks, you must specify the color for every widget you create
 To use a theme, call the `theme` function with the name of the theme before creating your window. You can add spaces for readability.  To set the theme to "Dark Grey 9":
 
 ```python
-import simpleui as sg
+import simplegui as sg
 
 sg.theme('dark grey 9')
 ```

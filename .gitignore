@@ -5,3 +5,4 @@ readme_creator/psg_gui.py
 .vscode
 .pytest_cache
 __pycache__
+todo.md

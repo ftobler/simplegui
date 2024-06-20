@@ -2,7 +2,7 @@ import tkinter
 import cv2
 from PIL import Image
 import numpy as np
-import simpleui as sg
+import simplegui as sg
 
 font_size = 3
 CAMERA_FRONT = 1

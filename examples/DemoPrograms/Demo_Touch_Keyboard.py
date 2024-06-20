@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 
 '''
     Example of on-screen keyboard.

@@ -3,7 +3,7 @@ import sys
 import random
 import math
 import time
-import simpleui as sg
+import simplegui as sg
 
 
 #-------------------------------------------------------------------------------#

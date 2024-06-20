@@ -7,7 +7,7 @@
     Copyright 2021 PySimpleGUI Inc.
 """
 
-import simpleui as sg
+import simplegui as sg
 
 layout = [[sg.Text('Close confirmation demo')],
           [sg.Text('Try closing window with the "X"')],

@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import threading
 import time
-import simpleui as sg
+import simplegui as sg
 
 """
     DESIGN PATTERN - Multithreaded Long Tasks GUI using shared global variables

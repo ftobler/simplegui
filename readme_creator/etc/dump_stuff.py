@@ -1,5 +1,5 @@
 import inspect
-import simpleui as sg
+import simplegui as sg
 
 psg_members = inspect.getmembers(PySimpleGUI)
 

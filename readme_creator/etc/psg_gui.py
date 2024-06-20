@@ -1,5 +1,5 @@
 import make_real_readme as mk_readme
-import simpleui as sg
+import simplegui as sg
 import logging, os 
 
 enable_logs = False

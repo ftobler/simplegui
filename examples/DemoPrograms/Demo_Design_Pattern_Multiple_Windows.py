@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 """
     Demo - 2 simultaneous windows using read_all_window
 

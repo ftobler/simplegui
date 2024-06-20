@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 
 
 def popup_color_chooser(look_and_feel=None):

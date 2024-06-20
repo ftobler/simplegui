@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import simpleui as sg
+import simplegui as sg
 
 """
     Simple test harness to demonstate how to use the CalendarButton and the get date popup

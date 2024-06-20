@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import simpleui as sg
+import simplegui as sg
 import os
 from PIL import Image, ImageTk
 import io

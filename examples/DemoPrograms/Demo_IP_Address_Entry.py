@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 
 '''
     IP Address entry window with digit validation and auto advance

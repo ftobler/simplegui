@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 
 # Testing async form, see if can have a slider
 # that adjusts the size of text displayed

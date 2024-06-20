@@ -3,7 +3,7 @@ import shutil
 import subprocess
 import sys
 
-import simpleui as sg
+import simplegui as sg
 
 """
     Demo - GitHub File Management

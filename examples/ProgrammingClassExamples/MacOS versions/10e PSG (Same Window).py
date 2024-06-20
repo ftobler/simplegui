@@ -2,7 +2,7 @@
 #Tony Crewe
 #Oct 2018 MacOs
 
-import simpleui as sg
+import simplegui as sg
 import matplotlib
 # added this to work with MacOs
 matplotlib.use('TkAgg')

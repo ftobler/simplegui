@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 
 """
     PySimpleGUI is designed & authored in Python to take full advantage the awesome Python constructs & capabilities.

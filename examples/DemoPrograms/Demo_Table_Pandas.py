@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import simpleui as sg
+import simplegui as sg
 import pandas as pd
 
 # Yet another example of showing CSV data in Table

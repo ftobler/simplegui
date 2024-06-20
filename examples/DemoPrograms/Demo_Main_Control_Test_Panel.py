@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 
 """
     This is a simple as it gets.  Calls the "main" function which is the PySimpleGUI Test Harness

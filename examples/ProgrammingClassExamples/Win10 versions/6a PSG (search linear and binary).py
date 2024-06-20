@@ -2,7 +2,7 @@
 #Tony Crewe
 #Sep 2018
 
-import simpleui as sg
+import simplegui as sg
 
 sg.SetOptions (font =('Calibri',12,'bold'))    
               

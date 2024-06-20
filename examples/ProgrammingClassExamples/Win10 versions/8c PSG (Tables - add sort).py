@@ -6,7 +6,7 @@
 #https://gitlab.com/lotspaih/PySimpleGUI
 
 import sys
-import simpleui as sg
+import simplegui as sg
 import csv
 import operator
 

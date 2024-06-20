@@ -2,7 +2,7 @@
 #Tony Crewe
 #Oct 2018 MacOs
 
-import simpleui as sg
+import simplegui as sg
 
 #Set formatting options for all elements rather than individually.
 #MacOs - colour background issue buttons - make text LightBlue

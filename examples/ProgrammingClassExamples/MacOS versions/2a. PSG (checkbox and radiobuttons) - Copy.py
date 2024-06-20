@@ -2,7 +2,7 @@
 #Tony Crewe
 #Oct 2018 MacOs
 
-import simpleui as sg
+import simplegui as sg
 
 #Set colour scheme and font
 #sg.ChangeLookAndFeel('GreenTan')                

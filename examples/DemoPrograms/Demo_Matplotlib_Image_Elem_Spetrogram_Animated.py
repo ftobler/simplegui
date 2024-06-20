@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 import numpy as np
 from matplotlib.backends.backend_tkagg import FigureCanvasAgg
 import matplotlib.pyplot as plt

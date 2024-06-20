@@ -2,7 +2,7 @@
 #Tony Crewe
 #Oct 2018
 
-import simpleui as sg
+import simplegui as sg
 
 tab1_layout =  [[sg.Text('This is inside tab 1')]]
 

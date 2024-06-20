@@ -2,7 +2,7 @@
 #Tony Crewe
 #Sep 2018 MacOs
 
-import simpleui as sg
+import simplegui as sg
 
 #sg.ChangeLookAndFeel('SandyBeach')    
 sg.SetOptions (background_color = 'LightBlue',

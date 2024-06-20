@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import sys
-import simpleui as sg
+import simplegui as sg
 
 # Example of colors in PSG
 

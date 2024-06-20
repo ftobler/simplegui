@@ -26,7 +26,7 @@
     Copyright 2021, 2022, 2023 PySimpleGUI
 """
 
-import simpleui as sg
+import simplegui as sg
 
 SYMBOL_X = '❎'
 SYMBOL_CHECK = '✅'

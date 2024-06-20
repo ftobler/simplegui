@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import sys
-import simpleui as sg
+import simplegui as sg
 
 # Recipe for getting keys, one at a time as they are released
 # If want to use the space bar, then be sure and disable the "default focus"

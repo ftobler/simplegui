@@ -1,4 +1,4 @@
-import simpleui as sg
+import simplegui as sg
 from win32com.client import Dispatch
 import os
 import sys

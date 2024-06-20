@@ -2,7 +2,7 @@
 #Tony Crewe
 #Oct 2018 MacOS
 
-import simpleui as sg
+import simplegui as sg
 
 sg.SetOptions(background_color = 'LightBlue',
             element_background_color = 'LightBlue',
