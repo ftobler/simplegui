@@ -181,7 +181,7 @@ import re
 import tempfile
 import ctypes
 import platform
-from simpleui.base64_img import *
+from .base64_img import *
 
 pil_import_attempted = pil_imported = False
 
@@ -17980,13 +17980,6 @@ def StartupTK(window):
         root.bind("<Button-4>", window._MouseWheelCallback)
         root.bind("<Button-5>", window._MouseWheelCallback)
 
-    DEFAULT_WINDOW_SNAPSHOT_KEY_CODE = main_global_get_screen_snapshot_symcode()
-
-    if DEFAULT_WINDOW_SNAPSHOT_KEY_CODE:
-        # print('**** BINDING THE SNAPSHOT!', DEFAULT_WINDOW_SNAPSHOT_KEY_CODE, DEFAULT_WINDOW_SNAPSHOT_KEY)
-        window.bind(DEFAULT_WINDOW_SNAPSHOT_KEY_CODE, DEFAULT_WINDOW_SNAPSHOT_KEY, propagate=False)
-        # window.bind('<Win_L><F12>', DEFAULT_WINDOW_SNAPSHOT_KEY, )
-
     if window.NoTitleBar:
         window.TKroot.focus_force()
 
@@ -22172,7 +22165,7 @@ def _error_popup_with_code(title, filename, line_num, *args,  emoji=None):
     :param emoji:     An optional BASE64 Encoded image to shows in the error window
     :type emoji:      bytes
     """
-    editor_filename = execute_get_editor()
+    editor_filename = execute_get_editor() # TODO
     emoji_data = emoji if emoji is not None else _random_error_emoji()
     layout = [[Text('ERROR'), Text(title)],
               [Image(data=emoji_data)]]
@@ -23141,332 +23134,6 @@ def user_settings_object():
     return UserSettings._default_for_function_interface
 
 
-'''
-'########:'##::::'##:'########::'######::'##::::'##:'########:'########:
- ##.....::. ##::'##:: ##.....::'##... ##: ##:::: ##:... ##..:: ##.....::
- ##::::::::. ##'##::: ##::::::: ##:::..:: ##:::: ##:::: ##:::: ##:::::::
- ######:::::. ###:::: ######::: ##::::::: ##:::: ##:::: ##:::: ######:::
- ##...:::::: ## ##::: ##...:::: ##::::::: ##:::: ##:::: ##:::: ##...::::
- ##:::::::: ##:. ##:: ##::::::: ##::: ##: ##:::: ##:::: ##:::: ##:::::::
- ########: ##:::. ##: ########:. ######::. #######::::: ##:::: ########:
-........::..:::::..::........:::......::::.......::::::..:::::........::
-:::'###::::'########::'####::'######::
-::'## ##::: ##.... ##:. ##::'##... ##:
-:'##:. ##:: ##:::: ##:: ##:: ##:::..::
-'##:::. ##: ########::: ##::. ######::
- #########: ##.....:::: ##:::..... ##:
- ##.... ##: ##::::::::: ##::'##::: ##:
- ##:::: ##: ##::::::::'####:. ######::
-..:::::..::..:::::::::....:::......:::
-
-
-
-These are the functions used to implement the subprocess APIs (Exec APIs) of PySimpleGUI
-
-'''
-
-
-def execute_command_subprocess(command, *args, wait=False, cwd=None, pipe_output=False, merge_stderr_with_stdout=True, stdin=None):
-    """
-    Runs the specified command as a subprocess.
-    By default the call is non-blocking.
-    The function will immediately return without waiting for the process to complete running. You can use the returned Popen object to communicate with the subprocess and get the results.
-    Returns a subprocess Popen object.
-
-    :param command:                  The command/file to execute. What you would type at a console to run a program or shell command.
-    :type command:                   (str)
-    :param *args:                    Variable number of arguments that are passed to the program being started as command line parms
-    :type *args:                     (Any)
-    :param wait:                     If True then wait for the subprocess to finish
-    :type wait:                      (bool)
-    :param cwd:                      Working directory to use when executing the subprocess
-    :type cwd:                       (str))
-    :param pipe_output:              If True then output from the subprocess will be piped. You MUST empty the pipe by calling execute_get_results or your subprocess will block until no longer full
-    :type pipe_output:               (bool)
-    :param merge_stderr_with_stdout: If True then output from the subprocess stderr will be merged with stdout. The result is ALL output will be on stdout.
-    :type merge_stderr_with_stdout:  (bool)
-    :param stdin:                    Value passed to the Popen call. Defaults to subprocess.DEVNULL so that the pyinstaller created executable work correctly
-    :type stdin:                     (bool)
-    :return:                         Popen object
-    :rtype:                          (subprocess.Popen)
-    """
-    if stdin is None:
-        stdin = subprocess.DEVNULL
-    try:
-        if args is not None:
-            expanded_args = ' '.join(args)
-            # print('executing subprocess command:',command, 'args:',expanded_args)
-            if command[0] != '"' and ' ' in command:
-                command = '"' + command + '"'
-            # print('calling popen with:', command +' '+ expanded_args)
-            # sp = subprocess.Popen(command +' '+ expanded_args, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, cwd=cwd)
-            if pipe_output:
-                if merge_stderr_with_stdout:
-                    sp = subprocess.Popen(command + ' ' + expanded_args, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=cwd, stdin=stdin)
-                else:
-                    sp = subprocess.Popen(command + ' ' + expanded_args, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=cwd, stdin=stdin)
-            else:
-                sp = subprocess.Popen(command + ' ' + expanded_args, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, cwd=cwd, stdin=stdin)
-        else:
-            sp = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=cwd, stdin=stdin)
-        if wait:
-            out, err = sp.communicate()
-            if out:
-                print(out.decode("utf-8"))
-            if err:
-                print(err.decode("utf-8"))
-    except Exception as e:
-        warnings.warn('Error in execute_command_subprocess {}'.format(e), UserWarning)
-        _error_popup_with_traceback('Error in execute_command_subprocess', e, 'command={}'.format(command), 'args={}'.format(args), 'cwd={}'.format(cwd))
-        sp = None
-    return sp
-
-
-def execute_py_file(pyfile, parms=None, cwd=None, interpreter_command=None, wait=False, pipe_output=False, merge_stderr_with_stdout=True):
-    """
-    Executes a Python file.
-    The interpreter to use is chosen based on this priority order:
-        1. interpreter_command paramter
-        2. global setting "-python command-"
-        3. the interpreter running running PySimpleGUI
-    :param pyfile:                   the file to run
-    :type pyfile:                    (str)
-    :param parms:                    parameters to pass on the command line
-    :type parms:                     (str)
-    :param cwd:                      the working directory to use
-    :type cwd:                       (str)
-    :param interpreter_command:      the command used to invoke the Python interpreter
-    :type interpreter_command:       (str)
-    :param wait:                     the working directory to use
-    :type wait:                      (bool)
-    :param pipe_output:              If True then output from the subprocess will be piped. You MUST empty the pipe by calling execute_get_results or your subprocess will block until no longer full
-    :type pipe_output:               (bool)
-    :param merge_stderr_with_stdout: If True then output from the subprocess stderr will be merged with stdout. The result is ALL output will be on stdout.
-    :type merge_stderr_with_stdout:  (bool)
-    :return:                         Popen object
-    :rtype:                          (subprocess.Popen) | None
-    """
-
-    if cwd is None:
-        # if the specific file is not found (not an absolute path) then assume it's relative to '.'
-        if not os.path.exists(pyfile):
-            cwd = '.'
-
-    if pyfile[0] != '"' and ' ' in pyfile:
-        pyfile = '"' + pyfile + '"'
-    if interpreter_command is not None:
-        python_program = interpreter_command
-    else:
-        # use the version CURRENTLY RUNNING if nothing is specified. Previously used the one from the settings file
-        # ^ hmmm... that's not the code is doing now... it's getting the one from the settings file first
-        pysimplegui_user_settings.load()        # Refresh the settings just in case they've changed via another program
-        python_program = pysimplegui_user_settings.get('-python command-', '')
-        if python_program == '':        # if no interpreter set in the settings, then use the current one
-            python_program = sys.executable
-            # python_program = 'python' if running_windows() else 'python3'
-    if parms is not None and python_program:
-        sp = execute_command_subprocess(python_program, pyfile, parms, wait=wait, cwd=cwd, pipe_output=pipe_output, merge_stderr_with_stdout=merge_stderr_with_stdout)
-    elif python_program:
-        sp = execute_command_subprocess(python_program, pyfile, wait=wait, cwd=cwd, pipe_output=pipe_output, merge_stderr_with_stdout=merge_stderr_with_stdout)
-    else:
-        print('execute_py_file - No interpreter has been configured')
-        sp = None
-    return sp
-
-
-def execute_py_get_interpreter():
-    """
-    Returns Python Interpreter from the system settings. If none found in the settings file
-    then the currently running interpreter is returned.
-
-    :return: Full path to python interpreter (uses settings file or sys.executable)
-    :rtype:  (str)
-    """
-    pysimplegui_user_settings.load()  # Refresh the settings just in case they've changed via another program
-    interpreter = pysimplegui_user_settings.get('-python command-', '')
-    if interpreter == '':
-        interpreter = sys.executable
-    return interpreter
-
-
-def execute_py_get_running_interpreter():
-    """
-    Returns the command that is currently running.
-
-    :return: Full path to python interpreter (uses sys.executable)
-    :rtype:  (str)
-    """
-    return sys.executable
-
-
-def execute_editor(file_to_edit, line_number=None):
-    """
-    Runs the editor that was configured in the global settings and opens the file to a specific line number.
-    Two global settings keys are used.
-    '-editor program-' the command line used to startup your editor. It's set
-        in the global settings window or by directly manipulating the PySimpleGUI settings object
-    '-editor format string-' a string containing 3 "tokens" that describes the command that is executed
-            <editor> <file> <line>
-    :param file_to_edit: the full path to the file to edit
-    :type file_to_edit:  (str)
-    :param line_number:  optional line number to place the cursor
-    :type line_number:   (int)
-    :return:             Popen object
-    :rtype:              (subprocess.Popen) | None
-    """
-    if file_to_edit is not None and len(file_to_edit) != 0 and file_to_edit[0] not in ('\"', "\'") and ' ' in file_to_edit:
-        file_to_edit = '"' + file_to_edit + '"'
-    pysimplegui_user_settings.load()        # Refresh the settings just in case they've changed via another program
-    editor_program = pysimplegui_user_settings.get('-editor program-', None)
-    if editor_program is not None:
-        format_string = pysimplegui_user_settings.get('-editor format string-', None)
-        # if no format string, then just launch the editor with the filename
-        if not format_string or line_number is None:
-            sp = execute_command_subprocess(editor_program, file_to_edit)
-        else:
-            command = _create_full_editor_command(file_to_edit, line_number, format_string)
-            # print('final command line = ', command)
-            sp = execute_command_subprocess(editor_program, command)
-    else:
-        print('No editor has been configured in the global settings')
-        sp = None
-    return sp
-
-
-def execute_get_results(subprocess_id, timeout=None):
-    """
-    Get the text results of a previously executed execute call
-    Returns a tuple of the strings (stdout, stderr)
-    :param subprocess_id: a Popen subprocess ID returned from a previous execute call
-    :type subprocess_id:  (subprocess.Popen)
-    :param timeout:       Time in fractions of a second to wait. Returns '','' if timeout. Default of None means wait forever
-    :type timeout:        (None | float)
-    :returns:             Tuple with 2 strings (stdout, stderr)
-    :rtype:               (str | None , str | None)
-    """
-
-    out_decoded = err_decoded = None
-    if subprocess_id is not None:
-        try:
-            out, err = subprocess_id.communicate(timeout=timeout)
-            if out:
-                out_decoded = out.decode("utf-8")
-            if err:
-                err_decoded = err.decode("utf-8")
-        except ValueError:
-            # will get an error if stdout and stderr are combined and attempt to read stderr
-            # so ignore the error that would be generated
-            pass
-        except subprocess.TimeoutExpired:
-            # a Timeout error is not actually an error that needs to be reported
-            pass
-        except Exception as e:
-            popup_error('Error in execute_get_results', e)
-    return out_decoded, err_decoded
-
-
-def execute_subprocess_still_running(subprocess_id):
-    """
-    Returns True is the subprocess ID provided is for a process that is still running
-
-    :param subprocess_id: ID previously returned from Exec API calls that indicate this value is returned
-    :type subprocess_id:  (subprocess.Popen)
-    :return:              True if the subproces is running
-    :rtype:               bool
-    """
-    if subprocess_id.poll() == 0:
-        return False
-    return True
-
-
-def execute_file_explorer(folder_to_open=''):
-    """
-    The global settings has a setting called -   "-explorer program-"
-    It defines the program to run when this function is called.
-    The optional folder paramter specified which path should be opened.
-
-    :param folder_to_open: The path to open in the explorer program
-    :type folder_to_open:  str
-    :return:               Popen object
-    :rtype:                (subprocess.Popen) | None
-    """
-    pysimplegui_user_settings.load()  # Refresh the settings just in case they've changed via another program
-    explorer_program = pysimplegui_user_settings.get('-explorer program-', None)
-    if explorer_program is not None:
-        sp = execute_command_subprocess(explorer_program, folder_to_open)
-    else:
-        print('No file explorer has been configured in the global settings')
-        sp = None
-    return sp
-
-
-def execute_find_callers_filename():
-    """
-    Returns the first filename found in a traceback that is not the name of this file (__file__)
-    Used internally with the debugger for example.
-
-    :return: filename of the caller, assumed to be the first non PySimpleGUI file
-    :rtype:  str
-    """
-    try:  # lots can go wrong so wrapping the entire thing
-        trace_details = traceback.format_stack()
-        file_info_pysimplegui, error_message = None, ''
-        for line in reversed(trace_details):
-            if __file__ not in line:
-                file_info_pysimplegui = line.split(",")[0]
-                error_message = line
-                break
-        if file_info_pysimplegui is None:
-            return ''
-        error_parts = None
-        if error_message != '':
-            error_parts = error_message.split(', ')
-            if len(error_parts) < 4:
-                error_message = error_parts[0] + '\n' + error_parts[1] + '\n' + ''.join(error_parts[2:])
-        if error_parts is None:
-            print('*** Error popup attempted but unable to parse error details ***')
-            print(trace_details)
-            return ''
-        filename = error_parts[0][error_parts[0].index('File ') + 5:]
-        return filename
-    except:
-        return ''
-
-
-def _create_full_editor_command(file_to_edit, line_number, edit_format_string):
-    """
-    The global settings has a setting called -   "-editor format string-"
-    It uses 3 "tokens" to describe how to invoke the editor in a way that starts at a specific line #
-    <editor> <file> <line>
-
-    :param file_to_edit:
-    :type file_to_edit:        str
-    :param edit_format_string:
-    :type edit_format_string:  str
-    :return:
-    :rtype:
-    """
-
-    command = edit_format_string
-    command = command.replace('<editor>', '')
-    command = command.replace('<file>', file_to_edit)
-    command = command.replace('<line>', str(line_number) if line_number is not None else '')
-    return command
-
-
-def execute_get_editor():
-    """
-    Get the path to the editor based on user settings or on PySimpleGUI's global settings
-
-    :return: Path to the editor
-    :rtype:  str
-    """
-    try:  # in case running with old version of PySimpleGUI that doesn't have a global PSG settings path
-        global_editor = pysimplegui_user_settings.get('-editor program-')
-    except:
-        global_editor = ''
-
-    return user_settings_get_entry('-editor program-', global_editor)
 
 
 '''
@@ -23618,7 +23285,6 @@ def main_mac_feature_control():
 #####################################################################################################
 
 
-red_x = b"R0lGODlhEAAQAPeQAIsAAI0AAI4AAI8AAJIAAJUAAJQCApkAAJoAAJ4AAJkJCaAAAKYAAKcAAKcCAKcDA6cGAKgAAKsAAKsCAKwAAK0AAK8AAK4CAK8DAqUJAKULAKwLALAAALEAALIAALMAALMDALQAALUAALYAALcEALoAALsAALsCALwAAL8AALkJAL4NAL8NAKoTAKwbAbEQALMVAL0QAL0RAKsREaodHbkQELMsALg2ALk3ALs+ALE2FbgpKbA1Nbc1Nb44N8AAAMIWAMsvAMUgDMcxAKVABb9NBbVJErFYEq1iMrtoMr5kP8BKAMFLAMxKANBBANFCANJFANFEB9JKAMFcANFZANZcANpfAMJUEMZVEc5hAM5pAMluBdRsANR8AM9YOrdERMpIQs1UVMR5WNt8X8VgYMdlZcxtYtx4YNF/btp9eraNf9qXXNCCZsyLeNSLd8SSecySf82kd9qqc9uBgdyBgd+EhN6JgtSIiNuJieGHhOGLg+GKhOKamty1ste4sNO+ueenp+inp+HHrebGrefKuOPTzejWzera1O7b1vLb2/bl4vTu7fbw7ffx7vnz8f///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAJAALAAAAAAQABAAAAjUACEJHEiwYEEABniQKfNFgQCDkATQwAMokEU+PQgUFDAjjR09e/LUmUNnh8aBCcCgUeRmzBkzie6EeQBAoAAMXuA8ciRGCaJHfXzUMCAQgYooWN48anTokR8dQk4sELggBhQrU9Q8evSHiJQgLCIIfMDCSZUjhbYuQkLFCRAMAiOQGGLE0CNBcZYmaRIDLqQFGF60eTRoSxc5jwjhACFWIAgMLtgUocJFy5orL0IQRHAiQgsbRZYswbEhBIiCCH6EiJAhAwQMKU5DjHCi9gnZEHMTDAgAOw=="
 
 
 
@@ -24326,501 +23992,6 @@ def _random_happy_emoji():
 
 
 
-
-# ..######...##........#######..########.....###....##.........
-# .##....##..##.......##.....##.##.....##...##.##...##.........
-# .##........##.......##.....##.##.....##..##...##..##.........
-# .##...####.##.......##.....##.########..##.....##.##.........
-# .##....##..##.......##.....##.##.....##.#########.##.........
-# .##....##..##.......##.....##.##.....##.##.....##.##.........
-# ..######...########..#######..########..##.....##.########...
-# ..######..########.########.########.########.####.##....##..######....######.
-# .##....##.##..........##.......##.......##.....##..###...##.##....##..##....##
-# .##.......##..........##.......##.......##.....##..####..##.##........##......
-# ..######..######......##.......##.......##.....##..##.##.##.##...####..######.
-# .......##.##..........##.......##.......##.....##..##..####.##....##........##
-# .##....##.##..........##.......##.......##.....##..##...###.##....##..##....##
-# ..######..########....##.......##.......##....####.##....##..######....######.
-
-
-def _global_settings_get_ttk_scrollbar_info():
-    """
-    This function reads the ttk scrollbar settings from the global PySimpleGUI settings file.
-    Each scrollbar setting is stored with a key that's a TUPLE, not a normal string key.
-    The settings are for pieces of the scrollbar and their associated piece of the PySimpleGUI theme.
-
-    The whole ttk scrollbar feature is based on mapping parts of the scrollbar to parts of the PySimpleGUI theme.
-    That is what the ttk_part_mapping_dict does, maps between the two lists of items.
-    For example, the scrollbar arrow color may map to the theme input text color.
-
-    """
-    global ttk_part_mapping_dict, DEFAULT_TTK_THEME
-    for ttk_part in TTK_SCROLLBAR_PART_LIST:
-        value = pysimplegui_user_settings.get(json.dumps(('-ttk scroll-', ttk_part)), ttk_part_mapping_dict[ttk_part])
-        ttk_part_mapping_dict[ttk_part] = value
-
-    DEFAULT_TTK_THEME = pysimplegui_user_settings.get('-ttk theme-', DEFAULT_TTK_THEME)
-
-
-def _global_settings_get_watermark_info():
-    if not pysimplegui_user_settings.get('-watermark-', False) and not Window._watermark_temp_forced:
-        Window._watermark = None
-        return
-    forced =  Window._watermark_temp_forced
-    prefix_text = pysimplegui_user_settings.get('-watermark text-', '')
-
-    ver_text = ' ' + version.split(" ", 1)[0] if pysimplegui_user_settings.get('-watermark ver-', False if not forced else True) or forced else ''
-    framework_ver_text = ' Tk ' + framework_version  if pysimplegui_user_settings.get('-watermark framework ver-', False if not forced else True) or forced else ''
-    watermark_font = pysimplegui_user_settings.get('-watermark font-', '_ 9 bold')
-    # background_color = pysimplegui_user_settings.get('-watermark bg color-', 'window.BackgroundColor')
-    user_text = pysimplegui_user_settings.get('-watermark text-', '')
-    python_text = ' Py {}.{}.{}'.format(sys.version_info.major, sys.version_info.minor, sys.version_info.micro)
-    if user_text:
-        text = str(user_text)
-    else:
-        text = prefix_text + ver_text + python_text + framework_ver_text
-    Window._watermark = lambda window: Text(text, font=watermark_font, background_color= window.BackgroundColor)
-
-
-
-def main_global_get_screen_snapshot_symcode():
-    pysimplegui_user_settings = UserSettings(filename=DEFAULT_USER_SETTINGS_PYSIMPLEGUI_FILENAME, path=DEFAULT_USER_SETTINGS_PYSIMPLEGUI_PATH)
-
-    settings = pysimplegui_user_settings.read()
-
-    screenshot_keysym = ''
-    for i in range(4):
-        keysym = settings.get(json.dumps(('-snapshot keysym-', i)), '')
-        if keysym:
-            screenshot_keysym += "<{}>".format(keysym)
-
-    screenshot_keysym_manual = settings.get('-snapshot keysym manual-', '')
-
-    # print('BINDING INFO!', screenshot_keysym, screenshot_keysym_manual)
-    if screenshot_keysym_manual:
-        return screenshot_keysym_manual
-    elif screenshot_keysym:
-        return screenshot_keysym
-    return ''
-
-def main_global_pysimplegui_settings_erase():
-    """
-    *** WARNING ***
-    Deletes the PySimpleGUI settings file without asking for verification
-
-
-    """
-    print('********** WARNING - you are deleting your PySimpleGUI settings file **********')
-    print('The file being deleted is:', pysimplegui_user_settings.full_filename)
-
-
-def main_global_pysimplegui_settings():
-    """
-    Window to set settings that will be used across all PySimpleGUI programs that choose to use them.
-    Use set_options to set the path to the folder for all PySimpleGUI settings.
-
-    :return: True if settings were changed
-    :rtype:  (bool)
-    """
-    global DEFAULT_WINDOW_SNAPSHOT_KEY_CODE, ttk_part_mapping_dict, DEFAULT_TTK_THEME
-
-    key_choices = tuple(sorted(tkinter_keysyms))
-
-    settings = pysimplegui_user_settings.read()
-
-    editor_format_dict = {
-        'pycharm': '<editor> --line <line> <file>',
-        'notepad++': '<editor> -n<line> <file>',
-        'sublime': '<editor> <file>:<line>',
-        'vim': '<editor> +<line> <file>',
-        'wing': '<editor> <file>:<line>',
-        'visual studio': '<editor> <file> /command "edit.goto <line>"',
-        'atom': '<editor> <file>:<line>',
-        'spyder': '<editor> <file>',
-        'thonny': '<editor> <file>',
-        'pydev': '<editor> <file>:<line>',
-        'idle': '<editor> <file>'}
-
-    tooltip = 'Format strings for some popular editors/IDEs:\n' + \
-              'PyCharm - <editor> --line <line> <file>\n' + \
-              'Notepad++ - <editor> -n<line> <file>\n' + \
-              'Sublime - <editor> <file>:<line>\n' + \
-              'vim -  <editor> +<line> <file>\n' + \
-              'wing - <editor> <file>:<line>\n' + \
-              'Visual Studio - <editor> <file> /command "edit.goto <line>"\n' + \
-              'Atom - <editor> <file>:<line>\n' + \
-              'Spyder - <editor> <file>\n' + \
-              'Thonny - <editor> <file>\n' + \
-              'PyDev - <editor> <file>:<line>\n' + \
-              'IDLE - <editor> <file>\n'
-
-    tooltip_file_explorer = 'This is the program you normally use to "Browse" for files\n' + \
-                            'For Windows this is normally "explorer". On Linux "nemo" is sometimes used.'
-
-    tooltip_theme = 'The normal default theme for PySimpleGUI is "Dark Blue 13\n' + \
-                    'If you do not call theme("theme name") by your program to change the theme, then the default is used.\n' + \
-                    'This setting allows you to set the theme that PySimpleGUI will use for ALL of your programs that\n' + \
-                    'do not set a theme specifically.'
-
-    # ------------------------- TTK Tab -------------------------
-    ttk_scrollbar_tab_layout = [[T('Default TTK Theme', font='_ 16'), Combo([], DEFAULT_TTK_THEME, readonly=True, size=(20, 10), key='-TTK THEME-', font='_ 16')],
-                                [HorizontalSeparator()],
-                                [T('TTK Scrollbar Settings', font='_ 16')]]
-
-    t_len = max([len(l) for l in TTK_SCROLLBAR_PART_LIST])
-    ttk_layout = [[]]
-    for key, item in ttk_part_mapping_dict.items():
-        if key in TTK_SCROLLBAR_PART_THEME_BASED_LIST:
-            ttk_layout += [[T(key, s=t_len, justification='r'), Combo(PSG_THEME_PART_LIST, default_value=settings.get(('-ttk scroll-', key), item), key=('-TTK SCROLL-', key))]]
-        elif key in (TTK_SCROLLBAR_PART_ARROW_WIDTH, TTK_SCROLLBAR_PART_SCROLL_WIDTH):
-            ttk_layout += [[T(key, s=t_len, justification='r'), Combo(list(range(100)), default_value=settings.get(('-ttk scroll-', key), item), key=('-TTK SCROLL-', key))]]
-        elif key == TTK_SCROLLBAR_PART_RELIEF:
-            ttk_layout += [[T(key, s=t_len, justification='r'), Combo(RELIEF_LIST, default_value=settings.get(('-ttk scroll-', key), item), readonly=True, key=('-TTK SCROLL-', key))]]
-
-    ttk_scrollbar_tab_layout += ttk_layout
-    ttk_scrollbar_tab_layout += [[Button('Reset Scrollbar Settings'), Button('Test Scrollbar Settings')]]
-    ttk_tab = Tab('TTK', ttk_scrollbar_tab_layout)
-
-    layout = [[T('Global PySimpleGUI Settings', text_color=theme_button_color()[0], background_color=theme_button_color()[1],font='_ 18', expand_x=True, justification='c')]]
-
-    # ------------------------- Interpreter Tab -------------------------
-
-
-    interpreter_tab = Tab('Python Interpreter',
-              [[T('Normally leave this blank')],
-                [T('Command to run a python program:'), In(settings.get('-python command-', ''), k='-PYTHON COMMAND-', enable_events=True), FileBrowse()]], font='_ 16', expand_x=True)
-
-    # ------------------------- Editor Tab -------------------------
-
-    editor_tab = Tab('Editor Settings',
-              [[T('Command to invoke your editor:'), In(settings.get('-editor program-', ''), k='-EDITOR PROGRAM-', enable_events=True), FileBrowse()],
-              [T('String to launch your editor to edit at a particular line #.')],
-              [T('Use tags <editor> <file> <line> to specify the string')],
-              [T('that will be executed to edit python files using your editor')],
-              [T('Edit Format String (hover for tooltip)', tooltip=tooltip),
-               In(settings.get('-editor format string-', '<editor> <file>'), k='-EDITOR FORMAT-', tooltip=tooltip)]], font='_ 16', expand_x=True)
-
-    # ------------------------- Explorer Tab -------------------------
-
-    explorer_tab = Tab('Explorer Program',
-              [[In(settings.get('-explorer program-', ''), k='-EXPLORER PROGRAM-', tooltip=tooltip_file_explorer)]], font='_ 16', expand_x=True,  tooltip=tooltip_file_explorer)
-
-    # ------------------------- Snapshots Tab -------------------------
-
-    snapshots_tab = Tab('Window Snapshots',
-              [[Combo(('',)+key_choices, default_value=settings.get(json.dumps(('-snapshot keysym-', i)), ''), readonly=True, k=('-SNAPSHOT KEYSYM-', i), s=(None, 30)) for i in range(4)],
-              [T('Manually Entered Bind String:'), Input(settings.get('-snapshot keysym manual-', ''),k='-SNAPSHOT KEYSYM MANUAL-')],
-              [T('Folder to store screenshots:'), Push(), In(settings.get('-screenshots folder-', ''), k='-SCREENSHOTS FOLDER-'), FolderBrowse()],
-              [T('Screenshots Filename or Prefix:'), Push(), In(settings.get('-screenshots filename-', ''), k='-SCREENSHOTS FILENAME-'), FileBrowse()],
-              [Checkbox('Auto-number Images', k='-SCREENSHOTS AUTONUMBER-')]], font='_ 16', expand_x=True,)
-
-    # ------------------------- Theme Tab -------------------------
-
-    theme_tab = Tab('Theme',
-              [[T('Leave blank for "official" PySimpleGUI default theme: {}'.format(OFFICIAL_PYSIMPLEGUI_THEME))],
-              [T('Default Theme For All Programs:'),
-               Combo([''] + theme_list(), settings.get('-theme-', None), readonly=True, k='-THEME-', tooltip=tooltip_theme), Checkbox('Always use custom Titlebar', default=pysimplegui_user_settings.get('-custom titlebar-',False), k='-CUSTOM TITLEBAR-')],
-               [Frame('Window Watermarking',
-                       [[Checkbox('Enable Window Watermarking', pysimplegui_user_settings.get('-watermark-', False), k='-WATERMARK-')],
-                       [T('Prefix Text String:'), Input(pysimplegui_user_settings.get('-watermark text-', ''), k='-WATERMARK TEXT-')],
-                       [Checkbox('PySimpleGUI Version', pysimplegui_user_settings.get('-watermark ver-', False), k='-WATERMARK VER-')],
-                       [Checkbox('Framework Version',pysimplegui_user_settings.get('-watermark framework ver-', False), k='-WATERMARK FRAMEWORK VER-')],
-                       [T('Font:'), Input(pysimplegui_user_settings.get('-watermark font-', '_ 9 bold'), k='-WATERMARK FONT-')],
-                       # [T('Background Color:'), Input(pysimplegui_user_settings.get('-watermark bg color-', 'window.BackgroundColor'), k='-WATERMARK BG COLOR-')],
-                        ],
-                font='_ 16', expand_x=True)]])
-
-
-
-    settings_tab_group = TabGroup([[theme_tab, ttk_tab, interpreter_tab, explorer_tab, editor_tab, snapshots_tab,  ]])
-    layout += [[settings_tab_group]]
-              # [T('Buttons (Leave Unchecked To Use Default) NOT YET IMPLEMENTED!',  font='_ 16')],
-              #      [Checkbox('Always use TTK buttons'), CBox('Always use TK Buttons')],
-    layout += [[B('Ok', bind_return_key=True), B('Cancel'), B('Mac Patch Control')]]
-
-    window = Window('Settings', layout, keep_on_top=True, modal=False, finalize=True)
-
-    # fill in the theme list into the Combo element - must do this AFTER the window is created or a tkinter temp window is auto created by tkinter
-    ttk_theme_list = ttk.Style().theme_names()
-
-    window['-TTK THEME-'].update(value=DEFAULT_TTK_THEME, values=ttk_theme_list)
-
-    while True:
-        event, values = window.read()
-        if event in ('Cancel', WIN_CLOSED):
-            break
-        if event == 'Ok':
-            new_theme = OFFICIAL_PYSIMPLEGUI_THEME if values['-THEME-'] == '' else values['-THEME-']
-            pysimplegui_user_settings.set('-editor program-', values['-EDITOR PROGRAM-'])
-            pysimplegui_user_settings.set('-explorer program-', values['-EXPLORER PROGRAM-'])
-            pysimplegui_user_settings.set('-editor format string-', values['-EDITOR FORMAT-'])
-            pysimplegui_user_settings.set('-python command-', values['-PYTHON COMMAND-'])
-            pysimplegui_user_settings.set('-custom titlebar-', values['-CUSTOM TITLEBAR-'])
-            pysimplegui_user_settings.set('-theme-', new_theme)
-            pysimplegui_user_settings.set('-watermark-', values['-WATERMARK-'])
-            pysimplegui_user_settings.set('-watermark text-', values['-WATERMARK TEXT-'])
-            pysimplegui_user_settings.set('-watermark ver-', values['-WATERMARK VER-'])
-            pysimplegui_user_settings.set('-watermark framework ver-', values['-WATERMARK FRAMEWORK VER-'])
-            pysimplegui_user_settings.set('-watermark font-', values['-WATERMARK FONT-'])
-            # pysimplegui_user_settings.set('-watermark bg color-', values['-WATERMARK BG COLOR-'])
-
-            # TTK SETTINGS
-            pysimplegui_user_settings.set('-ttk theme-', values['-TTK THEME-'])
-            DEFAULT_TTK_THEME = values['-TTK THEME-']
-
-            # Snapshots portion
-            screenshot_keysym_manual = values['-SNAPSHOT KEYSYM MANUAL-']
-            pysimplegui_user_settings.set('-snapshot keysym manual-', values['-SNAPSHOT KEYSYM MANUAL-'])
-            screenshot_keysym = ''
-            for i in range(4):
-                pysimplegui_user_settings.set(json.dumps(('-snapshot keysym-',i)), values[('-SNAPSHOT KEYSYM-', i)])
-                if values[('-SNAPSHOT KEYSYM-', i)]:
-                    screenshot_keysym += "<{}>".format(values[('-SNAPSHOT KEYSYM-', i)])
-            if screenshot_keysym_manual:
-                DEFAULT_WINDOW_SNAPSHOT_KEY_CODE = screenshot_keysym_manual
-            elif screenshot_keysym:
-                DEFAULT_WINDOW_SNAPSHOT_KEY_CODE = screenshot_keysym
-
-            pysimplegui_user_settings.set('-screenshots folder-', values['-SCREENSHOTS FOLDER-'])
-            pysimplegui_user_settings.set('-screenshots filename-', values['-SCREENSHOTS FILENAME-'])
-
-            # TTK Scrollbar portion
-            for key, value in values.items():
-                if isinstance(key, tuple):
-                    if key[0] == '-TTK SCROLL-':
-                        pysimplegui_user_settings.set(json.dumps(('-ttk scroll-', key[1])), value)
-
-            # Upgrade Service Settings
-            pysimplegui_user_settings.set('-upgrade show only critical-', values['-UPGRADE SHOW ONLY CRITICAL-'])
-
-
-
-            theme(new_theme)
-
-            _global_settings_get_ttk_scrollbar_info()
-            _global_settings_get_watermark_info()
-
-            window.close()
-            return True
-        elif event == '-EDITOR PROGRAM-':
-            for key in editor_format_dict.keys():
-                if key in values['-EDITOR PROGRAM-'].lower():
-                    window['-EDITOR FORMAT-'].update(value=editor_format_dict[key])
-        elif event == 'Mac Patch Control':
-            main_mac_feature_control()
-            # re-read the settings in case they changed
-            _read_mac_global_settings()
-        elif event == 'Reset Scrollbar Settings':
-            ttk_part_mapping_dict = copy.copy(DEFAULT_TTK_PART_MAPPING_DICT)
-            for key, item in ttk_part_mapping_dict.items():
-                window[('-TTK SCROLL-', key)].update(item)
-        elif event == 'Test Scrollbar Settings':
-            for ttk_part in TTK_SCROLLBAR_PART_LIST:
-                value = values[('-TTK SCROLL-', ttk_part)]
-                ttk_part_mapping_dict[ttk_part] = value
-            DEFAULT_TTK_THEME = values['-TTK THEME-']
-            for i in range(100):
-                Print(i, keep_on_top=True)
-            Print('Close this window to continue...', keep_on_top=True)
-
-    window.close()
-    # In case some of the settings were modified and tried out, reset the ttk info to be what's in the config file
-    style = ttk.Style(Window.hidden_master_root)
-    _change_ttk_theme(style, DEFAULT_TTK_THEME)
-    _global_settings_get_ttk_scrollbar_info()
-
-    return False
-
-
-# ..######..########..##....##....##.....##.########.##.......########.
-# .##....##.##.....##.##...##.....##.....##.##.......##.......##.....##
-# .##.......##.....##.##..##......##.....##.##.......##.......##.....##
-# ..######..##.....##.#####.......#########.######...##.......########.
-# .......##.##.....##.##..##......##.....##.##.......##.......##.......
-# .##....##.##.....##.##...##.....##.....##.##.......##.......##.......
-# ..######..########..##....##....##.....##.########.########.##.......
-
-
-def main_sdk_help():
-    """
-    Display a window that will display the docstrings for each PySimpleGUI Element and the Window object
-
-    """
-    online_help_links = {
-        'Button': r'https://PySimpleGUI.org/en/latest/call%20reference/#button-element',
-        'ButtonMenu': r'https://PySimpleGUI.org/en/latest/call%20reference/#buttonmenu-element',
-        'Canvas': r'https://PySimpleGUI.org/en/latest/call%20reference/#canvas-element',
-        'Checkbox': r'https://PySimpleGUI.org/en/latest/call%20reference/#checkbox-element',
-        'Column': r'https://PySimpleGUI.org/en/latest/call%20reference/#column-element',
-        'Combo': r'https://PySimpleGUI.org/en/latest/call%20reference/#combo-element',
-        'Frame': r'https://PySimpleGUI.org/en/latest/call%20reference/#frame-element',
-        'Graph': r'https://PySimpleGUI.org/en/latest/call%20reference/#graph-element',
-        'HorizontalSeparator': r'https://PySimpleGUI.org/en/latest/call%20reference/#horizontalseparator-element',
-        'Image': r'https://PySimpleGUI.org/en/latest/call%20reference/#image-element',
-        'Input': r'https://PySimpleGUI.org/en/latest/call%20reference/#input-element',
-        'Listbox': r'https://PySimpleGUI.org/en/latest/call%20reference/#listbox-element',
-        'Menu': r'https://PySimpleGUI.org/en/latest/call%20reference/#menu-element',
-        'MenubarCustom': r'https://PySimpleGUI.org/en/latest/call%20reference/#menubarcustom-element',
-        'Multiline': r'https://PySimpleGUI.org/en/latest/call%20reference/#multiline-element',
-        'OptionMenu': r'https://PySimpleGUI.org/en/latest/call%20reference/#optionmenu-element',
-        'Output': r'https://PySimpleGUI.org/en/latest/call%20reference/#output-element',
-        'Pane': r'https://PySimpleGUI.org/en/latest/call%20reference/#pane-element',
-        'ProgressBar': r'https://PySimpleGUI.org/en/latest/call%20reference/#progressbar-element',
-        'Radio': r'https://PySimpleGUI.org/en/latest/call%20reference/#radio-element',
-        'Slider': r'https://PySimpleGUI.org/en/latest/call%20reference/#slider-element',
-        'Spin': r'https://PySimpleGUI.org/en/latest/call%20reference/#spin-element',
-        'StatusBar': r'https://PySimpleGUI.org/en/latest/call%20reference/#statusbar-element',
-        'Tab': r'https://PySimpleGUI.org/en/latest/call%20reference/#tab-element',
-        'TabGroup': r'https://PySimpleGUI.org/en/latest/call%20reference/#tabgroup-element',
-        'Table': r'https://PySimpleGUI.org/en/latest/call%20reference/#table-element',
-        'Text': r'https://PySimpleGUI.org/en/latest/call%20reference/#text-element',
-        'Titlebar': r'https://PySimpleGUI.org/en/latest/call%20reference/#titlebar-element',
-        'Tree': r'https://PySimpleGUI.org/en/latest/call%20reference/#tree-element',
-        'VerticalSeparator': r'https://PySimpleGUI.org/en/latest/call%20reference/#verticalseparator-element',
-        'Window': r'https://PySimpleGUI.org/en/latest/call%20reference/#window',
-    }
-
-    NOT_AN_ELEMENT = 'Not An Element'
-    element_classes = Element.__subclasses__()
-    element_names = {element.__name__: element for element in element_classes}
-    element_names['Window'] = Window
-    element_classes.append(Window)
-    element_arg_default_dict, element_arg_default_dict_update = {}, {}
-    vars3 = [m for m in inspect.getmembers(sys.modules[__name__])]
-
-    functions = [m for m in inspect.getmembers(sys.modules[__name__], inspect.isfunction)]
-    functions_names_lower = [f for f in functions if f[0][0].islower()]
-    functions_names_upper = [f for f in functions if f[0][0].isupper()]
-    functions_names = sorted(functions_names_lower) + sorted(functions_names_upper)
-
-    for element in element_classes:
-        # Build info about init method
-        args = inspect.getfullargspec(element.__init__).args[1:]
-        defaults = inspect.getfullargspec(element.__init__).defaults
-        # print('------------- {element}----------')
-        # print(args)
-        # print(defaults)
-        if len(args) != len(defaults):
-            diff = len(args) - len(defaults)
-            defaults = ('NO DEFAULT',) * diff + defaults
-        args_defaults = []
-        for i, a in enumerate(args):
-            args_defaults.append((a, defaults[i]))
-        element_arg_default_dict[element.__name__] = args_defaults
-
-        # Build info about update method
-        try:
-            args = inspect.getfullargspec(element.update).args[1:]
-            defaults = inspect.getfullargspec(element.update).defaults
-            if args is None or defaults is None:
-                element_arg_default_dict_update[element.__name__] = (('', ''),)
-                continue
-            if len(args) != len(defaults):
-                diff = len(args) - len(defaults)
-                defaults = ('NO DEFAULT',) * diff + defaults
-            args_defaults = []
-            for i, a in enumerate(args):
-                args_defaults.append((a, defaults[i]))
-            element_arg_default_dict_update[element.__name__] = args_defaults if len(args_defaults) else (('', ''),)
-        except Exception as e:
-            pass
-
-    # Add on the pseudo-elements
-    element_names['MenubarCustom'] = MenubarCustom
-    element_names['Titlebar'] = Titlebar
-
-    buttons = [[B(e, pad=(0, 0), size=(22, 1), font='Courier 10')] for e in sorted(element_names.keys())]
-    buttons += [[B('Func Search', pad=(0, 0), size=(22, 1), font='Courier 10')]]
-    button_col = Col(buttons, vertical_alignment='t')
-    mline_col = Column([[Multiline(size=(100, 46), key='-ML-', write_only=True, reroute_stdout=True, font='Courier 10', expand_x=True, expand_y=True)],
-                        [T(size=(80, 1), font='Courier 10 underline', k='-DOC LINK-', enable_events=True)]], pad=(0, 0), expand_x=True, expand_y=True, vertical_alignment='t')
-    layout = [[button_col, mline_col]]
-    layout += [[CBox('Summary Only', enable_events=True, k='-SUMMARY-'), CBox('Display Only PEP8 Functions', default=True, k='-PEP8-')]]
-    # layout = [[Column(layout, scrollable=True, p=0, expand_x=True, expand_y=True, vertical_alignment='t'), Sizegrip()]]
-    layout += [[Button('Exit', size=(15, 1)), Sizegrip()]]
-
-    window = Window('SDK API Call Reference', layout, resizable=True, use_default_focus=False, keep_on_top=True, icon=EMOJI_BASE64_THINK, finalize=True, right_click_menu=MENU_RIGHT_CLICK_EDITME_EXIT)
-    window['-DOC LINK-'].set_cursor('hand1')
-    online_help_link = ''
-    ml = window['-ML-']
-    current_element = ''
-    try:
-        while True:  # Event Loop
-            event, values = window.read()
-            if event in (WIN_CLOSED, 'Exit'):
-                break
-            if event == '-DOC LINK-':
-                if webbrowser_available and online_help_link:
-                    webbrowser.open_new_tab(online_help_link)
-            if event == '-SUMMARY-':
-                event = current_element
-
-            if event in element_names.keys():
-                current_element = event
-                window['-ML-'].update('')
-                online_help_link = online_help_links.get(event, '')
-                window['-DOC LINK-'].update(online_help_link)
-                if not values['-SUMMARY-']:
-                    elem = element_names[event]
-                    ml.print(pydoc.help(elem))
-                    # print the aliases for the class
-                    ml.print('\n--- Shortcut Aliases for Class ---')
-                    for v in vars3:
-                        if elem == v[1] and elem.__name__ != v[0]:
-                            print(v[0])
-                    ml.print('\n--- Init Parms ---')
-                else:
-                    elem = element_names[event]
-                    if inspect.isfunction(elem):
-                        ml.print('Not a class...It is a function', background_color='red', text_color='white')
-                    else:
-                        element_methods = [m[0] for m in inspect.getmembers(Element, inspect.isfunction) if not m[0].startswith('_') and not m[0][0].isupper()]
-                        methods = inspect.getmembers(elem, inspect.isfunction)
-                        methods = [m[0] for m in methods if not m[0].startswith('_') and not m[0][0].isupper()]
-
-                        unique_methods = [m for m in methods if m not in element_methods and not m[0][0].isupper()]
-
-                        properties = inspect.getmembers(elem, lambda o: isinstance(o, property))
-                        properties = [p[0] for p in properties if not p[0].startswith('_')]
-                        ml.print('--- Methods ---', background_color='red', text_color='white')
-                        ml.print('\n'.join(methods))
-                        ml.print('--- Properties ---', background_color='red', text_color='white')
-                        ml.print('\n'.join(properties))
-                        if elem != NOT_AN_ELEMENT:
-                            if issubclass(elem, Element):
-                                ml.print('Methods Unique to This Element', background_color='red', text_color='white')
-                                ml.print('\n'.join(unique_methods))
-                        ml.print('========== Init Parms ==========', background_color='#FFFF00', text_color='black')
-                        elem_text_name = event
-                        for parm, default in element_arg_default_dict[elem_text_name]:
-                            ml.print('{:18}'.format(parm), end=' = ')
-                            ml.print(default, end=',\n')
-                        if elem_text_name in element_arg_default_dict_update:
-                            ml.print('========== Update Parms ==========', background_color='#FFFF00', text_color='black')
-                            for parm, default in element_arg_default_dict_update[elem_text_name]:
-                                ml.print('{:18}'.format(parm), end=' = ')
-                                ml.print(default, end=',\n')
-                ml.set_vscroll_position(0)  # scroll to top of multoline
-            elif event == 'Func Search':
-                search_string = popup_get_text('Search for this in function list:', keep_on_top=True)
-                if search_string is not None:
-                    online_help_link = ''
-                    window['-DOC LINK-'].update('')
-                    ml.update('')
-                    for f_entry in functions_names:
-                        f = f_entry[0]
-                        if search_string in f.lower() and not f.startswith('_'):
-                            if (values['-PEP8-'] and not f[0].isupper()) or not values['-PEP8-']:
-                                if values['-SUMMARY-']:
-                                    ml.print(f)
-                                else:
-                                    ml.print('=========== ' + f + '===========', background_color='#FFFF00', text_color='black')
-                                    ml.print(pydoc.help(f_entry[1]))
-                ml.set_vscroll_position(0)  # scroll to top of multoline
-    except Exception as e:
-        _error_popup_with_traceback('Exception in SDK reference', e)
-    window.close()
-
 #                     oo
 #
 # 88d8b.d8b. .d8888b. dP 88d888b.
@@ -24947,10 +24118,6 @@ def _create_main_window():
         Tree(data=treedata, headings=['col1', 'col2', 'col3'], col_widths=[5, 5, 5, 5], change_submits=True, auto_size_columns=False, header_border_width=4,
              # header_relief=RELIEF_GROOVE,
              num_rows=8, col0_width=8, key='-TREE-', show_expanded=True )])]
-    frame7 = [[Image(EMOJI_BASE64_HAPPY_HEARTS, enable_events=True, k='-EMOJI-HEARTS-'), T('Do you'), Image(HEART_3D_BASE64, subsample=3, enable_events=True, k='-HEART-'), T('so far?')],
-              [T('Want to be taught PySimpleGUI?\nThen maybe the "Official PySimpleGUI Course" on Udemy is for you.')],
-              [B(image_data=UDEMY_ICON, enable_events=True,  k='-UDEMY-'),T('Check docs, announcements, easter eggs on this page for coupons.')],
-              [B(image_data=ICON_BUY_ME_A_COFFEE, enable_events=True,  k='-COFFEE-'), T('It is financially draining to operate a project this huge. $1 helps')]]
 
 
     pop_test_tab_layout = [
@@ -24969,27 +24136,15 @@ def _create_main_window():
                          [B('Themes'), B('Theme Swatches'), B('Switch Themes')]]
 
 
-    upgrade_recommendation_tab_layout = [[T('Latest Recommendation and Announcements For You', font='_ 14')],
-                                         [T('Severity Level of Update:'), T(pysimplegui_user_settings.get('-severity level-',''))],
-                                         [T('Recommended Version To Upgrade To:'), T(pysimplegui_user_settings.get('-upgrade recommendation-',''))],
-                                         [T(pysimplegui_user_settings.get('-upgrade message 1-',''))],
-                                         [T(pysimplegui_user_settings.get('-upgrade message 2-',''))],
-                                         [Checkbox('Show Only Critical Messages', default=pysimplegui_user_settings.get('-upgrade show only critical-', False), key='-UPGRADE SHOW ONLY CRITICAL-', enable_events=True)],
-                                         [Button('Show Notification Again'),
-],
-                                         ]
-    tab_upgrade = Tab('Upgrade\n',upgrade_recommendation_tab_layout,  expand_x=True)
 
 
     tab1 = Tab('Graph\n', frame6, tooltip='Graph is in here', title_color='red')
     tab2 = Tab('CB, Radio\nList, Combo',
                [[Frame('Multiple Choice Group', frame2, title_color='#FFFFFF', tooltip='Checkboxes, radio buttons, etc', vertical_alignment='t',),
                  Frame('Binary Choice Group', frame3, title_color='#FFFFFF', tooltip='Binary Choice', vertical_alignment='t', ), ]])
-    # tab3 = Tab('Table and Tree', [[Frame('Structured Data Group', frame5, title_color='red', element_justification='l')]], tooltip='tab 3', title_color='red', )
     tab3 = Tab('Table &\nTree', [[Column(frame5, element_justification='l', vertical_alignment='t')]], tooltip='tab 3', title_color='red', k='-TAB TABLE-')
     tab4 = Tab('Sliders\n', [[Frame('Variable Choice Group', frame4, title_color='blue')]], tooltip='tab 4', title_color='red', k='-TAB VAR-')
     tab5 = Tab('Input\nMultiline', [[Frame('TextInput', frame1, title_color='blue')]], tooltip='tab 5', title_color='red', k='-TAB TEXT-')
-    tab6 = Tab('Course or\nSponsor', frame7, k='-TAB SPONSOR-')
     tab7 = Tab('Popups\n', pop_test_tab_layout, k='-TAB POPUP-')
     tab8 = Tab('Themes\n', themes_tab_layout, k='-TAB THEMES-')
 
@@ -25010,16 +24165,14 @@ def _create_main_window():
 
     layout_bottom = [
         [B(SYMBOL_DOWN, pad=(0, 0), k='-HIDE TABS-'),
-         pin(Col([[TabGroup([[tab1, tab2, tab3, tab6, tab4, tab5, tab7, tab8, tab_upgrade]], key='-TAB_GROUP-')]], k='-TAB GROUP COL-'))],
+         pin(Col([[TabGroup([[tab1, tab2, tab3, tab4, tab5, tab7, tab8]], key='-TAB_GROUP-')]], k='-TAB GROUP COL-'))],
         [B('Button', highlight_colors=('yellow', 'red'),pad=(1, 0)),
          B('ttk Button', use_ttk_buttons=True, tooltip='This is a TTK Button',pad=(1, 0)),
          B('See-through Mode', tooltip='Make the background transparent',pad=(1, 0)),
-         B('Upgrade PySimpleGUI from GitHub', button_color='white on red', key='-INSTALL-',pad=(1, 0)),
          B('Global Settings', tooltip='Settings across all PySimpleGUI programs',pad=(1, 0)),
          B('Exit', tooltip='Exit button',pad=(1, 0))],
         # [B(image_data=ICON_BUY_ME_A_COFFEE,pad=(1, 0), key='-COFFEE-'),
-        [B(image_data=UDEMY_ICON,pad=(1, 0), key='-UDEMY-'),
-         B('SDK Reference', pad=(1, 0)), B('Open GitHub Issue',pad=(1, 0)), B('Versions for GitHub',pad=(1, 0)),
+        [
          ButtonMenu('ButtonMenu', button_menu_def, pad=(1, 0),key='-BMENU-', tearoff=True,  disabled_text_color='yellow')
          ]]
 
@@ -25113,8 +24266,6 @@ def main():
         elif event.startswith('See'):
             window._see_through = not window._see_through
             window.set_transparent_color(theme_background_color() if window._see_through else '')
-        elif event in ('-INSTALL-', '-UPGRADE FROM GITHUB-'):
-            _upgrade_gui()
         elif event == 'Popup':
             popup('This is your basic popup', keep_on_top=True)
         elif event == 'Get File':
@@ -25125,17 +24276,6 @@ def main():
             popup_scrolled('Returned:', popup_get_date(keep_on_top=True))
         elif event == 'Get Text':
             popup_scrolled('Returned:', popup_get_text('Enter some text', keep_on_top=True))
-        elif event.startswith('-UDEMY-'):
-                webbrowser.open_new_tab(r'https://www.udemy.com/course/pysimplegui/?couponCode=522B20BF5EF123C4AB30')
-        elif event.startswith('-SPONSOR-'):
-            if webbrowser_available:
-                webbrowser.open_new_tab(r'https://www.paypal.me/pythongui')
-        elif event == '-COFFEE-':
-            if webbrowser_available:
-                webbrowser.open_new_tab(r'https://www.buymeacoffee.com/PySimpleGUI')
-        elif event in  ('-EMOJI-HEARTS-', '-HEART-', '-PYTHON HEARTS-'):
-            popup_scrolled("Oh look!  It's a Udemy discount coupon!", '522B20BF5EF123C4AB30',
-                           'A personal message from Mike -- thank you so very much for supporting PySimpleGUI!', title='Udemy Coupon', image=EMOJI_BASE64_MIKE, keep_on_top=True)
         elif event == 'Themes':
             search_string = popup_get_text('Enter a search term or leave blank for all themes', 'Show Available Themes', keep_on_top=True)
             if search_string is not None:
@@ -25151,8 +24291,6 @@ def main():
             window['-TAB GROUP COL-'].update(visible=window['-TAB GROUP COL-'].metadata == True)
             window['-TAB GROUP COL-'].metadata = not window['-TAB GROUP COL-'].metadata
             window['-HIDE TABS-'].update(text=SYMBOL_UP if window['-TAB GROUP COL-'].metadata else SYMBOL_DOWN)
-        elif event == 'SDK Reference':
-            main_sdk_help()
         elif event == 'Global Settings':
             if main_global_pysimplegui_settings():
                 theme(pysimplegui_user_settings.get('-theme-', OFFICIAL_PYSIMPLEGUI_THEME))
@@ -25175,21 +24313,6 @@ def main():
                 popup_non_blocking('Non-blocking', 'The background window should still be running', keep_on_top=True)
             elif event == 'P AutoClose':
                 popup_auto_close('Will autoclose in 3 seconds', auto_close_duration=3, keep_on_top=True)
-        elif event == 'Versions for GitHub':
-            main_get_debug_data()
-        elif event == 'Edit Me':
-            execute_editor(__file__)
-        elif event == 'Open GitHub Issue':
-            window.minimize()
-            main_open_github_issue()
-            window.normal()
-        elif event == 'Show Notification Again':
-            if not running_trinket():
-                pysimplegui_user_settings.set('-upgrade info seen-', False)
-            __show_previous_upgrade_information()
-        elif event == '-UPGRADE SHOW ONLY CRITICAL-':
-            if not running_trinket():
-                pysimplegui_user_settings.set('-upgrade show only critical-', values['-UPGRADE SHOW ONLY CRITICAL-'])
 
 
         i += 1
@@ -25252,30 +24375,13 @@ ScrolledTextBox = popup_scrolled
 TimerStart = timer_start
 TimerStop = timer_stop
 test = main
-sdk_help = main_sdk_help
 
-def _optional_window_data(window):
-    """
-    A function to help with testing PySimpleGUI releases. Makes it easier to add a watermarked line to the bottom
-    of a window while testing release candidates.
-
-    :param window:
-    :type window:       Window
-    :return:            An element that will be added to the bottom of the layout
-    :rtype:             None | Element
-    """
-    return None
 
 pysimplegui_user_settings = UserSettings(filename=DEFAULT_USER_SETTINGS_PYSIMPLEGUI_FILENAME, path=DEFAULT_USER_SETTINGS_PYSIMPLEGUI_PATH)
 # ------------------------ Set the "Official PySimpleGUI Theme Colors" ------------------------
 
 
 theme(theme_global())
-# ------------------------ Read the ttk scrollbar info ------------------------
-_global_settings_get_ttk_scrollbar_info()
-
-# ------------------------ Read the window watermark info ------------------------
-_global_settings_get_watermark_info()
 
 # See if running on Trinket. If Trinket, then use custom titlebars since Trinket doesn't supply any
 if running_trinket():
@@ -25307,17 +24413,7 @@ if _mac_should_set_alpha_to_99():
 
 
 def main_code():
-    # To execute the upgrade from command line, type:
-    # python -m PySimpleGUI.PySimpleGUI upgrade
-    if len(sys.argv) > 1 and sys.argv[1] == 'upgrade':
-        # _upgrade_gui()
-        print("function was removed from this port")
-        exit(0)
-    elif len(sys.argv) > 1 and sys.argv[1] == 'help':
-        main_sdk_help()
-        exit(0)
     main()
-    exit(0)
 
 if __name__ == '__main__':
     main_code()
