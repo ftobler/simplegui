@@ -141,7 +141,6 @@ import inspect
 import traceback
 import difflib
 import copy
-import pprint
 try:  # Because Raspberry Pi is still on 3.4....it's not critical if this module isn't imported on the Pi
     from typing import List, Any, Union, Tuple, Dict, SupportsAbs, Optional  # because this code has to run on 2.7 can't use real type hints.  Must do typing only in comments
 except:
@@ -160,25 +159,10 @@ except Exception as e:
 
 import threading
 import itertools
-import json
-import configparser
 import queue
 
-try:
-    import webbrowser
-    webbrowser_available = True
-except:
-    webbrowser_available = False
-# used for github upgrades
-import urllib.request
-import urllib.error
-import urllib.parse
-import pydoc
-from urllib import request
 import os
 import sys
-import re
-import tempfile
 import ctypes
 import platform
 from simplegui.base64_img import *
@@ -367,12 +351,6 @@ def running_replit():
     return False
 
 
-
-
-# Handy python statements to increment and decrement with wrapping that I don't want to forget
-# count = (count + (MAX - 1)) % MAX           # Decrement - roll over to MAX from 0
-# count = (count + 1) % MAX                   # Increment to MAX then roll over to 0
-
 """
     Welcome to the "core" PySimpleGUI code....
 
@@ -455,19 +433,6 @@ DEFAULT_TEXT_COLOR = COLOR_SYSTEM_DEFAULT
 DEFAULT_INPUT_ELEMENTS_COLOR = COLOR_SYSTEM_DEFAULT
 DEFAULT_INPUT_TEXT_COLOR = COLOR_SYSTEM_DEFAULT
 DEFAULT_SCROLLBAR_COLOR = None
-# DEFAULT_BUTTON_COLOR = (YELLOWS[0], PURPLES[0])    # (Text, Background) or (Color "on", Color) as a way to remember
-# DEFAULT_BUTTON_COLOR = (GREENS[3], TANS[0])    # Foreground, Background (None, None) == System Default
-# DEFAULT_BUTTON_COLOR = (YELLOWS[0], GREENS[4])    # Foreground, Background (None, None) == System Default
-# DEFAULT_BUTTON_COLOR = ('white', 'black')    # Foreground, Background (None, None) == System Default
-# DEFAULT_BUTTON_COLOR = (YELLOWS[0], PURPLES[2])    # Foreground, Background (None, None) == System Default
-# DEFAULT_PROGRESS_BAR_COLOR = (GREENS[2], GREENS[0])     # a nice green progress bar
-# DEFAULT_PROGRESS_BAR_COLOR = (BLUES[1], BLUES[1])     # a nice green progress bar
-# DEFAULT_PROGRESS_BAR_COLOR = (BLUES[0], BLUES[0])     # a nice green progress bar
-# DEFAULT_PROGRESS_BAR_COLOR = (PURPLES[1],PURPLES[0])    # a nice purple progress bar
-
-
-# A transparent button is simply one that matches the background
-# TRANSPARENT_BUTTON = 'This constant has been depricated. You must set your button background = background it is on for it to be transparent appearing'
 
 
 # --------------------------------------------------------------------------------
@@ -654,20 +619,6 @@ else:
     SYMBOL_TITLEBAR_MINIMIZE = '_'
     SYMBOL_TITLEBAR_MAXIMIZE = 'O'
     SYMBOL_TITLEBAR_CLOSE = 'X'
-
-#################### PATHS for user_settings APIs ####################
-# These paths are passed to os.path.expanduser to get the default path for user_settings
-# They can be changed using set_options
-
-DEFAULT_USER_SETTINGS_WIN_PATH = r'~\AppData\Local\PySimpleGUI\settings'
-DEFAULT_USER_SETTINGS_LINUX_PATH = r'~/.config/PySimpleGUI/settings'
-DEFAULT_USER_SETTINGS_MAC_PATH = r'~/Library/Application Support/PySimpleGUI/settings'
-DEFAULT_USER_SETTINGS_TRINKET_PATH = r'.'
-DEFAULT_USER_SETTINGS_REPLIT_PATH = r'.'
-DEFAULT_USER_SETTINGS_UNKNOWN_OS_PATH = r'~/Library/Application Support/PySimpleGUI/settings'
-DEFAULT_USER_SETTINGS_PATH = None  # value set by user to override all paths above
-DEFAULT_USER_SETTINGS_PYSIMPLEGUI_PATH = None  # location of the global PySimpleGUI settings
-DEFAULT_USER_SETTINGS_PYSIMPLEGUI_FILENAME = '_PySimpleGUI_settings_global_.json'  # location of the global PySimpleGUI settings
 
 
 # ====================================================================== #
@@ -1813,7 +1764,7 @@ class Element():
         """
         Saves an image of the PySimpleGUI window provided into the filename provided
 
-        :param filename:        Optional filename to save screenshot to. If not included, the User Settinds are used to get the filename
+        :param filename:        filename to save screenshot to. If not included, Exception will be thrown
         :return:                A PIL ImageGrab object that can be saved or manipulated
         :rtype:                 (PIL.ImageGrab | None)
         """
@@ -1844,9 +1795,7 @@ class Element():
 
         # return grab
         if filename is None:
-            folder = pysimplegui_user_settings.get('-screenshots folder-', '')
-            filename = pysimplegui_user_settings.get('-screenshots filename-', '')
-            full_filename = os.path.join(folder, filename)
+            raise Exception("Must provide a filename.")
         else:
             full_filename = filename
         if full_filename:
@@ -10104,7 +10053,7 @@ class Window:
         self.close_destroys_window = not enable_close_attempted_event if enable_close_attempted_event is not None else None
         self.enable_window_config_events = enable_window_config_events
         self.override_custom_titlebar = False
-        self.use_custom_titlebar = use_custom_titlebar or theme_use_custom_titlebar()
+        self.use_custom_titlebar = use_custom_titlebar or USE_CUSTOM_TITLEBAR
         self.titlebar_background_color = titlebar_background_color
         self.titlebar_text_color = titlebar_text_color
         self.titlebar_font = titlebar_font
@@ -12221,7 +12170,7 @@ class Window:
         """
         Saves an image of the PySimpleGUI window provided into the filename provided
 
-        :param filename:        Optional filename to save screenshot to. If not included, the User Settinds are used to get the filename
+        :param filename:        filename to save screenshot to. If not included, exception will be thrown.
         :return:                A PIL ImageGrab object that can be saved or manipulated
         :rtype:                 (PIL.ImageGrab | None)
         """
@@ -12267,9 +12216,7 @@ class Window:
             return None
         # return grab
         if filename is None:
-            folder = pysimplegui_user_settings.get('-screenshots folder-', '')
-            filename = pysimplegui_user_settings.get('-screenshots filename-', '')
-            full_filename = os.path.join(folder, filename)
+            raise Exception("Must provide filename.")
         else:
             full_filename = filename
         if full_filename:
@@ -18996,16 +18943,12 @@ def set_options(icon=None, button_color=None, element_size=(None, None), button_
     global CUSTOM_TITLEBAR_TEXT_COLOR
     global CUSTOM_TITLEBAR_ICON
     global CUSTOM_TITLEBAR_FONT
-    global DEFAULT_USER_SETTINGS_PATH
-    global DEFAULT_USER_SETTINGS_PYSIMPLEGUI_PATH
-    global DEFAULT_USER_SETTINGS_PYSIMPLEGUI_FILENAME
     global DEFAULT_KEEP_ON_TOP
     global DEFAULT_SCALING
     global DEFAULT_MODAL_WINDOWS_ENABLED
     global DEFAULT_MODAL_WINDOWS_FORCED
     global DEFAULT_TOOLTIP_OFFSET
     global DEFAULT_ALPHA_CHANNEL
-    global _pysimplegui_user_settings
     global ttk_part_overrides_from_options
     global DEFAULT_HIDE_WINDOW_WHEN_CREATING
     global DEFAULT_USE_BUTTON_SHORTCUTS
@@ -19156,19 +19099,6 @@ def set_options(icon=None, button_color=None, element_size=(None, None), button_
 
     if titlebar_icon is not None:
         CUSTOM_TITLEBAR_ICON = titlebar_icon
-
-    if user_settings_path is not None:
-        DEFAULT_USER_SETTINGS_PATH = user_settings_path
-
-    if pysimplegui_settings_path is not None:
-        DEFAULT_USER_SETTINGS_PYSIMPLEGUI_PATH = pysimplegui_settings_path
-
-    if pysimplegui_settings_filename is not None:
-        DEFAULT_USER_SETTINGS_PYSIMPLEGUI_FILENAME = pysimplegui_settings_filename
-
-    if pysimplegui_settings_filename is not None or pysimplegui_settings_filename is not None:
-        _pysimplegui_user_settings = UserSettings(filename=DEFAULT_USER_SETTINGS_PYSIMPLEGUI_FILENAME,
-                                                  path=DEFAULT_USER_SETTINGS_PYSIMPLEGUI_PATH)
 
     if keep_on_top is not None:
         DEFAULT_KEEP_ON_TOP = keep_on_top
@@ -19922,45 +19852,6 @@ def theme_add_new(new_theme_name, new_theme_dict):
         LOOK_AND_FEEL_TABLE[new_theme_name] = new_theme_dict
     except Exception as e:
         print('Exception during adding new theme {}'.format(e))
-
-
-def theme_use_custom_titlebar():
-    """
-    Returns True if a custom titlebar will be / should be used.
-    The setting is in the Global Settings window and can be overwridden
-    using set_options call
-
-    :return:        True if a custom titlebar / custom menubar should be used
-    :rtype:         (bool)
-    """
-    if USE_CUSTOM_TITLEBAR is False:
-        return False
-
-    return USE_CUSTOM_TITLEBAR or pysimplegui_user_settings.get('-custom titlebar-', False)
-
-
-def theme_global(new_theme=None):
-    """
-    Sets / Gets the global PySimpleGUI Theme.  If none is specified then returns the global theme from user settings.
-    Note the theme must be a standard, built-in PySimpleGUI theme... not a user-created theme.
-
-    :param new_theme: the new theme name to use
-    :type new_theme:  (str)
-    :return:          the currently selected theme
-    :rtype:           (str)
-    """
-    if new_theme is not None:
-        if new_theme not in theme_list():
-            popup_error_with_traceback('Cannot use custom themes with theme_global call',
-                                       'Your request to use theme {} cannot be performed.'.format(new_theme),
-                                       'The PySimpleGUI Global User Settings are meant for PySimpleGUI standard items, not user config items',
-                                       'You can use any of the many built-in themes instead or use your own UserSettings file to store your custom theme')
-            return pysimplegui_user_settings.get('-theme-', CURRENT_LOOK_AND_FEEL)
-        pysimplegui_user_settings.set('-theme-', new_theme)
-        theme(new_theme)
-        return new_theme
-    else:
-        return pysimplegui_user_settings.get('-theme-', CURRENT_LOOK_AND_FEEL)
 
 
 def theme_previewer(columns=12, scrollable=False, scroll_area_size=(None, None), search_string=None, location=(None, None)):
@@ -21445,7 +21336,9 @@ def popup_get_file(message, title=None, default_path='', default_extension='', s
     :rtype:                          str | None
     """
 
-    # First setup the history settings file if history feature is enabled
+    # First setup the history settings file if history feature is enabledif history:
+    if history:
+        raise Exception("history implementation has been removed.")
     if history and history_setting_filename is not None:
         try:
             history_settings = UserSettings(history_setting_filename)
@@ -21671,6 +21564,8 @@ def popup_get_text(message, title=None, default_text='', password_char='', size=
 
 
     # First setup the history settings file if history feature is enabled
+    if history:
+        raise Exception("history implementation has been removed.")
     if history and history_setting_filename is not None:
         try:
             history_settings = UserSettings(history_setting_filename)
@@ -22100,83 +21995,11 @@ def popup_error_with_traceback(title, *messages, emoji=None):
 
 
 def _error_popup_with_traceback(title, *args, emoji=None):
-    if SUPPRESS_ERROR_POPUPS:
-        return
-    trace_details = traceback.format_stack()
-    error_message = ''
-    file_info_pysimplegui = None
-    for line in reversed(trace_details):
-        if __file__ not in line:
-            file_info_pysimplegui = line.split(",")[0]
-            error_message = line
-            break
-    if file_info_pysimplegui is None:
-        _error_popup_with_code(title, None, None,  'Did not find your traceback info', *args,emoji=emoji)
-        return
+    message = title
+    for arg in args:
+        message += "\n" + str(arg)
+    raise Exception(message)
 
-    error_parts = None
-    if error_message != '':
-        error_parts = error_message.split(', ')
-        if len(error_parts) < 4:
-            error_message = error_parts[0] + '\n' + error_parts[1] + '\n' + ''.join(error_parts[2:])
-    if error_parts is None:
-        print('*** Error popup attempted but unable to parse error details ***')
-        print(trace_details)
-        return
-    filename = error_parts[0][error_parts[0].index('File ') + 5:]
-    line_num = error_parts[1][error_parts[1].index('line ') + 5:]
-    _error_popup_with_code(title, filename, line_num, error_message, *args, emoji=emoji)
-
-
-def _error_popup_with_code(title, filename, line_num, *args,  emoji=None):
-    """
-    Makes the error popup window
-
-    :param title:     The title that will be shown in the popup's titlebar and in the first line of the window
-    :type title:      str
-    :param filename:  The filename to show.. may not be the filename that actually encountered the exception!
-    :type filename:   str
-    :param line_num:  Line number within file with the error
-    :type line_num:   int | str
-    :param args:      A variable number of lines of messages
-    :type args:       *Any
-    :param emoji:     An optional BASE64 Encoded image to shows in the error window
-    :type emoji:      bytes
-    """
-    editor_filename = execute_get_editor() # TODO
-    emoji_data = emoji if emoji is not None else _random_error_emoji()
-    layout = [[Text('ERROR'), Text(title)],
-              [Image(data=emoji_data)]]
-    lines = []
-    for msg in args:
-        if isinstance(msg, Exception):
-            lines += [[f'Additional Exception info pased in by PySimpleGUI or user: Error type is: {type(msg).__name__}']]
-            lines += [[f'In file {__file__} Line number {msg.__traceback__.tb_lineno}']]
-            lines += [[f'{msg}']]
-        else:
-            lines += [str(msg).split('\n')]
-    max_line_len = 0
-    for line in lines:
-        max_line_len = max(max_line_len, max([len(s) for s in line]))
-
-    layout += [[Text(''.join(line), size=(min(max_line_len, 90), None))] for line in lines]
-    layout += [[Button('Close'), Button('Take me to error', disabled=True if not editor_filename else False), Button('Kill Application', button_color='white on red')]]
-    if not editor_filename:
-        layout += [[Text('Configure editor in the Global settings to enable "Take me to error" feature')]]
-    window = Window(title, layout, keep_on_top=True)
-
-    while True:
-        event, values = window.read()
-        if event in ('Close', WIN_CLOSED):
-            break
-        if event == 'Kill Application':
-            window.close()
-            popup_quick_message('KILLING APP!  BYE!', font='_ 18', keep_on_top=True, text_color='white', background_color='red', non_blocking=False)
-            sys.exit()
-        if event == 'Take me to error' and filename is not None and line_num is not None:
-            execute_editor(filename, line_num)
-
-    window.close()
 
 
 #####################################################################
@@ -22309,810 +22132,6 @@ def _create_error_message():
            'The error originated from:\n' + error_message
 
 
-#   .d8888b.           888    888    d8b
-#  d88P  Y88b          888    888    Y8P
-#  Y88b.               888    888
-#   "Y888b.    .d88b.  888888 888888 888 88888b.   .d88b.  .d8888b
-#      "Y88b. d8P  Y8b 888    888    888 888 "88b d88P"88b 88K
-#        "888 88888888 888    888    888 888  888 888  888 "Y8888b.
-#  Y88b  d88P Y8b.     Y88b.  Y88b.  888 888  888 Y88b 888      X88
-#   "Y8888P"   "Y8888   "Y888  "Y888 888 888  888  "Y88888  88888P'
-#                                                      888
-#                                                 Y8b d88P
-#                                                  "Y88P"
-
-# Interface to saving / loading user program settings in json format
-# This is a new set of APIs supplied by PySimpleGUI that enables users to easily set/save/load individual
-# settings.  They are automatically saved to a JSON file. If no file/path is specified then a filename is
-# created from the source file filename.
-
-class UserSettings:
-    # A reserved settings object for use by the setting functions. It's a way for users
-    # to access the user settings without diarectly using the UserSettings class
-    _default_for_function_interface = None  # type: UserSettings
-
-    def __init__(self, filename=None, path=None, silent_on_error=False, autosave=True, use_config_file=None, convert_bools_and_none=True):
-        """
-        User Settings
-
-        :param filename:               The name of the file to use. Can be a full path and filename or just filename
-        :type filename:                (str or None)
-        :param path:                   The folder that the settings file will be stored in. Do not include the filename.
-        :type path:                    (str or None)
-        :param silent_on_error:        If True errors will not be reported
-        :type silent_on_error:         (bool)
-        :param autosave:               If True the settings file is saved after every update
-        :type autosave:                (bool)
-        :param use_config_file:        If True then the file format will be a config.ini rather than json
-        :type use_config_file:         (bool)
-        :param convert_bools_and_none: If True then "True", "False", "None" will be converted to the Python values True, False, None when using INI files. Default is TRUE
-        :type convert_bools_and_none:  (bool)
-        """
-
-        self.path = path
-        self.filename = filename
-        self.full_filename = None
-        self.dict = {}
-        self.default_value = None
-        self.silent_on_error = silent_on_error
-        self.autosave = autosave
-        if filename is not None and filename.endswith('.ini') and use_config_file is None:
-            warnings.warn('[UserSettings] You have specified a filename with .ini extension but did not set use_config_file. Setting use_config_file for you.', UserWarning)
-            use_config_file = True
-        self.use_config_file = use_config_file
-        # self.retain_config_comments = retain_config_comments
-        self.convert_bools = convert_bools_and_none
-        if use_config_file:
-            self.config = configparser.ConfigParser()
-            self.config.optionxform = str
-            # self.config_dict = {}
-            self.section_class_dict = {}        # type: dict[_SectionDict]
-        if filename is not None or path is not None:
-            self.load(filename=filename, path=path)
-
-
-    ########################################################################################################
-    ## FIRST is the _SectionDict helper class
-    ## It is typically not directly accessed, although it is possible to call delete_section, get, set
-    ########################################################################################################
-
-    class _SectionDict:
-        item_count = 0
-        def __init__(self, section_name, section_dict, config, user_settings_parent):  # (str, Dict, configparser.ConfigParser)
-            """
-            The Section Dictionary.  It holds the values for a section.
-
-            :param section_name:                Name of the section
-            :type section_name:                 str
-            :param section_dict:                Dictionary of values for the section
-            :type section_dict:                 dict
-            :param config:                      The configparser object
-            :type config:                       configparser.ConfigParser
-            :param user_settings_parent:        The parent UserSettings object that hdas this section
-            :type user_settings_parent:         UserSettings
-            """
-            self.section_name = section_name
-            self.section_dict = section_dict            # type: Dict
-            self.new_section = False
-            self.config = config            # type: configparser.ConfigParser
-            self.user_settings_parent = user_settings_parent    # type: UserSettings
-            UserSettings._SectionDict.item_count += 1
-
-            if self.user_settings_parent.convert_bools:
-                for key, value in self.section_dict.items():
-                    if value == 'True':
-                        value = True
-                        self.section_dict[key] = value
-                    elif value == 'False':
-                        value = False
-                        self.section_dict[key] = value
-                    elif value == 'None':
-                        value = None
-                        self.section_dict[key] = value
-            # print(f'++++++ making a new SectionDict with name = {section_name}')
-
-
-        def __repr__(self):
-            """
-            Converts the settings dictionary into a string for easy display
-
-            :return: the dictionary as a string
-            :rtype:  (str)
-            """
-            return_string = '{}:\n'.format(self.section_name)
-            for entry in self.section_dict.keys():
-                return_string += '          {} : {}\n'.format(entry, self.section_dict[entry])
-
-            return return_string
-
-
-        def get(self, key, default=None):
-            """
-            Returns the value of a specified setting.  If the setting is not found in the settings dictionary, then
-            the user specified default value will be returned.  It no default is specified and nothing is found, then
-            the "default value" is returned.  This default can be specified in this call, or previously defined
-            by calling set_default. If nothing specified now or previously, then None is returned as default.
-
-            :param key:     Key used to lookup the setting in the settings dictionary
-            :type key:      (Any)
-            :param default: Value to use should the key not be found in the dictionary
-            :type default:  (Any)
-            :return:        Value of specified settings
-            :rtype:         (Any)
-            """
-            value = self.section_dict.get(key, default)
-            if self.user_settings_parent.convert_bools:
-                if value == 'True':
-                    value = True
-                elif value == 'False':
-                    value = False
-            return value
-
-        def set(self, key, value):
-            value = str(value)      # all values must be strings
-            if self.new_section:
-                self.config.add_section(self.section_name)
-                self.new_section = False
-            self.config.set(section=self.section_name, option=key, value=value)
-            self.section_dict[key] = value
-            if self.user_settings_parent.autosave:
-                self.user_settings_parent.save()
-
-        def delete_section(self):
-            # print(f'** Section Dict deleting section = {self.section_name}')
-            self.config.remove_section(section=self.section_name)
-            del self.user_settings_parent.section_class_dict[self.section_name]
-            if self.user_settings_parent.autosave:
-                self.user_settings_parent.save()
-
-        def __getitem__(self, item):
-            # print('*** In SectionDict Get ***')
-            return self.get(item)
-
-        def __setitem__(self, item, value):
-            """
-            Enables setting a setting by using [ ] notation like a dictionary.
-            Your code will have this kind of design pattern:
-            settings = sg.UserSettings()
-            settings[item] = value
-
-            :param item:  The key for the setting to change. Needs to be a hashable type. Basically anything but a list
-            :type item:   Any
-            :param value: The value to set the setting to
-            :type value:  Any
-            """
-            # print(f'*** In SectionDict SET *** item = {item} value = {value}')
-            self.set(item, value)
-            self.section_dict[item]  = value
-
-        def __delitem__(self, item):
-            """
-            Delete an individual user setting.  This is the same as calling delete_entry.  The syntax
-            for deleting the item using this manner is:
-                del settings['entry']
-            :param item: The key for the setting to delete
-            :type item:  Any
-            """
-            # print(f'** In SectionDict delete! section name = {self.section_name} item = {item} ')
-            self.config.remove_option(section=self.section_name, option=item)
-            try:
-                del self.section_dict[item]
-            except Exception as e:
-                pass
-                # print(e)
-            if self.user_settings_parent.autosave:
-                self.user_settings_parent.save()
-
-
-    ########################################################################################################
-
-    def __repr__(self):
-        """
-        Converts the settings dictionary into a string for easy display
-
-        :return: the dictionary as a string
-        :rtype:  (str)
-        """
-        if not self.use_config_file:
-            return pprint.pformat(self.dict)
-        else:
-            # rvalue = '-------------------- Settings ----------------------\n'
-            rvalue = ''
-            for name, section in self.section_class_dict.items():
-                rvalue += str(section)
-
-            # rvalue += '\n-------------------- Settings End----------------------\n'
-            rvalue += '\n'
-            return rvalue
-
-
-    def set_default_value(self, default):
-        """
-        Set the value that will be returned if a requested setting is not found
-
-        :param default: value to be returned if a setting is not found in the settings dictionary
-        :type default:  Any
-        """
-        self.default_value = default
-
-    def _compute_filename(self, filename=None, path=None):
-        """
-        Creates the full filename given the path or the filename or both.
-
-        :param filename: The name of the file to use. Can be a full path and filename or just filename
-        :type filename:  (str or None)
-        :param path:     The folder that the settings file will be stored in. Do not include the filename.
-        :type path:      (str or None)
-        :return:         Tuple with (full filename, path, filename)
-        :rtype:          Tuple[str, str, str]
-        """
-        if filename is not None:
-            dirname_from_filename = os.path.dirname(filename)  # see if a path was provided as part of filename
-            if dirname_from_filename:
-                path = dirname_from_filename
-                filename = os.path.basename(filename)
-        elif self.filename is not None:
-            filename = self.filename
-        else:
-            if not self.use_config_file:
-                filename = os.path.splitext(os.path.basename(sys.modules["__main__"].__file__))[0] + '.json'
-            else:
-                filename = os.path.splitext(os.path.basename(sys.modules["__main__"].__file__))[0] + '.ini'
-
-        if path is None:
-            if self.path is not None:
-                # path = self.path
-                path = os.path.expanduser(self.path)  # expand user provided path in case it has user ~ in it. Don't think it'll hurt
-            elif DEFAULT_USER_SETTINGS_PATH is not None:  # if user set the path manually system-wide using set options
-                path = os.path.expanduser(DEFAULT_USER_SETTINGS_PATH)
-            elif running_trinket():
-                path = os.path.expanduser(DEFAULT_USER_SETTINGS_TRINKET_PATH)
-            elif running_replit():
-                path = os.path.expanduser(DEFAULT_USER_SETTINGS_REPLIT_PATH)
-            elif running_windows():
-                path = os.path.expanduser(DEFAULT_USER_SETTINGS_WIN_PATH)
-            elif running_linux():
-                path = os.path.expanduser(DEFAULT_USER_SETTINGS_LINUX_PATH)
-            elif running_mac():
-                path = os.path.expanduser(DEFAULT_USER_SETTINGS_MAC_PATH)
-            else:
-                path = '.'
-
-        full_filename = os.path.join(path, filename)
-        return (full_filename, path, filename)
-
-    def set_location(self, filename=None, path=None):
-        """
-        Sets the location of the settings file
-
-        :param filename: The name of the file to use. Can be a full path and filename or just filename
-        :type filename:  (str or None)
-        :param path:     The folder that the settings file will be stored in. Do not include the filename.
-        :type path:      (str or None)
-        """
-        cfull_filename, cpath, cfilename = self._compute_filename(filename=filename, path=path)
-
-        self.filename = cfilename
-        self.path = cpath
-        self.full_filename = cfull_filename
-
-    def get_filename(self, filename=None, path=None):
-        """
-        Sets the filename and path for your settings file.  Either paramter can be optional.
-
-        If you don't choose a path, one is provided for you that is OS specific
-        Windows path default = users/name/AppData/Local/PySimpleGUI/settings.
-
-        If you don't choose a filename, your application's filename + '.json' will be used.
-
-        Normally the filename and path are split in the user_settings calls. However for this call they
-        can be combined so that the filename contains both the path and filename.
-
-        :param filename: The name of the file to use. Can be a full path and filename or just filename
-        :type filename:  (str or None)
-        :param path:     The folder that the settings file will be stored in. Do not include the filename.
-        :type path:      (str or None)
-        :return:         The full pathname of the settings file that has both the path and filename combined.
-        :rtype:          (str)
-        """
-        if filename is not None or path is not None or (filename is None and path is None and self.full_filename is None):
-            self.set_location(filename=filename, path=path)
-            self.read()
-        return self.full_filename
-
-
-    def save(self, filename=None, path=None):
-        """
-        Saves the current settings dictionary.  If a filename or path is specified in the call, then it will override any
-        previously specitfied filename to create a new settings file.  The settings dictionary is then saved to the newly defined file.
-
-        :param filename: The fFilename to save to. Can specify a path or just the filename. If no filename specified, then the caller's filename will be used.
-        :type filename:  (str or None)
-        :param path:     The (optional) path to use to save the file.
-        :type path:      (str or None)
-        :return:         The full path and filename used to save the settings
-        :rtype:          (str)
-        """
-        if filename is not None or path is not None:
-            self.set_location(filename=filename, path=path)
-        try:
-            if not os.path.exists(self.path):
-                os.makedirs(self.path)
-            with open(self.full_filename, 'w') as f:
-                if not self.use_config_file:
-                    json.dump(self.dict, f)
-                else:
-                    self.config.write(f)
-        except Exception as e:
-            if not self.silent_on_error:
-                _error_popup_with_traceback('UserSettings.save error', '*** UserSettings.save()  Error saving settings to file:***\n', self.full_filename, e)
-
-        return self.full_filename
-
-
-
-    def load(self, filename=None, path=None):
-        """
-        Specifies the path and filename to use for the settings and reads the contents of the file.
-        The filename can be a full filename including a path, or the path can be specified separately.
-        If  no filename is specified, then the caller's filename will be used with the extension ".json"
-
-        :param filename: Filename to load settings from (and save to in the future)
-        :type filename:  (str or None)
-        :param path:     Path to the file. Defaults to a specific folder depending on the operating system
-        :type path:      (str or None)
-        :return:         The settings dictionary (i.e. all settings)
-        :rtype:          (dict)
-        """
-        if filename is not None or path is not None or self.full_filename is None:
-            self.set_location(filename, path)
-        self.read()
-        return self.dict
-
-    def delete_file(self, filename=None, path=None, report_error=False):
-        """
-        Deltes the filename and path for your settings file.  Either paramter can be optional.
-        If you don't choose a path, one is provided for you that is OS specific
-        Windows path default = users/name/AppData/Local/PySimpleGUI/settings.
-        If you don't choose a filename, your application's filename + '.json' will be used
-        Also sets your current dictionary to a blank one.
-
-        :param filename:     The name of the file to use. Can be a full path and filename or just filename
-        :type filename:      (str or None)
-        :param path:         The folder that the settings file will be stored in. Do not include the filename.
-        :type path:          (str or None)
-        :param report_error: Determines if an error should be shown if a delete error happen (i.e. file isn't present)
-        :type report_error:  (bool)
-        """
-
-        if filename is not None or path is not None or (filename is None and path is None):
-            self.set_location(filename=filename, path=path)
-        try:
-            os.remove(self.full_filename)
-        except Exception as e:
-            if report_error:
-                _error_popup_with_traceback('UserSettings delete_file warning ***', 'Exception trying to perform os.remove', e)
-        self.dict = {}
-
-    def write_new_dictionary(self, settings_dict):
-        """
-        Writes a specified dictionary to the currently defined settings filename.
-
-        :param settings_dict: The dictionary to be written to the currently defined settings file
-        :type settings_dict:  (dict)
-        """
-        if self.full_filename is None:
-            self.set_location()
-        self.dict = settings_dict
-        self.save()
-
-
-    def read(self):
-        """
-        Reads settings file and returns the dictionary.
-        If you have anything changed in an existing settings dictionary, you will lose your changes.
-        :return: settings dictionary
-        :rtype:  (dict)
-        """
-        if self.full_filename is None:
-            return {}
-        try:
-            if os.path.exists(self.full_filename):
-                with open(self.full_filename, 'r') as f:
-                    if not self.use_config_file:        # if using json
-                        self.dict = json.load(f)
-                    else:                               # if using a config file
-                        self.config.read_file(f)
-                        # Make a dictionary of SectionDict classses. Keys are the config.sections().
-                        self.section_class_dict = {}
-                        for section in self.config.sections():
-                            section_dict = dict(self.config[section])
-                            self.section_class_dict[section] = self._SectionDict(section, section_dict, self.config, self)
-
-                        self.dict = self.section_class_dict
-                        self.config_sections = self.config.sections()
-                        # self.config_dict = {section_name : dict(self.config[section_name]) for section_name in self.config.sections()}
-                    # if self.retain_config_comments:
-                    #     self.config_file_contents = f.readlines()
-        except Exception as e:
-            if not self.silent_on_error:
-                _error_popup_with_traceback('User Settings read warning', 'Error reading settings from file', self.full_filename, e)
-                # print('*** UserSettings.read - Error reading settings from file: ***\n', self.full_filename, e)
-                # print(_create_error_message())
-
-        return self.dict
-
-    def exists(self, filename=None, path=None):
-        """
-        Check if a particular settings file exists.  Returns True if file exists
-
-        :param filename: The name of the file to use. Can be a full path and filename or just filename
-        :type filename:  (str or None)
-        :param path:     The folder that the settings file will be stored in. Do not include the filename.
-        :type path:      (str or None)
-        """
-        cfull_filename, cpath, cfilename = self._compute_filename(filename=filename, path=path)
-        if os.path.exists(cfull_filename):
-            return True
-        return False
-
-    def delete_entry(self, key, section=None, silent_on_error=None):
-        """
-        Deletes an individual entry.  If no filename has been specified up to this point,
-        then a default filename will be used.
-        After value has been deleted, the settings file is written to disk.
-
-        :param key: Setting to be deleted. Can be any valid dictionary key type (i.e. must be hashable)
-        :type key:  (Any)
-        :param silent_on_error: Determines if error should be shown. This parameter overrides the silent on error setting for the object.
-        :type silent_on_error:  (bool)
-        """
-        if self.full_filename is None:
-            self.set_location()
-            self.read()
-        if not self.use_config_file:        # Is using JSON file
-            if key in self.dict:
-                del self.dict[key]
-                if self.autosave:
-                    self.save()
-            else:
-                if silent_on_error is False or (silent_on_error is not True and not self.silent_on_error):
-                    _error_popup_with_traceback('User Settings delete_entry Warning - key', key, ' not found in settings')
-
-        else:
-            if section is not None:
-                section_dict = self.get(section)
-                # print(f'** Trying to delete an entry with a config file in use ** id of section_dict = {id(section_dict)}')
-                # section_dict = self.section_class_dict[section]
-                del self.get(section)[key]
-                # del section_dict[key]
-                # del section_dict[key]
-
-
-    def delete_section(self, section):
-        """
-        Deletes a section with the name provided in the section parameter.  Your INI file will be saved afterwards if auto-save enabled (default is ON)
-        :param section:     Name of the section to delete
-        :type section:      str
-        """
-        if not self.use_config_file:
-            return
-
-        section_dict = self.section_class_dict.get(section, None)
-        section_dict.delete_section()
-        del self.section_class_dict[section]
-        if self.autosave:
-            self.save()
-
-    def set(self, key, value):
-        """
-        Sets an individual setting to the specified value.  If no filename has been specified up to this point,
-        then a default filename will be used.
-        After value has been modified, the settings file is written to disk.
-        Note that this call is not value for a config file normally. If it is, then the key is assumed to be the
-            Section key and the value written will be the default value.
-        :param key:      Setting to be saved. Can be any valid dictionary key type
-        :type key:       (Any)
-        :param value:    Value to save as the setting's value. Can be anything
-        :type value:     (Any)
-        :return:         value that key was set to
-        :rtype:          (Any)
-        """
-
-        if self.full_filename is None:
-            self.set_location()
-        # if not autosaving, then don't read the file or else will lose changes
-        if not self.use_config_file:
-            if self.autosave or self.dict == {}:
-                self.read()
-            self.dict[key] = value
-        else:
-            self.section_class_dict[key].set(value, self.default_value)
-
-        if self.autosave:
-            self.save()
-        return value
-
-    def get(self, key, default=None):
-        """
-        Returns the value of a specified setting.  If the setting is not found in the settings dictionary, then
-        the user specified default value will be returned.  It no default is specified and nothing is found, then
-        the "default value" is returned.  This default can be specified in this call, or previously defined
-        by calling set_default. If nothing specified now or previously, then None is returned as default.
-
-        :param key:     Key used to lookup the setting in the settings dictionary
-        :type key:      (Any)
-        :param default: Value to use should the key not be found in the dictionary
-        :type default:  (Any)
-        :return:        Value of specified settings
-        :rtype:         (Any)
-        """
-        if self.default_value is not None:
-            default = self.default_value
-
-        if self.full_filename is None:
-            self.set_location()
-            if self.autosave or self.dict == {}:
-                self.read()
-        if not self.use_config_file:
-            value = self.dict.get(key, default)
-        else:
-            value = self.section_class_dict.get(key, None)
-            if key not in list(self.section_class_dict.keys()):
-                self.section_class_dict[key] = self._SectionDict(key, {}, self.config, self)
-                value = self.section_class_dict[key]
-                value.new_section = True
-        return value
-
-    def get_dict(self):
-        """
-        Returns the current settings dictionary.  If you've not setup the filename for the
-        settings, a default one will be used and then read.
-
-        Note that you can display the dictionary in text format by printing the object itself.
-
-        :return: The current settings dictionary
-        :rtype:  Dict
-        """
-        if self.full_filename is None:
-            self.set_location()
-            if self.autosave or self.dict == {}:
-                self.read()
-                self.save()
-        return self.dict
-
-    def __setitem__(self, item, value):
-        """
-        Enables setting a setting by using [ ] notation like a dictionary.
-        Your code will have this kind of design pattern:
-        settings = sg.UserSettings()
-        settings[item] = value
-
-        :param item:  The key for the setting to change. Needs to be a hashable type. Basically anything but a list
-        :type item:   Any
-        :param value: The value to set the setting to
-        :type value:  Any
-        """
-        return self.set(item, value)
-
-    def __getitem__(self, item):
-        """
-        Enables accessing a setting using [ ] notation like a dictionary.
-        If the entry does not exist, then the default value will be returned.  This default
-        value is None unless user sets by calling UserSettings.set_default_value(default_value)
-
-        :param item: The key for the setting to change. Needs to be a hashable type. Basically anything but a list
-        :type item:  Any
-        :return:     The setting value
-        :rtype:      Any
-        """
-        return self.get(item, self.default_value)
-
-    def __delitem__(self, item):
-        """
-        Delete an individual user setting.  This is the same as calling delete_entry.  The syntax
-        for deleting the item using this manner is:
-            del settings['entry']
-        :param item: The key for the setting to delete
-        :type item:  Any
-        """
-        if self.use_config_file:
-            return self.get(item)
-        else:
-            self.delete_entry(key=item)
-
-
-# Create a singleton for the settings information so that the settings functions can be used
-if UserSettings._default_for_function_interface is None:
-    UserSettings._default_for_function_interface = UserSettings()
-
-
-def user_settings_filename(filename=None, path=None):
-    """
-    Sets the filename and path for your settings file.  Either paramter can be optional.
-
-    If you don't choose a path, one is provided for you that is OS specific
-    Windows path default = users/name/AppData/Local/PySimpleGUI/settings.
-
-    If you don't choose a filename, your application's filename + '.json' will be used.
-
-    Normally the filename and path are split in the user_settings calls. However for this call they
-    can be combined so that the filename contains both the path and filename.
-
-    :param filename: The name of the file to use. Can be a full path and filename or just filename
-    :type filename:  (str)
-    :param path:     The folder that the settings file will be stored in. Do not include the filename.
-    :type path:      (str)
-    :return:         The full pathname of the settings file that has both the path and filename combined.
-    :rtype:          (str)
-    """
-    settings = UserSettings._default_for_function_interface
-    return settings.get_filename(filename, path)
-
-
-def user_settings_delete_filename(filename=None, path=None, report_error=False):
-    """
-    Deltes the filename and path for your settings file.  Either paramter can be optional.
-    If you don't choose a path, one is provided for you that is OS specific
-    Windows path default = users/name/AppData/Local/PySimpleGUI/settings.
-    If you don't choose a filename, your application's filename + '.json' will be used
-    Also sets your current dictionary to a blank one.
-
-    :param filename: The name of the file to use. Can be a full path and filename or just filename
-    :type filename:  (str)
-    :param path:     The folder that the settings file will be stored in. Do not include the filename.
-    :type path:      (str)
-    """
-    settings = UserSettings._default_for_function_interface
-    settings.delete_file(filename, path, report_error=report_error)
-
-
-def user_settings_set_entry(key, value):
-    """
-    Sets an individual setting to the specified value.  If no filename has been specified up to this point,
-    then a default filename will be used.
-    After value has been modified, the settings file is written to disk.
-
-    :param key:   Setting to be saved. Can be any valid dictionary key type
-    :type key:    (Any)
-    :param value: Value to save as the setting's value. Can be anything
-    :type value:  (Any)
-    """
-    settings = UserSettings._default_for_function_interface
-    settings.set(key, value)
-
-
-
-def user_settings_delete_entry(key, silent_on_error=None):
-    """
-    Deletes an individual entry.  If no filename has been specified up to this point,
-    then a default filename will be used.
-    After value has been deleted, the settings file is written to disk.
-
-    :param key: Setting to be saved. Can be any valid dictionary key type (hashable)
-    :type key:  (Any)
-    :param silent_on_error: Determines if an error popup should be shown if an error occurs. Overrides the silent onf effort setting from initialization
-    :type silent_on_error:  (bool)
-    """
-    settings = UserSettings._default_for_function_interface
-    settings.delete_entry(key, silent_on_error=silent_on_error)
-
-
-
-def user_settings_get_entry(key, default=None):
-    """
-    Returns the value of a specified setting.  If the setting is not found in the settings dictionary, then
-    the user specified default value will be returned.  It no default is specified and nothing is found, then
-    None is returned.  If the key isn't in the dictionary, then it will be added and the settings file saved.
-    If no filename has been specified up to this point, then a default filename will be assigned and used.
-    The settings are SAVED prior to returning.
-
-    :param key:     Key used to lookup the setting in the settings dictionary
-    :type key:      (Any)
-    :param default: Value to use should the key not be found in the dictionary
-    :type default:  (Any)
-    :return:        Value of specified settings
-    :rtype:         (Any)
-    """
-    settings = UserSettings._default_for_function_interface
-    return settings.get(key, default)
-
-
-def user_settings_save(filename=None, path=None):
-    """
-    Saves the current settings dictionary.  If a filename or path is specified in the call, then it will override any
-    previously specitfied filename to create a new settings file.  The settings dictionary is then saved to the newly defined file.
-
-    :param filename: The fFilename to save to. Can specify a path or just the filename. If no filename specified, then the caller's filename will be used.
-    :type filename:  (str)
-    :param path:     The (optional) path to use to save the file.
-    :type path:      (str)
-    :return:         The full path and filename used to save the settings
-    :rtype:          (str)
-    """
-    settings = UserSettings._default_for_function_interface
-    return settings.save(filename, path)
-
-
-def user_settings_load(filename=None, path=None):
-    """
-    Specifies the path and filename to use for the settings and reads the contents of the file.
-    The filename can be a full filename including a path, or the path can be specified separately.
-    If  no filename is specified, then the caller's filename will be used with the extension ".json"
-
-    :param filename: Filename to load settings from (and save to in the future)
-    :type filename:  (str)
-    :param path:     Path to the file. Defaults to a specific folder depending on the operating system
-    :type path:      (str)
-    :return:         The settings dictionary (i.e. all settings)
-    :rtype:          (dict)
-    """
-    settings = UserSettings._default_for_function_interface
-    return settings.load(filename, path)
-
-
-def user_settings_file_exists(filename=None, path=None):
-    """
-    Determines if a settings file exists.  If so a boolean True is returned.
-    If either a filename or a path is not included, then the appropriate default
-    will be used.
-
-    :param filename: Filename to check
-    :type filename:  (str)
-    :param path:     Path to the file. Defaults to a specific folder depending on the operating system
-    :type path:      (str)
-    :return:         True if the file exists
-    :rtype:          (bool)
-    """
-    settings = UserSettings._default_for_function_interface
-    return settings.exists(filename=filename, path=path)
-
-
-def user_settings_write_new_dictionary(settings_dict):
-    """
-    Writes a specified dictionary to the currently defined settings filename.
-
-    :param settings_dict: The dictionary to be written to the currently defined settings file
-    :type settings_dict:  (dict)
-    """
-    settings = UserSettings._default_for_function_interface
-    settings.write_new_dictionary(settings_dict)
-
-
-def user_settings_silent_on_error(silent_on_error=False):
-    """
-    Used to control the display of error messages.  By default, error messages are displayed to stdout.
-
-    :param silent_on_error: If True then all error messages are silenced (not displayed on the console)
-    :type silent_on_error:  (bool)
-    """
-    settings = UserSettings._default_for_function_interface
-    settings.silent_on_error = silent_on_error
-
-
-def user_settings():
-    """
-    Returns the current settings dictionary.  If you've not setup the filename for the
-    settings, a default one will be used and then read.
-    :return:            The current settings dictionary as a dictionary or a nicely formatted string representing it
-    :rtype:             (dict or str)
-    """
-    settings = UserSettings._default_for_function_interface
-    return settings.get_dict()
-
-
-def user_settings_object():
-    """
-    Returns the object that is used for the function version of this API.
-    With this object you can use the object interface, print it out in a nice format, etc.
-
-    :return:    The UserSettings obect used for the function level interface
-    :rtype:     (UserSettings)
-    """
-    return UserSettings._default_for_function_interface
-
-
-
 
 '''
 '##::::'##::::'###:::::'######::::::'######::'########::'########::'######::'####:'########:'####::'######::
@@ -23150,14 +22169,10 @@ def _read_mac_global_settings():
     global ENABLE_MAC_DISABLE_GRAB_ANYWHERE_WITH_TITLEBAR
     global ENABLE_MAC_ALPHA_99_PATCH
 
-    ENABLE_MAC_MODAL_DISABLE_PATCH = pysimplegui_user_settings.get(MAC_PATCH_DICT['Disable Modal Windows'][0],
-                                                                   MAC_PATCH_DICT['Disable Modal Windows'][1])
-    ENABLE_MAC_NOTITLEBAR_PATCH = pysimplegui_user_settings.get(MAC_PATCH_DICT['Enable No Titlebar Patch'][0],
-                                                                MAC_PATCH_DICT['Enable No Titlebar Patch'][1])
-    ENABLE_MAC_DISABLE_GRAB_ANYWHERE_WITH_TITLEBAR = pysimplegui_user_settings.get(MAC_PATCH_DICT['Disable Grab Anywhere with Titlebar'][0],
-                                                                MAC_PATCH_DICT['Disable Grab Anywhere with Titlebar'][1])
-    ENABLE_MAC_ALPHA_99_PATCH = pysimplegui_user_settings.get(MAC_PATCH_DICT['Set Alpha Channel to 0.99 for MacOS >= 12.3'][0],
-                                                                MAC_PATCH_DICT['Set Alpha Channel to 0.99 for MacOS >= 12.3'][1])
+    ENABLE_MAC_MODAL_DISABLE_PATCH = MAC_PATCH_DICT['Disable Modal Windows'][1]
+    ENABLE_MAC_NOTITLEBAR_PATCH = MAC_PATCH_DICT['Enable No Titlebar Patch'][1]
+    ENABLE_MAC_DISABLE_GRAB_ANYWHERE_WITH_TITLEBAR = MAC_PATCH_DICT['Disable Grab Anywhere with Titlebar'][1]
+    ENABLE_MAC_ALPHA_99_PATCH = MAC_PATCH_DICT['Set Alpha Channel to 0.99 for MacOS >= 12.3'][1]
 
 def _mac_should_apply_notitlebar_patch():
     """
@@ -23207,558 +22222,6 @@ def _mac_should_set_alpha_to_99():
     return False
 
 
-def main_mac_feature_control():
-    """
-    Window to set settings that will be used across all PySimpleGUI programs that choose to use them.
-    Use set_options to set the path to the folder for all PySimpleGUI settings.
-
-    :return: True if settings were changed
-    :rtype:  (bool)
-    """
-
-    current_theme = theme()
-    theme('dark red')
-
-    layout = [[T('Mac PySimpleGUI Feature Control', font='DEFAIULT 18')],
-              [T('Use this window to enable / disable features.')],
-              [T('Unfortunately, on some releases of tkinter on the Mac, there are problems that')],
-              [T('create the need to enable and disable sets of features. This window facilitates the control.')],
-              [T('Feature Control / Settings', font='_ 16 bold')],
-              [T('You are running tkinter version:', font='_ 12 bold'), T(framework_version, font='_ 12 bold')]]
-
-
-    for key, value in MAC_PATCH_DICT.items():
-        layout += [[Checkbox(key, k=value[0], default=pysimplegui_user_settings.get(value[0], value[1]))]]
-    layout += [[T('Currently the no titlebar patch ' + ('WILL' if _mac_should_apply_notitlebar_patch() else 'WILL NOT') + ' be applied')],
-               [T('The no titlebar patch will ONLY be applied on tkinter versions < 8.6.10')]]
-    layout += [[Button('Ok'), Button('Cancel')]]
-
-    window = Window('Mac Feature Control', layout, keep_on_top=True, finalize=True )
-    while True:
-        event, values = window.read()
-        if event in ('Cancel', WIN_CLOSED):
-            break
-        if event == 'Ok':
-            for key, value in values.items():
-                print('setting {} to {}'.format(key, value))
-                pysimplegui_user_settings.set(key, value)
-            break
-    window.close()
-    theme(current_theme)
-
-
-# '''
-# '########::'########:'########::'##::::'##::'######::::'######:::'########:'########::
-#  ##.... ##: ##.....:: ##.... ##: ##:::: ##:'##... ##::'##... ##:: ##.....:: ##.... ##:
-#  ##:::: ##: ##::::::: ##:::: ##: ##:::: ##: ##:::..::: ##:::..::: ##::::::: ##:::: ##:
-#  ##:::: ##: ######::: ########:: ##:::: ##: ##::'####: ##::'####: ######::: ########::
-#  ##:::: ##: ##...:::: ##.... ##: ##:::: ##: ##::: ##:: ##::: ##:: ##...:::: ##.. ##:::
-#  ##:::: ##: ##::::::: ##:::: ##: ##:::: ##: ##::: ##:: ##::: ##:: ##::::::: ##::. ##::
-#  ########:: ########: ########::. #######::. ######:::. ######::: ########: ##:::. ##:
-# ........:::........::........::::.......::::......:::::......::::........::..:::::..::
-# '''
-
-# #####################################################################################################
-# # Debugger
-# #####################################################################################################
-
-
-
-
-
-
-# class _Debugger:
-#     debugger = None
-#     DEBUGGER_MAIN_WINDOW_THEME = 'dark grey 13'
-#     DEBUGGER_POPOUT_THEME = 'dark grey 13'
-#     WIDTH_VARIABLES = 23
-#     WIDTH_RESULTS = 46
-
-#     WIDTH_WATCHER_VARIABLES = 20
-#     WIDTH_WATCHER_RESULTS = 60
-
-#     WIDTH_LOCALS = 80
-#     NUM_AUTO_WATCH = 9
-
-#     MAX_LINES_PER_RESULT_FLOATING = 4
-#     MAX_LINES_PER_RESULT_MAIN = 3
-
-#     DEBUGGER_POPOUT_WINDOW_FONT = 'Sans 8'
-#     DEBUGGER_VARIABLE_DETAILS_FONT = 'Courier 10'
-
-#     '''
-#         #     #                    ######
-#         ##   ##   ##   # #    #    #     # ###### #####  #    #  ####   ####  ###### #####
-#         # # # #  #  #  # ##   #    #     # #      #    # #    # #    # #    # #      #    #
-#         #  #  # #    # # # #  #    #     # #####  #####  #    # #      #      #####  #    #
-#         #     # ###### # #  # #    #     # #      #    # #    # #  ### #  ### #      #####
-#         #     # #    # # #   ##    #     # #      #    # #    # #    # #    # #      #   #
-#         #     # #    # # #    #    ######  ###### #####   ####   ####   ####  ###### #    #
-#     '''
-#     def __init__(self):
-#         self.watcher_window = None  # type: Window
-#         self.popout_window = None  # type: Window
-#         self.local_choices = {}
-#         self.myrc = ''
-#         self.custom_watch = ''
-#         self.locals = {}
-#         self.globals = {}
-#         self.popout_choices = {}
-
-#     # Includes the DUAL PANE (now 2 tabs)!  Don't forget REPL is there too!
-#     def _build_main_debugger_window(self, location=(None, None)):
-#         old_theme = theme()
-#         theme(_Debugger.DEBUGGER_MAIN_WINDOW_THEME)
-
-#         def InVar(key1):
-#             row1 = [T('    '),
-#                     I(key=key1, size=(_Debugger.WIDTH_VARIABLES, 1)),
-#                     T('', key=key1 + 'CHANGED_', size=(_Debugger.WIDTH_RESULTS, 1)), B('Detail', key=key1 + 'DETAIL_'),
-#                     B('Obj', key=key1 + 'OBJ_'), ]
-#             return row1
-
-#         variables_frame = [InVar('_VAR0_'),
-#                            InVar('_VAR1_'),
-#                            InVar('_VAR2_'), ]
-
-#         interactive_frame = [[T('>>> '), In(size=(83, 1), key='-REPL-',
-#                                             tooltip='Type in any "expression" or "statement"\n and it will be disaplayed below.\nPress RETURN KEY instead of "Go"\nbutton for faster use'),
-#                               B('Go', bind_return_key=True, visible=True)],
-#                              [Multiline(size=(93, 26), key='-OUTPUT-', autoscroll=True, do_not_clear=True)], ]
-
-#         autowatch_frame = [[Button('Choose Variables To Auto Watch', key='-LOCALS-'),
-#                             Button('Clear All Auto Watches'),
-#                             Button('Show All Variables', key='-SHOW_ALL-'),
-#                             Button('Locals', key='-ALL_LOCALS-'),
-#                             Button('Globals', key='-GLOBALS-'),
-#                             Button('Popout', key='-POPOUT-')]]
-
-#         var_layout = []
-#         for i in range(_Debugger.NUM_AUTO_WATCH):
-#             var_layout.append([T('', size=(_Debugger.WIDTH_WATCHER_VARIABLES, 1), key='_WATCH%s_' % i),
-#                                T('', size=(_Debugger.WIDTH_WATCHER_RESULTS, _Debugger.MAX_LINES_PER_RESULT_MAIN), key='_WATCH%s_RESULT_' % i,)])
-
-#         col1 = [
-#             # [Frame('Auto Watches', autowatch_frame+variable_values, title_color='blue')]
-#             [Frame('Auto Watches', autowatch_frame + var_layout, title_color=theme_button_color()[0])]
-#         ]
-
-#         col2 = [
-#             [Frame('Variables or Expressions to Watch', variables_frame, title_color=theme_button_color()[0]), ],
-#             [Frame('REPL-Light - Press Enter To Execute Commands', interactive_frame, title_color=theme_button_color()[0]), ]
-#         ]
-
-#         # Tab based layout
-#         layout = [[Text('Debugging: ' + self._find_users_code())],
-#                   [TabGroup([[Tab('Variables', col1), Tab('REPL & Watches', col2)]])]]
-
-#         # ------------------------------- Create main window -------------------------------
-#         window = Window("PySimpleGUI Debugger", layout, icon=PSG_DEBUGGER_LOGO, margins=(0, 0), location=location, keep_on_top=True, right_click_menu=[[''], ['Exit', ]])
-
-#         Window._read_call_from_debugger = True
-#         window.finalize()
-#         Window._read_call_from_debugger = False
-
-#         window.Element('_VAR1_').SetFocus()
-#         self.watcher_window = window
-#         theme(old_theme)
-#         return window
-
-#     '''
-#         #     #                    #######                               #
-#         ##   ##   ##   # #    #    #       #    # ###### #    # #####    #        ####   ####  #####
-#         # # # #  #  #  # ##   #    #       #    # #      ##   #   #      #       #    # #    # #    #
-#         #  #  # #    # # # #  #    #####   #    # #####  # #  #   #      #       #    # #    # #    #
-#         #     # ###### # #  # #    #       #    # #      #  # #   #      #       #    # #    # #####
-#         #     # #    # # #   ##    #        #  #  #      #   ##   #      #       #    # #    # #
-#         #     # #    # # #    #    #######   ##   ###### #    #   #      #######  ####   ####  #
-#     '''
-
-#     def _refresh_main_debugger_window(self, mylocals, myglobals):
-#         if not self.watcher_window:  # if there is no window setup, nothing to do
-#             return False
-#         event, values = self.watcher_window.read(timeout=1)
-#         if event in (None, 'Exit', '_EXIT_', '-EXIT-'):  # EXIT BUTTON / X BUTTON
-#             try:
-#                 self.watcher_window.close()
-#             except:
-#                 pass
-#             self.watcher_window = None
-#             return False
-#         # ------------------------------- Process events from REPL Tab -------------------------------
-#         cmd = values['-REPL-']  # get the REPL entered
-#         # BUTTON - GO (NOTE - This button is invisible!!)
-#         if event == 'Go':  # GO BUTTON
-#             self.watcher_window.Element('-REPL-').Update('')
-#             self.watcher_window.Element('-OUTPUT-').Update(">>> {}\n".format(cmd), append=True, autoscroll=True)
-
-#             try:
-#                 result = eval('{}'.format(cmd), myglobals, mylocals)
-#             except Exception as e:
-#                 if sys.version_info[0] < 3:
-#                     result = 'Not available in Python 2'
-#                 else:
-#                     try:
-#                         result = exec('{}'.format(cmd), myglobals, mylocals)
-#                     except Exception as e:
-#                         result = 'Exception {}\n'.format(e)
-
-#             self.watcher_window.Element('-OUTPUT-').Update('{}\n'.format(result), append=True, autoscroll=True)
-#         # BUTTON - DETAIL
-#         elif event.endswith('_DETAIL_'):  # DETAIL BUTTON
-#             var = values['_VAR{}_'.format(event[4])]
-#             try:
-#                 result = str(eval(str(var), myglobals, mylocals))
-#             except:
-#                 result = ''
-#             old_theme = theme()
-#             theme(_Debugger.DEBUGGER_MAIN_WINDOW_THEME)
-#             popup_scrolled(str(values['_VAR{}_'.format(event[4])]) + '\n' + result, title=var, non_blocking=True, font=_Debugger.DEBUGGER_VARIABLE_DETAILS_FONT)
-#             theme(old_theme)
-#         # BUTTON - OBJ
-#         elif event.endswith('_OBJ_'):  # OBJECT BUTTON
-#             var = values['_VAR{}_'.format(event[4])]
-#             try:
-#                 result = ObjToStringSingleObj(mylocals[var])
-#             except Exception as e:
-#                 try:
-#                     result = eval('{}'.format(var), myglobals, mylocals)
-#                     result = ObjToStringSingleObj(result)
-#                 except Exception as e:
-#                     result = '{}\nError showing object {}'.format(e, var)
-#             old_theme = theme()
-#             theme(_Debugger.DEBUGGER_MAIN_WINDOW_THEME)
-#             popup_scrolled(str(var) + '\n' + str(result), title=var, non_blocking=True, font=_Debugger.DEBUGGER_VARIABLE_DETAILS_FONT)
-#             theme(old_theme)
-#         # ------------------------------- Process Watch Tab -------------------------------
-#         # BUTTON - Choose Locals to see
-#         elif event == '-LOCALS-':  # Show all locals BUTTON
-#             self._choose_auto_watches(mylocals)
-#         # BUTTON - Locals (quick popup)
-#         elif event == '-ALL_LOCALS-':
-#             self._display_all_vars('All Locals', mylocals)
-#         # BUTTON - Globals (quick popup)
-#         elif event == '-GLOBALS-':
-#             self._display_all_vars('All Globals', myglobals)
-#         # BUTTON - clear all
-#         elif event == 'Clear All Auto Watches':
-#             if popup_yes_no('Do you really want to clear all Auto-Watches?', 'Really Clear??') == 'Yes':
-#                 self.local_choices = {}
-#                 self.custom_watch = ''
-#         # BUTTON - Popout
-#         elif event == '-POPOUT-':
-#             if not self.popout_window:
-#                 self._build_floating_window()
-#         # BUTTON - Show All
-#         elif event == '-SHOW_ALL-':
-#             for key in self.locals:
-#                 self.local_choices[key] = not key.startswith('_')
-
-#         # -------------------- Process the manual "watch list" ------------------
-#         for i in range(3):
-#             key = '_VAR{}_'.format(i)
-#             out_key = '_VAR{}_CHANGED_'.format(i)
-#             self.myrc = ''
-#             if self.watcher_window.Element(key):
-#                 var = values[key]
-#                 try:
-#                     result = eval(str(var), myglobals, mylocals)
-#                 except:
-#                     result = ''
-#                 self.watcher_window.Element(out_key).Update(str(result))
-#             else:
-#                 self.watcher_window.Element(out_key).Update('')
-
-#         # -------------------- Process the automatic "watch list" ------------------
-#         slot = 0
-#         for key in self.local_choices:
-#             if key == '-CUSTOM_WATCH-':
-#                 continue
-#             if self.local_choices[key]:
-#                 self.watcher_window.Element('_WATCH{}_'.format(slot)).Update(key)
-#                 try:
-#                     self.watcher_window.Element('_WATCH{}_RESULT_'.format(slot), silent_on_error=True).Update(mylocals[key])
-#                 except:
-#                     self.watcher_window.Element('_WATCH{}_RESULT_'.format(slot)).Update('')
-#                 slot += 1
-
-#             if slot + int(not self.custom_watch in (None, '')) >= _Debugger.NUM_AUTO_WATCH:
-#                 break
-#         # If a custom watch was set, display that value in the window
-#         if self.custom_watch:
-#             self.watcher_window.Element('_WATCH{}_'.format(slot)).Update(self.custom_watch)
-#             try:
-#                 self.myrc = eval(self.custom_watch, myglobals, mylocals)
-#             except:
-#                 self.myrc = ''
-#             self.watcher_window.Element('_WATCH{}_RESULT_'.format(slot)).Update(self.myrc)
-#             slot += 1
-#         # blank out all of the slots not used (blank)
-#         for i in range(slot, _Debugger.NUM_AUTO_WATCH):
-#             self.watcher_window.Element('_WATCH{}_'.format(i)).Update('')
-#             self.watcher_window.Element('_WATCH{}_RESULT_'.format(i)).Update('')
-
-#         return True  # return indicating the window stayed open
-
-#     def _find_users_code(self):
-#         try:  # lots can go wrong so wrapping the entire thing
-#             trace_details = traceback.format_stack()
-#             file_info_pysimplegui, error_message = None, ''
-#             for line in reversed(trace_details):
-#                 if __file__ not in line:
-#                     file_info_pysimplegui = line.split(",")[0]
-#                     error_message = line
-#                     break
-#             if file_info_pysimplegui is None:
-#                 return ''
-#             error_parts = None
-#             if error_message != '':
-#                 error_parts = error_message.split(', ')
-#                 if len(error_parts) < 4:
-#                     error_message = error_parts[0] + '\n' + error_parts[1] + '\n' + ''.join(error_parts[2:])
-#             if error_parts is None:
-#                 print('*** Error popup attempted but unable to parse error details ***')
-#                 print(trace_details)
-#                 return ''
-#             filename = error_parts[0][error_parts[0].index('File ') + 5:]
-#             return filename
-#         except:
-#             return
-#     '''
-#         ######                                 #     #
-#         #     #  ####  #####  #    # #####     #  #  # # #    # #####   ####  #    #
-#         #     # #    # #    # #    # #    #    #  #  # # ##   # #    # #    # #    #
-#         ######  #    # #    # #    # #    #    #  #  # # # #  # #    # #    # #    #
-#         #       #    # #####  #    # #####     #  #  # # #  # # #    # #    # # ## #
-#         #       #    # #      #    # #         #  #  # # #   ## #    # #    # ##  ##
-#         #        ####  #       ####  #          ## ##  # #    # #####   ####  #    #
-
-#         ######                                    #                     #     #
-#         #     # #    # #    # #####   ####       # #   #      #         #     #   ##   #####   ####
-#         #     # #    # ##  ## #    # #          #   #  #      #         #     #  #  #  #    # #
-#         #     # #    # # ## # #    #  ####     #     # #      #         #     # #    # #    #  ####
-#         #     # #    # #    # #####       #    ####### #      #          #   #  ###### #####       #
-#         #     # #    # #    # #      #    #    #     # #      #           # #   #    # #   #  #    #
-#         ######   ####  #    # #       ####     #     # ###### ######       #    #    # #    #  ####
-#     '''
-#     # displays them into a single text box
-
-#     def _display_all_vars(self, title, dict):
-#         num_cols = 3
-#         output_text = ''
-#         num_lines = 2
-#         cur_col = 0
-#         out_text = title + '\n'
-#         longest_line = max([len(key) for key in dict])
-#         line = []
-#         sorted_dict = {}
-#         for key in sorted(dict.keys()):
-#             sorted_dict[key] = dict[key]
-#         for key in sorted_dict:
-#             value = dict[key]
-#             # wrapped_list = textwrap.wrap(str(value), 60)
-#             # wrapped_text = '\n'.join(wrapped_list)
-#             wrapped_text = str(value)
-#             out_text += '{} - {}\n'.format(key, wrapped_text)
-#             # if cur_col + 1 == num_cols:
-#             #     cur_col = 0
-#             #     num_lines += len(wrapped_list)
-#             # else:
-#             #     cur_col += 1
-#         old_theme = theme()
-#         theme(_Debugger.DEBUGGER_MAIN_WINDOW_THEME)
-#         popup_scrolled(out_text, title=title, non_blocking=True, font=_Debugger.DEBUGGER_VARIABLE_DETAILS_FONT, keep_on_top=True, icon=PSG_DEBUGGER_LOGO)
-#         theme(old_theme)
-
-#     '''
-#         #####                                        #     #
-#        #     # #    #  ####   ####   ####  ######    #  #  #   ##   #####  ####  #    #
-#        #       #    # #    # #    # #      #         #  #  #  #  #    #   #    # #    #
-#        #       ###### #    # #    #  ####  #####     #  #  # #    #   #   #      ######
-#        #       #    # #    # #    #      # #         #  #  # ######   #   #      #    #
-#        #     # #    # #    # #    # #    # #         #  #  # #    #   #   #    # #    #
-#         #####  #    #  ####   ####   ####  ######     ## ##  #    #   #    ####  #    #
-
-#         #     #                                                       #     #
-#         #     #   ##   #####  #   ##   #####  #      ######  ####     #  #  # # #    #
-#         #     #  #  #  #    # #  #  #  #    # #      #      #         #  #  # # ##   #
-#         #     # #    # #    # # #    # #####  #      #####   ####     #  #  # # # #  #
-#          #   #  ###### #####  # ###### #    # #      #           #    #  #  # # #  # #
-#           # #   #    # #   #  # #    # #    # #      #      #    #    #  #  # # #   ##
-#            #    #    # #    # # #    # #####  ###### ######  ####      ## ##  # #    #
-#     '''
-
-#     def _choose_auto_watches(self, my_locals):
-#         old_theme = theme()
-#         theme(_Debugger.DEBUGGER_MAIN_WINDOW_THEME)
-#         num_cols = 3
-#         output_text = ''
-#         num_lines = 2
-#         cur_col = 0
-#         layout = [[Text('Choose your "Auto Watch" variables', font='ANY 14', text_color='red')]]
-#         longest_line = max([len(key) for key in my_locals])
-#         line = []
-#         sorted_dict = {}
-#         for key in sorted(my_locals.keys()):
-#             sorted_dict[key] = my_locals[key]
-#         for key in sorted_dict:
-#             line.append(CB(key, key=key, size=(longest_line, 1),
-#                            default=self.local_choices[key] if key in self.local_choices else False))
-#             if cur_col + 1 == num_cols:
-#                 cur_col = 0
-#                 layout.append(line)
-#                 line = []
-#             else:
-#                 cur_col += 1
-#         if cur_col:
-#             layout.append(line)
-
-#         layout += [
-#             [Text('Custom Watch (any expression)'), Input(default_text=self.custom_watch, size=(40, 1), key='-CUSTOM_WATCH-')]]
-#         layout += [
-#             [Ok(), Cancel(), Button('Clear All'), Button('Select [almost] All', key='-AUTO_SELECT-')]]
-
-#         window = Window('Choose Watches', layout, icon=PSG_DEBUGGER_LOGO, finalize=True, keep_on_top=True)
-
-#         while True:  # event loop
-#             event, values = window.read()
-#             if event in (None, 'Cancel', '-EXIT-'):
-#                 break
-#             elif event == 'Ok':
-#                 self.local_choices = values
-#                 self.custom_watch = values['-CUSTOM_WATCH-']
-#                 break
-#             elif event == 'Clear All':
-#                 popup_quick_message('Cleared Auto Watches', auto_close=True, auto_close_duration=3, non_blocking=True, text_color='red', font='ANY 18')
-#                 for key in sorted_dict:
-#                     window.Element(key).Update(False)
-#                 window.Element('-CUSTOM_WATCH-').Update('')
-#             elif event == 'Select All':
-#                 for key in sorted_dict:
-#                     window.Element(key).Update(False)
-#             elif event == '-AUTO_SELECT-':
-#                 for key in sorted_dict:
-#                     window.Element(key).Update(not key.startswith('_'))
-
-#         # exited event loop
-#         window.Close()
-#         theme(old_theme)
-
-
-#     '''
-#         ######                            #######
-#         #     # #    # # #      #####     #       #       ####    ##   ##### # #    #  ####
-#         #     # #    # # #      #    #    #       #      #    #  #  #    #   # ##   # #    #
-#         ######  #    # # #      #    #    #####   #      #    # #    #   #   # # #  # #
-#         #     # #    # # #      #    #    #       #      #    # ######   #   # #  # # #  ###
-#         #     # #    # # #      #    #    #       #      #    # #    #   #   # #   ## #    #
-#         ######   ####  # ###### #####     #       ######  ####  #    #   #   # #    #  ####
-
-#         #     #
-#         #  #  # # #    # #####   ####  #    #
-#         #  #  # # ##   # #    # #    # #    #
-#         #  #  # # # #  # #    # #    # #    #
-#         #  #  # # #  # # #    # #    # # ## #
-#         #  #  # # #   ## #    # #    # ##  ##
-#          ## ##  # #    # #####   ####  #    #
-#     '''
-
-#     def _build_floating_window(self, location=(None, None)):
-#         """
-
-#         :param location:
-#         :type location:
-
-#         """
-#         if self.popout_window:  # if floating window already exists, close it first
-#             self.popout_window.Close()
-#         old_theme = theme()
-#         theme(_Debugger.DEBUGGER_POPOUT_THEME)
-#         num_cols = 2
-#         width_var = 15
-#         width_value = 30
-#         layout = []
-#         line = []
-#         col = 0
-#         # self.popout_choices = self.local_choices
-#         self.popout_choices = {}
-#         if self.popout_choices == {}:  # if nothing chosen, then choose all non-_ variables
-#             for key in sorted(self.locals.keys()):
-#                 self.popout_choices[key] = not key.startswith('_')
-
-#         width_var = max([len(key) for key in self.popout_choices])
-#         for key in self.popout_choices:
-#             if self.popout_choices[key] is True:
-#                 value = str(self.locals.get(key))
-#                 h = min(len(value) // width_value + 1, _Debugger.MAX_LINES_PER_RESULT_FLOATING)
-#                 line += [Text('{}'.format(key), size=(width_var, 1), font=_Debugger.DEBUGGER_POPOUT_WINDOW_FONT),
-#                          Text(' = ', font=_Debugger.DEBUGGER_POPOUT_WINDOW_FONT),
-#                          Text(value, key=key, size=(width_value, h), font=_Debugger.DEBUGGER_POPOUT_WINDOW_FONT)]
-#                 if col + 1 < num_cols:
-#                     line += [VerticalSeparator(), T(' ')]
-#                 col += 1
-#             if col >= num_cols:
-#                 layout.append(line)
-#                 line = []
-#                 col = 0
-#         if col != 0:
-#             layout.append(line)
-#         layout = [[T(SYMBOL_X, enable_events=True, key='-EXIT-', font='_ 7')], [Column(layout)]]
-
-#         Window._read_call_from_debugger = True
-#         self.popout_window = Window('Floating', layout, alpha_channel=0, no_titlebar=True, grab_anywhere=True,
-#                                     element_padding=(0, 0), margins=(0, 0), keep_on_top=True,
-#                                     right_click_menu=['&Right', ['Debugger::RightClick', 'Exit::RightClick']], location=location, finalize=True)
-#         Window._read_call_from_debugger = False
-
-#         if location == (None, None):
-#             screen_size = self.popout_window.GetScreenDimensions()
-#             self.popout_window.Move(screen_size[0] - self.popout_window.Size[0], 0)
-#         self.popout_window.SetAlpha(1)
-#         theme(old_theme)
-#         return True
-
-#     '''
-#         ######
-#         #     # ###### ###### #####  ######  ####  #    #
-#         #     # #      #      #    # #      #      #    #
-#         ######  #####  #####  #    # #####   ####  ######
-#         #   #   #      #      #####  #           # #    #
-#         #    #  #      #      #   #  #      #    # #    #
-#         #     # ###### #      #    # ######  ####  #    #
-
-#         #######
-#         #       #       ####    ##   ##### # #    #  ####
-#         #       #      #    #  #  #    #   # ##   # #    #
-#         #####   #      #    # #    #   #   # # #  # #
-#         #       #      #    # ######   #   # #  # # #  ###
-#         #       #      #    # #    #   #   # #   ## #    #
-#         #       ######  ####  #    #   #   # #    #  ####
-
-#         #     #
-#         #  #  # # #    # #####   ####  #    #
-#         #  #  # # ##   # #    # #    # #    #
-#         #  #  # # # #  # #    # #    # #    #
-#         #  #  # # #  # # #    # #    # # ## #
-#         #  #  # # #   ## #    # #    # ##  ##
-#          ## ##  # #    # #####   ####  #    #
-#     '''
-
-#     def _refresh_floating_window(self):
-#         if not self.popout_window:
-#             return
-#         for key in self.popout_choices:
-#             if self.popout_choices[key] is True and key in self.locals:
-#                 if key is not None and self.popout_window is not None:
-#                     self.popout_window.Element(key, silent_on_error=True).Update(self.locals.get(key))
-#         event, values = self.popout_window.read(timeout=5)
-#         if event in (None, '_EXIT_', 'Exit::RightClick', '-EXIT-'):
-#             self.popout_window.Close()
-#             self.popout_window = None
-#         elif event == 'Debugger::RightClick':
-#             show_debugger_window()
-
-
 # 888     888                                .d8888b.         d8888 888 888          888      888
 # 888     888                               d88P  Y88b       d88888 888 888          888      888
 # 888     888                               888    888      d88P888 888 888          888      888
@@ -23776,102 +22239,6 @@ def main_mac_feature_control():
 # 888        888  888 888  888 888      888    888 888  888 888  888 "Y8888b.
 # 888        Y88b 888 888  888 Y88b.    Y88b.  888 Y88..88P 888  888      X88
 # 888         "Y88888 888  888  "Y8888P  "Y888 888  "Y88P"  888  888  88888P'
-
-
-# def show_debugger_window(location=(None, None), *args):
-#     """
-#     Shows the large main debugger window
-#     :param location: Locations (x,y) on the screen to place upper left corner of the window
-#     :type location:  (int, int)
-#     :return:         None
-#     :rtype:          None
-#     """
-#     if _Debugger.debugger is None:
-#         _Debugger.debugger = _Debugger()
-#     debugger = _Debugger.debugger
-#     frame = inspect.currentframe()
-#     prev_frame = inspect.currentframe().f_back
-#     # frame, *others = inspect.stack()[1]
-#     try:
-#         debugger.locals = frame.f_back.f_locals
-#         debugger.globals = frame.f_back.f_globals
-#     finally:
-#         del frame
-
-#     if not debugger.watcher_window:
-#         debugger.watcher_window = debugger._build_main_debugger_window(location=location)
-#     return True
-
-
-# def show_debugger_popout_window(location=(None, None), *args):
-#     """
-#     Shows the smaller "popout" window.  Default location is the upper right corner of your screen
-
-#     :param location: Locations (x,y) on the screen to place upper left corner of the window
-#     :type location:  (int, int)
-#     :return:         None
-#     :rtype:          None
-#     """
-#     if _Debugger.debugger is None:
-#         _Debugger.debugger = _Debugger()
-#     debugger = _Debugger.debugger
-#     frame = inspect.currentframe()
-#     prev_frame = inspect.currentframe().f_back
-#     # frame = inspect.getframeinfo(prev_frame)
-#     # frame, *others = inspect.stack()[1]
-#     try:
-#         debugger.locals = frame.f_back.f_locals
-#         debugger.globals = frame.f_back.f_globals
-#     finally:
-#         del frame
-#     if debugger.popout_window:
-#         debugger.popout_window.Close()
-#         debugger.popout_window = None
-#     debugger._build_floating_window(location=location)
-
-
-# def _refresh_debugger():
-#     """
-#     Refreshes the debugger windows. USERS should NOT be calling this function. Within PySimpleGUI it is called for the USER every time the Window.Read function is called.
-
-#     :return: return code False if user closed the main debugger window.
-#     :rtype:  (bool)
-#     """
-#     if _Debugger.debugger is None:
-#         _Debugger.debugger = _Debugger()
-#     debugger = _Debugger.debugger
-#     Window._read_call_from_debugger = True
-#     rc = None
-#     # frame = inspect.currentframe()
-#     # frame = inspect.currentframe().f_back
-
-#     frame, *others = inspect.stack()[1]
-#     try:
-#         debugger.locals = frame.f_back.f_locals
-#         debugger.globals = frame.f_back.f_globals
-#     finally:
-#         del frame
-#     if debugger.popout_window:
-#         rc = debugger._refresh_floating_window()
-#     if debugger.watcher_window:
-#         rc = debugger._refresh_main_debugger_window(debugger.locals, debugger.globals)
-#     Window._read_call_from_debugger = False
-#     return rc
-
-
-# def _debugger_window_is_open():
-#     """
-#     Determines if one of the debugger window is currently open
-#     :return: returns True if the popout window or the main debug window is open
-#     :rtype: (bool)
-#     """
-
-#     if _Debugger.debugger is None:
-#         return False
-#     debugger = _Debugger.debugger
-#     if debugger.popout_window or debugger.watcher_window:
-#         return True
-#     return False
 
 
 def get_versions():
@@ -24154,7 +22521,7 @@ def _create_main_window():
 
     layout = [[]]
 
-    if not theme_use_custom_titlebar():
+    if not False:
         layout += [[Menu(menu_def, key='-MENU-', font='Courier 15', background_color='red', text_color='white', disabled_text_color='yellow', tearoff=True)]]
     else:
         layout += [[MenubarCustom(menu_def, key='-MENU-', font='Courier 15', bar_background_color=theme_background_color(), bar_text_color=theme_text_color(),
@@ -24233,12 +22600,6 @@ def main():
         if event == 'Button':
             window.Element('-TEXT1-').SetTooltip('NEW TEXT')
             window.Element('-MENU-').Update(visible=True)
-        elif event == 'Popout':
-            show_debugger_popout_window()
-        elif event == 'Launch Debugger':
-            show_debugger_window()
-        elif event == 'About...':
-            popup('About this program...', 'You are looking at the test harness for the PySimpleGUI program', version, keep_on_top=True, image=DEFAULT_BASE64_ICON)
         elif event.startswith('See'):
             window._see_through = not window._see_through
             window.set_transparent_color(theme_background_color() if window._see_through else '')
@@ -24267,14 +22628,6 @@ def main():
             window['-TAB GROUP COL-'].update(visible=window['-TAB GROUP COL-'].metadata == True)
             window['-TAB GROUP COL-'].metadata = not window['-TAB GROUP COL-'].metadata
             window['-HIDE TABS-'].update(text=SYMBOL_UP if window['-TAB GROUP COL-'].metadata else SYMBOL_DOWN)
-        elif event == 'Global Settings':
-            if main_global_pysimplegui_settings():
-                theme(pysimplegui_user_settings.get('-theme-', OFFICIAL_PYSIMPLEGUI_THEME))
-                window.close()
-                window = _create_main_window()
-                graph_elem = window['+GRAPH+']
-            else:
-                Window('', layout=[[Multiline()]], alpha_channel=0).read(timeout=1, close=True)
         elif event.startswith('P '):
             if event == 'P ':
                 popup('Normal Popup - Modal', keep_on_top=True)
@@ -24292,7 +22645,6 @@ def main():
 
 
         i += 1
-        # _refresh_debugger()
     print('event = ', event)
     window.close()
     set_options(force_modal_windows=forced_modal)
@@ -24353,11 +22705,10 @@ TimerStop = timer_stop
 test = main
 
 
-pysimplegui_user_settings = UserSettings(filename=DEFAULT_USER_SETTINGS_PYSIMPLEGUI_FILENAME, path=DEFAULT_USER_SETTINGS_PYSIMPLEGUI_PATH)
 # ------------------------ Set the "Official PySimpleGUI Theme Colors" ------------------------
 
 
-theme(theme_global())
+theme(CURRENT_LOOK_AND_FEEL)
 
 # See if running on Trinket. If Trinket, then use custom titlebars since Trinket doesn't supply any
 if running_trinket():
