@@ -11,7 +11,7 @@ def readme():
 setuptools.setup(
     name="simplegui",
     version="4.60.4",
-    author="PySimpleGUI",  # alternative author
+    author="PySimpleGUI",  # alternative maintainer
     author_email="PySimpleGUI@PySimpleGUI.org",  # alternative maintainer_email
     description="Fork of the LGPL3 version of PySimpleGUI",
     long_description=readme(),
@@ -29,12 +29,14 @@ setuptools.setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
         "License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)",
         "Topic :: Multimedia :: Graphics",
         "Operating System :: OS Independent"
     ),
     install_requires=[
-        "psgtray"
+        "psgtray",
+        "matplotlib"
         # Add your dependencies here.
         # example:
         # 'numpy>=1.21.0,<2.0.0',
