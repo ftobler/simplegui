@@ -19,6 +19,7 @@ sys.path.insert(0, "../examples/DemoPrograms")
 
 import time
 import pytest
+import platform
 
 
 
@@ -36,7 +37,7 @@ sg.Window.read = exit_function
 
 
 expected_to_not_work = False
-if os.name != "nt" and os.getenv("GITHUB_ACTIONS") and sys.version_info.minor >= 12:
+if os.name != "nt" and os.getenv("GITHUB_ACTIONS") and (sys.version_info.minor >= 12 or platform.python_implementation() == "PyPy"):
     # skip tests if this matches
     # we might get
     # _tkinter.TclError: couldn't connect to display ":1.0"
