@@ -721,18 +721,19 @@ def main():
 
     window.close()
 
+
+sg.popup_quick_message('Building your color window... one moment please...', background_color='red', text_color='white', font='Any 14')
+
+sg.set_options(button_element_size=(12, 1),
+                element_padding=(0, 0),
+                auto_size_buttons=False,
+                border_width=1, tooltip_time=100)
+
+# -- Create primary color viewer window --
+hex_to_color = {v: k for k, v in color_map.items()}
+color_list = list(color_map.keys())
+# [key for key in color_map]
+COLORS_PER_ROW = 40
+font_size = 18
 if __name__ == '__main__':
-    sg.popup_quick_message('Building your color window... one moment please...', background_color='red', text_color='white', font='Any 14')
-
-    sg.set_options(button_element_size=(12, 1),
-                   element_padding=(0, 0),
-                   auto_size_buttons=False,
-                   border_width=1, tooltip_time=100)
-
-    # -- Create primary color viewer window --
-    hex_to_color = {v: k for k, v in color_map.items()}
-    color_list = list(color_map.keys())
-    # [key for key in color_map]
-    COLORS_PER_ROW = 40
-    font_size = 18
     main()

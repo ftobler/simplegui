@@ -70,6 +70,10 @@ def CustomMeter():
     window.CloseNonBlocking()
 
 
-if __name__ == '__main__':
+def main():
     CustomMeter()
     MachineLearningGUI()
+
+
+if __name__ == '__main__':
+    main()

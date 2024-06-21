@@ -560,7 +560,7 @@ Here's a quick demo that uses OpenCV2 to display your webcam in a window that ru
 
 ```python
 import tkinter
-import cv2, PySimpleGUI as sg
+import cv2, simplegui as sg
 USE_CAMERA = 0      # change to 1 for front facing camera
 window, cap = sg.Window('Demo Application - OpenCV Integration', [[sg.Image(filename='', key='image')], ], location=(0, 0), grab_anywhere=True), cv2.VideoCapture(USE_CAMERA)
 while window(timeout=20)[0] != sg.WIN_CLOSED:
