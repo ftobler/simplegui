@@ -1,6 +1,6 @@
 import make_real_readme as mk_readme
 import simplegui as sg
-import logging, os 
+import logging
 
 enable_logs = False
 

@@ -1,7 +1,7 @@
 import inspect
 import simplegui as sg
 
-psg_members = inspect.getmembers(PySimpleGUI)
+psg_members = inspect.getmembers(sg)
 
 psg_funcs    = [o for o in psg_members if inspect.isfunction(o[1])]
 psg_classes  = [o for o in psg_members if inspect.isclass(o[1])]
@@ -14,6 +14,3 @@ for i in psg_funcs:
     print('')
     print(f'<!-- <+func.{i[0]}+> -->')
     print('\n'.join(['\t' +  j[0] for j in inspect.getmembers(i[1]) if not j[0].startswith('_')]))
-
-sg.Popup()
-sg.Button()

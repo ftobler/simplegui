@@ -1,11 +1,10 @@
 import inspect
-import PySimpleGUI
+import simplegui as sg
 
 """ 
     Create All Possible Tags
     Will output to STDOUT all of the different tags for classes, members and functions for a given PySimpleGUI.py
     file.  Functions that begin with _ are filtered out from the list.
-    Displays the results in a PySimpleGUI window which can be used to copy and paste into other places.
 
 """
 
@@ -22,10 +21,8 @@ def new_name(name):
     new = new.replace("*3", "rgb")
     return new
 
-layout = [[PySimpleGUI.Output(size=(600,300))]]
-window = PySimpleGUI.Window('Dump of tags', layout, resizable=True).Finalize()
 
-psg_members = inspect.getmembers(PySimpleGUI)
+psg_members = inspect.getmembers(sg)
 
 psg_funcs    = [o for o in psg_members if inspect.isfunction(o[1])]
 psg_classes  = [o for o in psg_members if inspect.isclass(o[1])]
@@ -57,4 +54,4 @@ for f in psg_funcs:
     print(f'{new_name(f[0])} = {f[0]}')
     # print(f"<!-- <+func.{f[0]}+> -->")
 
-window.Read()
+
