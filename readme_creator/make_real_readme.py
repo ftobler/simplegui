@@ -1,7 +1,8 @@
 import inspect
 from inspect import getmembers, isfunction, isclass, getsource, signature, _empty, isdatadescriptor
 from datetime import datetime
-import PySimpleGUI, click, textwrap, logging, json, re, os
+import simplegui as PySimpleGUI
+import textwrap, logging, json, re, os
 import os
 cd = CD = os.path.dirname(os.path.abspath(__file__))
 
@@ -850,12 +851,12 @@ def main(do_full_readme=False,
 
 
 
-@click.command()
-@click.option('-nol', '--no_log',                   is_flag=True, help='Disable log')
-@click.option('-rml', '--delete_log',               is_flag=True, help='Delete log file after generating')
-@click.option('-rmh', '--delete_html_comments',     is_flag=True, help='Delete html comment in the generated .md file')
-@click.option('-o', '--output_name',                default='FINALreadme.md',   type=click.Path(), help='Name for generated .md file')
-@click.option('-lo', '--log_file',                  default='LOGS.log',         type=click.Path(), help='Name for log file')
+# @click.command()
+# @click.option('-nol', '--no_log',                   is_flag=True, help='Disable log')
+# @click.option('-rml', '--delete_log',               is_flag=True, help='Delete log file after generating')
+# @click.option('-rmh', '--delete_html_comments',     is_flag=True, help='Delete html comment in the generated .md file')
+# @click.option('-o', '--output_name',                default='FINALreadme.md',   type=click.Path(), help='Name for generated .md file')
+# @click.option('-lo', '--log_file',                  default='LOGS.log',         type=click.Path(), help='Name for log file')
 def cli(no_log, delete_log, delete_html_comments, output_name, log_file):
     # --------------------
     # ----- logging setup-
