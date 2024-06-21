@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12", "pypy3.10", "pypy3.9"]
+        python-version: ["3.4", "3.5", "3.6", 3.7", 3.8", "3.9", "3.10", "3.11", "3.12", "pypy3.10", "pypy3.9"]
         # pillow has a problem with "3.13.0-beta.1" and therefore was removed
 
     steps:
@@ -25,12 +25,23 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         python -m pip install pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         python -m pip install -e .
+
+    - name: Import package test
+      run: |
+        python -c "import simplegui as sg"
+
+    - name: Install test dependencies
+      run: |
+        apt-get install -y xvfb
+        python -m pip install pytest
+
     - name: Test with pytest
       run: |
         pytest
