@@ -1,27 +1,3 @@
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-▓▓  WHAT, HOW, WHEN?  ▓▓
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-============= Format =============
-
-## Title | shortcuts
-
-Description
-
-PYTHON CODE
-
-IMAGE
-
-init_call
-
-methods
-
----
-
-additions
-
-<!-- Start from here -->
 
 # PEP8 Bindings For Methods and Functions
 

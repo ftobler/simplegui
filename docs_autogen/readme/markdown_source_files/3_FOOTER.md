@@ -173,26 +173,26 @@ When you are finished with a window, be sure to:
 The sequence looks like this in code:
 
 ```python
-    import gc
+import gc
 
-    # Do all your windows stuff... make a layout... show your window... then when time to exit
-    window.close()
-    layout = None
-    window = None
-    gc.collect()
+# Do all your windows stuff... make a layout... show your window... then when time to exit
+window.close()
+layout = None
+window = None
+gc.collect()
 ```
-    
+
 This will ensure that the tkinter widgets are all deleted in the context of the main-thread and another thread won't accidentally run the Garbage Collect
 
 
 
-# Contributing to PySimpleGUI
+# Contributing
 
 ### Open Source License, but Private Development
 
-PySimpleGUI is different than most projects on GitHub.  It is licensed using the "Open Source License" LGPL3.  However, the coding and development of the project is not "open source".
+PySimpleGUI is different than most projects on GitHub.  It is licensed using the "Open Source License" LGPL3.  ~~However, the coding and development of the project is not "open source".~~
 
-This project does not accept user submitted code.
+~~This project does not accept user submitted code.~~
 
 #### Write Applications, Use PySimpleGUI, Write Tutorials, Teach Others
 
@@ -200,12 +200,12 @@ These are a few of the ways you can directly contribute to PySimpleGUI.  Using t
 
 #### Pull Requests
 
-Pull requests are *not being accepted* for the project.  This includes sending code changes via other means than "pull requests".  Plainly put, core code you send will not be used.
+Pull requests are being accepted as long as I have time. ~~*not being accepted* for the project.  This includes sending code changes via other means than "pull requests".  Plainly put, core code you send will not be used.~~
 
 
 #### Bug Fixes
 
-If you file an Issue for a bug, have located the bug, and found a fix in 10 lines of code or less.... and you wish to share your fix with the community, then feel free to include it with the filed Issue.  If it's longer than 10 lines and wish to discuss it, then send an email to help@PySimpleGUI.org.
+If you file an Issue for a bug, have located the bug, and found a fix in 10 lines of code or less.... and you wish to share your fix with the community, then feel free to include it with the filed Issue.
 
 ## Thank You
 
@@ -215,5 +215,5 @@ It's understood that this way of development of a Python package is unorthodox. 
 
 ## GitHub Repos
 
-If you've created a GitHub for your project that uses PySimpleGUI then please post screenshots in in the "User's Screenshots" Issue on the PySimpleGUI GitHub.  Say a little something about it and I'll also add it to the announcements. People *love* success stories and showing your GUI's screen visually communicates your success. 
+If you've created a GitHub for your project that uses PySimpleGUI then please post screenshots in in the "User's Screenshots" Issue on the PySimpleGUI GitHub.  Say a little something about it and I'll also add it to the announcements. People *love* success stories and showing your GUI's screen visually communicates your success.
 

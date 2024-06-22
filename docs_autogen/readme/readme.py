@@ -45,7 +45,7 @@ class BESTLOG(object):
 
 
 
-def compile_readme():
+def compile_index():
 
     log_obj = BESTLOG()
 
@@ -59,26 +59,26 @@ def compile_readme():
                 'docs_autogen/readme/markdown_source_files/3_FOOTER.md',
                 'docs_autogen/readme/markdown_source_files/4_Release_notes.md'
              ],
-         output_name='testdocs/readme.md',
+         output_name='docs/manual.md',
          delete_html_comments=True,
          do_full_readme=True)
 
     log_obj.printout_all()
 
 
-def compile_index():
+# def compile_readme():
 
-    log_obj = BESTLOG()
+#     log_obj = BESTLOG()
 
-    main(logger=log_obj,
-         main_md_file='docs_autogen/readme/markdown_source_files/2_readme.md',
-         insert_md_section_for__class_methods=insert_md_section_for__class_methods,
-         remove_repeated_sections_classmethods=remove_repeated_sections_classmethods,
-         output_name='testdocs/index.md',
-         delete_html_comments=True,
-         do_full_readme=False)
+#     main(logger=log_obj,
+#          main_md_file='docs_autogen/readme/markdown_source_files/2_readme.md',
+#          insert_md_section_for__class_methods=insert_md_section_for__class_methods,
+#          remove_repeated_sections_classmethods=remove_repeated_sections_classmethods,
+#          output_name='testdocs/readme.md',
+#          delete_html_comments=True,
+#          do_full_readme=False)
 
-    log_obj.printout_all()
+#     log_obj.printout_all()
 
 
 if __name__ == "__main__":
