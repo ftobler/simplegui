@@ -216,7 +216,7 @@ grab_anywhere_exclude()
 ### grab_anywhere_include
 
 Includes this element in the grab_anywhere feature
-        This will allow you to make a Multline element drag a window for example
+        This will allow you to make a Multiline element drag a window for example
 
 ```python
 grab_anywhere_include()
@@ -673,7 +673,7 @@ grab_anywhere_exclude()
 ### grab_anywhere_include
 
 Includes this element in the grab_anywhere feature
-        This will allow you to make a Multline element drag a window for example
+        This will allow you to make a Multiline element drag a window for example
 
 ```python
 grab_anywhere_include()
@@ -1067,7 +1067,7 @@ grab_anywhere_exclude()
 ### grab_anywhere_include
 
 Includes this element in the grab_anywhere feature
-        This will allow you to make a Multline element drag a window for example
+        This will allow you to make a Multiline element drag a window for example
 
 ```python
 grab_anywhere_include()
@@ -1418,7 +1418,7 @@ grab_anywhere_exclude()
 ### grab_anywhere_include
 
 Includes this element in the grab_anywhere feature
-        This will allow you to make a Multline element drag a window for example
+        This will allow you to make a Multiline element drag a window for example
 
 ```python
 grab_anywhere_include()
@@ -1858,7 +1858,7 @@ grab_anywhere_exclude()
 ### grab_anywhere_include
 
 Includes this element in the grab_anywhere feature
-        This will allow you to make a Multline element drag a window for example
+        This will allow you to make a Multiline element drag a window for example
 
 ```python
 grab_anywhere_include()
@@ -2303,7 +2303,7 @@ grab_anywhere_exclude()
 ### grab_anywhere_include
 
 Includes this element in the grab_anywhere feature
-        This will allow you to make a Multline element drag a window for example
+        This will allow you to make a Multiline element drag a window for example
 
 ```python
 grab_anywhere_include()
@@ -2746,7 +2746,7 @@ grab_anywhere_exclude()
 ### grab_anywhere_include
 
 Includes this element in the grab_anywhere feature
-        This will allow you to make a Multline element drag a window for example
+        This will allow you to make a Multiline element drag a window for example
 
 ```python
 grab_anywhere_include()
@@ -3471,7 +3471,7 @@ grab_anywhere_exclude()
 ### grab_anywhere_include
 
 Includes this element in the grab_anywhere feature
-        This will allow you to make a Multline element drag a window for example
+        This will allow you to make a Multiline element drag a window for example
 
 ```python
 grab_anywhere_include()
@@ -4208,7 +4208,7 @@ grab_anywhere_exclude()
 ### grab_anywhere_include
 
 Includes this element in the grab_anywhere feature
-        This will allow you to make a Multline element drag a window for example
+        This will allow you to make a Multiline element drag a window for example
 
 ```python
 grab_anywhere_include()
@@ -4532,7 +4532,7 @@ grab_anywhere_exclude()
 ### grab_anywhere_include
 
 Includes this element in the grab_anywhere feature
-        This will allow you to make a Multline element drag a window for example
+        This will allow you to make a Multiline element drag a window for example
 
 ```python
 grab_anywhere_include()
@@ -5004,7 +5004,7 @@ grab_anywhere_exclude()
 ### grab_anywhere_include
 
 Includes this element in the grab_anywhere feature
-        This will allow you to make a Multline element drag a window for example
+        This will allow you to make a Multiline element drag a window for example
 
 ```python
 grab_anywhere_include()
@@ -5510,7 +5510,7 @@ grab_anywhere_exclude()
 ### grab_anywhere_include
 
 Includes this element in the grab_anywhere feature
-        This will allow you to make a Multline element drag a window for example
+        This will allow you to make a Multiline element drag a window for example
 
 ```python
 grab_anywhere_include()
@@ -5999,7 +5999,7 @@ grab_anywhere_exclude()
 ### grab_anywhere_include
 
 Includes this element in the grab_anywhere feature
-        This will allow you to make a Multline element drag a window for example
+        This will allow you to make a Multiline element drag a window for example
 
 ```python
 grab_anywhere_include()
@@ -6478,7 +6478,7 @@ grab_anywhere_exclude()
 ### grab_anywhere_include
 
 Includes this element in the grab_anywhere feature
-        This will allow you to make a Multline element drag a window for example
+        This will allow you to make a Multiline element drag a window for example
 
 ```python
 grab_anywhere_include()
@@ -7007,7 +7007,7 @@ grab_anywhere_exclude()
 ### grab_anywhere_include
 
 Includes this element in the grab_anywhere feature
-        This will allow you to make a Multline element drag a window for example
+        This will allow you to make a Multiline element drag a window for example
 
 ```python
 grab_anywhere_include()
@@ -7431,7 +7431,7 @@ grab_anywhere_exclude()
 ### grab_anywhere_include
 
 Includes this element in the grab_anywhere feature
-        This will allow you to make a Multline element drag a window for example
+        This will allow you to make a Multiline element drag a window for example
 
 ```python
 grab_anywhere_include()
@@ -7861,7 +7861,7 @@ grab_anywhere_exclude()
 ### grab_anywhere_include
 
 Includes this element in the grab_anywhere feature
-        This will allow you to make a Multline element drag a window for example
+        This will allow you to make a Multiline element drag a window for example
 
 ```python
 grab_anywhere_include()
@@ -8208,7 +8208,7 @@ grab_anywhere_exclude()
 ### grab_anywhere_include
 
 Includes this element in the grab_anywhere feature
-        This will allow you to make a Multline element drag a window for example
+        This will allow you to make a Multiline element drag a window for example
 
 ```python
 grab_anywhere_include()
@@ -8673,7 +8673,7 @@ grab_anywhere_exclude()
 ### grab_anywhere_include
 
 Includes this element in the grab_anywhere feature
-        This will allow you to make a Multline element drag a window for example
+        This will allow you to make a Multiline element drag a window for example
 
 ```python
 grab_anywhere_include()
@@ -9068,7 +9068,7 @@ grab_anywhere_exclude()
 ### grab_anywhere_include
 
 Includes this element in the grab_anywhere feature
-        This will allow you to make a Multline element drag a window for example
+        This will allow you to make a Multiline element drag a window for example
 
 ```python
 grab_anywhere_include()
@@ -9399,7 +9399,7 @@ grab_anywhere_exclude()
 ### grab_anywhere_include
 
 Includes this element in the grab_anywhere feature
-        This will allow you to make a Multline element drag a window for example
+        This will allow you to make a Multiline element drag a window for example
 
 ```python
 grab_anywhere_include()
@@ -9797,7 +9797,7 @@ grab_anywhere_exclude()
 ### grab_anywhere_include
 
 Includes this element in the grab_anywhere feature
-        This will allow you to make a Multline element drag a window for example
+        This will allow you to make a Multiline element drag a window for example
 
 ```python
 grab_anywhere_include()
@@ -10215,7 +10215,7 @@ grab_anywhere_exclude()
 ### grab_anywhere_include
 
 Includes this element in the grab_anywhere feature
-        This will allow you to make a Multline element drag a window for example
+        This will allow you to make a Multiline element drag a window for example
 
 ```python
 grab_anywhere_include()
@@ -10614,7 +10614,7 @@ grab_anywhere_exclude()
 ### grab_anywhere_include
 
 Includes this element in the grab_anywhere feature
-        This will allow you to make a Multline element drag a window for example
+        This will allow you to make a Multiline element drag a window for example
 
 ```python
 grab_anywhere_include()
@@ -11104,7 +11104,7 @@ grab_anywhere_exclude()
 ### grab_anywhere_include
 
 Includes this element in the grab_anywhere feature
-        This will allow you to make a Multline element drag a window for example
+        This will allow you to make a Multiline element drag a window for example
 
 ```python
 grab_anywhere_include()
@@ -11543,7 +11543,7 @@ grab_anywhere_exclude()
 ### grab_anywhere_include
 
 Includes this element in the grab_anywhere feature
-        This will allow you to make a Multline element drag a window for example
+        This will allow you to make a Multiline element drag a window for example
 
 ```python
 grab_anywhere_include()
@@ -11952,7 +11952,7 @@ grab_anywhere_exclude()
 ### grab_anywhere_include
 
 Includes this element in the grab_anywhere feature
-        This will allow you to make a Multline element drag a window for example
+        This will allow you to make a Multiline element drag a window for example
 
 ```python
 grab_anywhere_include()
@@ -12459,7 +12459,7 @@ grab_anywhere_exclude()
 ### grab_anywhere_include
 
 Includes this element in the grab_anywhere feature
-        This will allow you to make a Multline element drag a window for example
+        This will allow you to make a Multiline element drag a window for example
 
 ```python
 grab_anywhere_include()
@@ -12885,7 +12885,7 @@ grab_anywhere_exclude()
 ### grab_anywhere_include
 
 Includes this element in the grab_anywhere feature
-        This will allow you to make a Multline element drag a window for example
+        This will allow you to make a Multiline element drag a window for example
 
 ```python
 grab_anywhere_include()

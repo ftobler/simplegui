@@ -54,7 +54,7 @@ def compile_call_ref():
          insert_md_section_for__class_methods=insert_md_section_for__class_methods,
          remove_repeated_sections_classmethods=remove_repeated_sections_classmethods,
          files_to_include=[],
-         output_name='docs/call reference.md',
+         output_name='docs/call_reference.md',
          delete_html_comments=True)
     log_obj.printout_all()
 
