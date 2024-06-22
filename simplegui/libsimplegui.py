@@ -1704,7 +1704,7 @@ class Element():
     def grab_anywhere_include(self):
         """
         Includes this element in the grab_anywhere feature
-        This will allow you to make a Multline element drag a window for example
+        This will allow you to make a Multiline element drag a window for example
         """
         self.ParentForm._grab_anywhere_include_these_list.append(self.Widget)
 
@@ -1780,7 +1780,7 @@ class Element():
             except:
                 pil_imported = False
                 pil_import_attempted = True
-                print('FAILED TO IMPORT PIL!')
+                print('Failed to import PIL!')
                 return None
         try:
             # Add a little to the X direction if window has a titlebar
