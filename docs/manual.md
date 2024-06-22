@@ -1511,68 +1511,6 @@ Preview of popups:
 	<img src="https://user-images.githubusercontent.com/13696193/44957595-9e15da00-aea1-11e8-8909-6b6121b74509.jpg">
 </p>
 
-Popup - Display a popup Window with as many parms as you wish to include.  This is the GUI equivalent of the
-"print" statement.  It's also great for "pausing" your program's flow until the user can read some error messages.
-
-If this popup doesn't have the features you want, then you can easily make your own. Popups can be accomplished in 1 line of code:
-choice, _ = sg.Window('Continue?', [[sg.T('Do you want to continue?')], [sg.Yes(s=10), sg.No(s=10)]], disable_close=True).read(close=True)
-
-```
-popup(args=*<1 or N object>,
-    title = None,
-    button_color = None,
-    background_color = None,
-    text_color = None,
-    button_type = 0,
-    auto_close = False,
-    auto_close_duration = None,
-    custom_text = (None, None),
-    non_blocking = False,
-    icon = None,
-    line_width = None,
-    font = None,
-    no_titlebar = False,
-    grab_anywhere = False,
-    keep_on_top = None,
-    location = (None, None),
-    relative_location = (None, None),
-    any_key_closes = False,
-    image = None,
-    modal = True,
-    button_justification = None,
-    drop_whitespace = True)
-```
-
-Parameter Descriptions:
-
-|Type|Name|Meaning|
-|--|--|--|
-|                   Any                   |         *args         | Variable number of your arguments. Load up the call with stuff to see! |
-|                   str                   |         title         | Optional title for the window. If none provided, the first arg will be used instead. |
-|            (str, str) or str            |     button_color      | Color of the buttons shown (text color, button color) |
-|                   str                   |   background_color    | Window's background color |
-|                   str                   |      text_color       | text color |
-|                   int                   |      button_type      | NOT USER SET! Determines which pre-defined buttons will be shown (Default value = POPUP_BUTTONS_OK). There are many Popup functions and they call Popup, changing this parameter to get the desired effect. |
-|                  bool                   |      auto_close       | If True the window will automatically close |
-|                   int                   |  auto_close_duration  | time in seconds to keep window open before closing it automatically |
-|            (str, str) or str            |      custom_text      | A string or pair of strings that contain the text to display on the buttons |
-|                  bool                   |     non_blocking      | If True then will immediately return from the function without waiting for the user's input. |
-|              str or bytes               |         icon          | icon to display on the window. Same format as a Window call |
-|                   int                   |      line_width       | Width of lines in characters. Defaults to MESSAGE_BOX_LINE_WIDTH |
-| str or Tuple[font_name, size, modifiers] |         font          | specifies the font family, size, etc. Tuple or Single string format 'name size styles'. Styles: italic * roman bold normal underline overstrike |
-|                  bool                   |      no_titlebar      | If True will not show the frame around the window and the titlebar across the top |
-|                  bool                   |     grab_anywhere     | If True can grab anywhere to move the window. If no_titlebar is True, grab_anywhere should likely be enabled too |
-|               (int, int)                |       location        | Location on screen to display the top left corner of window. Defaults to window centered on screen |
-|               (int, int)                |   relative_location   | (x,y) location relative to the default location of the window, in pixels. Normally the window centers. This location is relative to the location the window would be created. Note they can be negative. |
-|                  bool                   |      keep_on_top      | If True the window will remain above all current windows |
-|                  bool                   |    any_key_closes     | If True then will turn on return_keyboard_events for the window which will cause window to close as soon as any key is pressed. Normally the return key only will close the window. Default is false. |
-|              str or bytes               |         image         | Image to include at the top of the popup window |
-|                  bool                   |         modal         | If True then makes the popup will behave like a Modal window... all other windows are non-operational until this one is closed. Default = True |
-|                  bool                   | right_justify_buttons | If True then the buttons will be "pushed" to the right side of the Window |
-|                   str                   | button_justification  | Speficies if buttons should be left, right or centered. Default is left justified |
-|                  bool                   |    drop_whitespace    | Controls is whitespace should be removed when wrapping text. Parameter is passed to textwrap.fill. Default is to drop whitespace (so popup remains backward compatible) |
-| str or None | **RETURN** | Returns text of the button that was pressed.  None will be returned if user closed window with X
-
 The other output Popups are variations on parameters.  Usually the button_type parameter is the primary one changed.
 
 The choices for button_type are (you should not specify these yourself however):
@@ -1590,62 +1528,6 @@ POPUP_BUTTONS_NO_BUTTONS
 
 ### Scrolled Output
 There is a scrolled version of Popups should you have a lot of information to display.
-
-Show a scrolled Popup window containing the user's text that was supplied.  Use with as many items to print as you
-want, just like a print statement.
-
-```
-popup_scrolled(args=*<1 or N object>,
-    title = None,
-    button_color = None,
-    background_color = None,
-    text_color = None,
-    yes_no = False,
-    no_buttons = False,
-    button_justification = "l",
-    auto_close = False,
-    auto_close_duration = None,
-    size = (None, None),
-    location = (None, None),
-    relative_location = (None, None),
-    non_blocking = False,
-    no_titlebar = False,
-    grab_anywhere = False,
-    keep_on_top = None,
-    font = None,
-    image = None,
-    icon = None,
-    modal = True,
-    no_sizegrip = False)
-```
-
-Parameter Descriptions:
-
-|Type|Name|Meaning|
-|--|--|--|
-|                Any                 |        *args         | Variable number of items to display |
-|                str                 |        title         | Title to display in the window. |
-|         (str, str) or str          |     button_color     | button color (foreground, background) |
-|                bool                |        yes_no        | If True, displays Yes and No buttons instead of Ok |
-|                bool                |      no_buttons      | If True, no buttons will be shown. User will have to close using the "X" |
-|                str                 | button_justification | How buttons should be arranged. l, c, r for Left, Center or Right justified |
-|                bool                |      auto_close      | if True window will close itself |
-|            int or float            | auto_close_duration  | Older versions only accept int. Time in seconds until window will close |
-|             (int, int)             |         size         | (w,h) w=characters-wide, h=rows-high |
-|             (int, int)             |       location       | Location on the screen to place the upper left corner of the window |
-|             (int, int)             |  relative_location   | (x,y) location relative to the default location of the window, in pixels. Normally the window centers. This location is relative to the location the window would be created. Note they can be negative. |
-|                bool                |     non_blocking     | if True the call will immediately return rather than waiting on user input |
-|                str                 |   background_color   | color of background |
-|                str                 |      text_color      | color of the text |
-|                bool                |     no_titlebar      | If True no titlebar will be shown |
-|                bool                |    grab_anywhere     | If True, than can grab anywhere to move the window (Default = False) |
-|                bool                |     keep_on_top      | If True the window will remain above all current windows |
-| (str or (str, int[, str]) or None) |         font         | specifies the font family, size, etc. Tuple or Single string format 'name size styles'. Styles: italic * roman bold normal underline overstrike |
-|            str or bytes            |        image         | Image to include at the top of the popup window |
-|            bytes or str            |         icon         | filename or base64 string to be used for the window's icon |
-|                bool                |        modal         | If True then makes the popup will behave like a Modal window... all other windows are non-operational until this one is closed. Default = True |
-|                bool                |     no_sizegrip      | If True no Sizegrip will be shown when there is no titlebar. It's only shown if there is no titlebar |
-| str or None or TIMEOUT_KEY | **RETURN** | Returns text of the button that was pressed.  None will be returned if user closed window with X
 
 Typical usage:
 
@@ -1666,54 +1548,6 @@ Note that the default max number of lines before scrolling happens is set to 50.
 If `non_blocking` parameter is set, then  the call will not blocking waiting for the user to close the window.  Execution will immediately return to the user.  Handy when you want to dump out debug info without disrupting the program flow.
 
 ### Non-Blocking Popups - popup_no_wait and the non_blocking parameter
-
-Show Popup window and immediately return (does not block)
-
-```
-popup_no_wait(args=*<1 or N object>,
-    title = None,
-    button_type = 0,
-    button_color = None,
-    background_color = None,
-    text_color = None,
-    auto_close = False,
-    auto_close_duration = None,
-    non_blocking = True,
-    icon = None,
-    line_width = None,
-    font = None,
-    no_titlebar = False,
-    grab_anywhere = False,
-    keep_on_top = None,
-    location = (None, None),
-    relative_location = (None, None),
-    image = None,
-    modal = False)
-```
-
-Parameter Descriptions:
-
-|Type|Name|Meaning|
-|--|--|--|
-|                Any                 |        *args        | Variable number of items to display |
-|                str                 |        title        | Title to display in the window. |
-|                int                 |     button_type     | Determines which pre-defined buttons will be shown (Default value = POPUP_BUTTONS_OK). |
-|         (str, str) or str          |    button_color     | button color (foreground, background) |
-|                str                 |  background_color   | color of background |
-|                str                 |     text_color      | color of the text |
-|                bool                |     auto_close      | if True window will close itself |
-|            int or float            | auto_close_duration | Older versions only accept int. Time in seconds until window will close |
-|                bool                |    non_blocking     | if True the call will immediately return rather than waiting on user input |
-|            bytes or str            |        icon         | filename or base64 string to be used for the window's icon |
-|                int                 |     line_width      | Width of lines in characters |
-| (str or (str, int[, str]) or None) |        font         | specifies the font family, size, etc. Tuple or Single string format 'name size styles'. Styles: italic * roman bold normal underline overstrike |
-|                bool                |     no_titlebar     | If True no titlebar will be shown |
-|                bool                |    grab_anywhere    | If True: can grab anywhere to move the window (Default = False) |
-|             (int, int)             |      location       | Location of upper left corner of the window |
-|             (int, int)             |  relative_location  | (x,y) location relative to the default location of the window, in pixels. Normally the window centers. This location is relative to the location the window would be created. Note they can be negative. |
-|            str or bytes            |        image        | Image to include at the top of the popup window |
-|                bool                |        modal        | If True then makes the popup will behave like a Modal window... all other windows are non-operational until this one is closed. Default = False |
-| str or None | **RETURN** | Reason for popup closing
 
 The `popup` call `popup_no_wait` or `popup_non_blocking` will create a popup window and then immediately return control back to you.  You can turn other popup calls into non-blocking popups if they have a `non_blocking` parameter.  Setting `non_blocking` to True will cause the function to return immediately rather than waiting for the window to be closed.
 
@@ -1736,55 +1570,6 @@ Use these Popups instead of making  a custom window to get one data value, call 
 ### popup_get_text
 Use this Popup to get a line of text from the user.
 
-Display Popup with text entry field. Returns the text entered or None if closed / cancelled
-
-```
-popup_get_text(message,
-    title = None,
-    default_text = "",
-    password_char = "",
-    size = (None, None),
-    button_color = None,
-    background_color = None,
-    text_color = None,
-    icon = None,
-    font = None,
-    no_titlebar = False,
-    grab_anywhere = False,
-    keep_on_top = None,
-    location = (None, None),
-    relative_location = (None, None),
-    image = None,
-    history = False,
-    history_setting_filename = None,
-    modal = True)
-```
-
-Parameter Descriptions:
-
-|Type|Name|Meaning|
-|--|--|--|
-|                str                 |         message          | message displayed to user |
-|                str                 |          title           | Window title |
-|                str                 |       default_text       | default value to put into input area |
-|                str                 |      password_char       | character to be shown instead of actually typed characters. WARNING - if history=True then can't hide passwords |
-|             (int, int)             |           size           | (width, height) of the InputText Element |
-|         (str, str) or str          |       button_color       | Color of the button (text, background) |
-|                str                 |     background_color     | background color of the entire window |
-|                str                 |        text_color        | color of the message text |
-|            bytes or str            |           icon           | filename or base64 string to be used for the window's icon |
-| (str or (str, int[, str]) or None) |           font           | specifies the font family, size, etc. Tuple or Single string format 'name size styles'. Styles: italic * roman bold normal underline overstrike |
-|                bool                |       no_titlebar        | If True no titlebar will be shown |
-|                bool                |      grab_anywhere       | If True can click and drag anywhere in the window to move the window |
-|                bool                |       keep_on_top        | If True the window will remain above all current windows |
-|             (int, int)             |         location         | (x,y) Location on screen to display the upper left corner of window |
-|             (int, int)             |    relative_location     | (x,y) location relative to the default location of the window, in pixels. Normally the window centers. This location is relative to the location the window would be created. Note they can be negative. |
-|            str or bytes            |          image           | Image to include at the top of the popup window |
-|                bool                |         history          | If True then enable a "history" feature that will display previous entries used. Uses settings filename provided or default if none provided |
-|                str                 | history_setting_filename | Filename to use for the User Settings. Will store list of previous entries in this settings file |
-|                bool                |          modal           | If True then makes the popup will behave like a Modal window... all other windows are non-operational until this one is closed. Default = True |
-| str or None | **RETURN** | Text entered or None if window was closed or cancel button clicked
-
 ```python
 import simplegui as sg
 text = sg.popup_get_text('Title', 'Please input something')
@@ -1798,69 +1583,6 @@ sg.popup('Results', 'The value returned from PopupGetText', text)
 ### popup_get_file
 
 Gets one or more filenames from the user.  There are options to configure the type of dialog box to show.  Normally an "Open File" dialog box is shown.
-
-Display popup window with text entry field and browse button so that a file can be chosen by user.
-
-```
-popup_get_file(message,
-    title = None,
-    default_path = "",
-    default_extension = "",
-    save_as = False,
-    multiple_files = False,
-    file_types = (('ALL Files', '*.* *'),),
-    no_window = False,
-    size = (None, None),
-    button_color = None,
-    background_color = None,
-    text_color = None,
-    icon = None,
-    font = None,
-    no_titlebar = False,
-    grab_anywhere = False,
-    keep_on_top = None,
-    location = (None, None),
-    relative_location = (None, None),
-    initial_folder = None,
-    image = None,
-    files_delimiter = ";",
-    modal = True,
-    history = False,
-    show_hidden = True,
-    history_setting_filename = None)
-```
-
-Parameter Descriptions:
-
-|Type|Name|Meaning|
-|--|--|--|
-|                str                 |         message          | message displayed to user |
-|                str                 |          title           | Window title |
-|                str                 |       default_path       | path to display to user as starting point (filled into the input field) |
-|                str                 |    default_extension     | If no extension entered by user, add this to filename (only used in saveas dialogs) |
-|                bool                |         save_as          | if True, the "save as" dialog is shown which will verify before overwriting |
-|                bool                |      multiple_files      | if True, then allows multiple files to be selected that are returned with ';' between each filename |
-|       Tuple[Tuple[str,str]]        |        file_types        | List of extensions to show using wildcards. All files (the default) = (("ALL Files", "*.* *"),). |
-|                bool                |        no_window         | if True, no PySimpleGUI window will be shown. Instead just the tkinter dialog is shown |
-|             (int, int)             |           size           | (width, height) of the InputText Element or Combo element if using history feature |
-|         (str, str) or str          |       button_color       | Color of the button (text, background) |
-|                str                 |     background_color     | background color of the entire window |
-|                str                 |        text_color        | color of the text |
-|            bytes or str            |           icon           | filename or base64 string to be used for the window's icon |
-| (str or (str, int[, str]) or None) |           font           | specifies the font family, size, etc. Tuple or Single string format 'name size styles'. Styles: italic * roman bold normal underline overstrike |
-|                bool                |       no_titlebar        | If True no titlebar will be shown |
-|                bool                |      grab_anywhere       | If True: can grab anywhere to move the window (Default = False) |
-|                bool                |       keep_on_top        | If True the window will remain above all current windows |
-|             (int, int)             |         location         | Location of upper left corner of the window |
-|             (int, int)             |    relative_location     | (x,y) location relative to the default location of the window, in pixels. Normally the window centers. This location is relative to the location the window would be created. Note they can be negative. |
-|                str                 |      initial_folder      | location in filesystem to begin browsing |
-|            str or bytes            |          image           | Image to include at the top of the popup window |
-|                str                 |     files_delimiter      | String to place between files when multiple files are selected. Normally a ; |
-|                bool                |          modal           | If True then makes the popup will behave like a Modal window... all other windows are non-operational until this one is closed. Default = True |
-|                bool                |         history          | If True then enable a "history" feature that will display previous entries used. Uses settings filename provided or default if none provided |
-|                bool                |       show_hidden        | If True then enables the checkbox in the system dialog to select hidden files to be shown |
-|                str                 | history_setting_filename | Filename to use for the User Settings. Will store list of previous entries in this settings file |
-| str or None | **RETURN** | string representing the file(s) chosen, None if cancelled or window closed with X
 
 If configured as an Open File Popup then (save_as is not True)  the dialog box will look like this.
 
@@ -1885,57 +1607,6 @@ sg.popup('Results', 'The value returned from popup_get_file', text)
 
 The window created to get a folder name looks the same as the get a file name.  The difference is in what the browse button does.  `popup_get_file` shows an Open File dialog box while `popup_get_folder`  shows an Open Folder dialog box.
 
-Display popup with text entry field and browse button so that a folder can be chosen.
-
-```
-popup_get_folder(message,
-    title = None,
-    default_path = "",
-    no_window = False,
-    size = (None, None),
-    button_color = None,
-    background_color = None,
-    text_color = None,
-    icon = None,
-    font = None,
-    no_titlebar = False,
-    grab_anywhere = False,
-    keep_on_top = None,
-    location = (None, None),
-    relative_location = (None, None),
-    initial_folder = None,
-    image = None,
-    modal = True,
-    history = False,
-    history_setting_filename = None)
-```
-
-Parameter Descriptions:
-
-|Type|Name|Meaning|
-|--|--|--|
-|                str                 |         message          | message displayed to user |
-|                str                 |          title           | Window title |
-|                str                 |       default_path       | path to display to user as starting point (filled into the input field) |
-|                bool                |        no_window         | if True, no PySimpleGUI window will be shown. Instead just the tkinter dialog is shown |
-|             (int, int)             |           size           | (width, height) of the InputText Element |
-|         (str, str) or str          |       button_color       | button color (foreground, background) |
-|                str                 |     background_color     | color of background |
-|                str                 |        text_color        | color of the text |
-|            bytes or str            |           icon           | filename or base64 string to be used for the window's icon |
-| (str or (str, int[, str]) or None) |           font           | specifies the font family, size, etc. Tuple or Single string format 'name size styles'. Styles: italic * roman bold normal underline overstrike |
-|                bool                |       no_titlebar        | If True no titlebar will be shown |
-|                bool                |      grab_anywhere       | If True: can grab anywhere to move the window (Default = False) |
-|                bool                |       keep_on_top        | If True the window will remain above all current windows |
-|             (int, int)             |         location         | Location of upper left corner of the window |
-|             (int, int)             |    relative_location     | (x,y) location relative to the default location of the window, in pixels. Normally the window centers. This location is relative to the location the window would be created. Note they can be negative. |
-|                str                 |      initial_folder      | location in filesystem to begin browsing |
-|            str or bytes            |          image           | Image to include at the top of the popup window |
-|                bool                |          modal           | If True then makes the popup will behave like a Modal window... all other windows are non-operational until this one is closed. Default = True |
-|                bool                |         history          | If True then enable a "history" feature that will display previous entries used. Uses settings filename provided or default if none provided |
-|                str                 | history_setting_filename | Filename to use for the User Settings. Will store list of previous entries in this settings file |
-| str or None | **RETURN** | string representing the path chosen, None if cancelled or window closed with X
-
 This is a typical call
 
 ```python
@@ -1951,93 +1622,10 @@ This is a typical call
 
 The animated Popup enables you to easily display a "loading" style animation specified through a GIF file that is either stored in a file or a base64 variable.
 
-Show animation one frame at a time.  This function has its own internal clocking meaning you can call it at any frequency
- and the rate the frames of video is shown remains constant.  Maybe your frames update every 30 ms but your
- event loop is running every 10 ms.  You don't have to worry about delaying, just call it every time through the
- loop.
-
-```
-popup_animated(image_source,
-    message = None,
-    background_color = None,
-    text_color = None,
-    font = None,
-    no_titlebar = True,
-    grab_anywhere = True,
-    keep_on_top = True,
-    location = (None, None),
-    relative_location = (None, None),
-    alpha_channel = None,
-    time_between_frames = 0,
-    transparent_color = None,
-    title = "",
-    icon = None,
-    no_buffering = False)
-```
-
-Parameter Descriptions:
-
-|Type|Name|Meaning|
-|--|--|--|
-| str or bytes or None |    image_source     | Either a filename or a base64 string. Use None to close the window. |
-|        str         |       message       | An optional message to be shown with the animation |
-|        str         |  background_color   | color of background |
-|        str         |     text_color      | color of the text |
-|    str or tuple    |        font         | specifies the font family, size, etc. Tuple or Single string format 'name size styles'. Styles: italic * roman bold normal underline overstrike |
-|        bool        |     no_titlebar     | If True then the titlebar and window frame will not be shown |
-|        bool        |    grab_anywhere    | If True then you can move the window just clicking anywhere on window, hold and drag |
-|        bool        |     keep_on_top     | If True then Window will remain on top of all other windows currently shownn |
-|     (int, int)     |      location       | (x,y) location on the screen to place the top left corner of your window. Default is to center on screen |
-|     (int, int)     |  relative_location  | (x,y) location relative to the default location of the window, in pixels. Normally the window centers. This location is relative to the location the window would be created. Note they can be negative. |
-|       float        |    alpha_channel    | Window transparency 0 = invisible 1 = completely visible. Values between are see through |
-|        int         | time_between_frames | Amount of time in milliseconds between each frame |
-|        str         |  transparent_color  | This color will be completely see-through in your window. Can even click through |
-|        str         |        title        | Title that will be shown on the window |
-|    str or bytes    |        icon         | Same as Window icon parameter. Can be either a filename or Base64 byte string. For Windows if filename, it MUST be ICO format. For Linux, must NOT be ICO |
-|        bool        |    no_buffering     | If True then no buffering will be used for the GIF. May work better if you have a large animation |
-| bool | **RETURN** | True if the window updated OK. False if the window was closed
-
 ***To close animated popups***, call PopupAnimated with `image_source=None`.  This will close all of the currently open PopupAnimated windows.
 
 # Progress Meters!
 We all have loops in our code.  'Isn't it joyful waiting, watching a counter scrolling past in a text window?  How about one line of code to get a progress meter, that contains statistics about your code?
-
-```
-one_line_progress_meter(title,
-    current_value,
-    max_value,
-    args=*<1 or N object>,
-    key = "OK for 1 meter",
-    orientation = "v",
-    bar_color = (None, None),
-    button_color = None,
-    size = (20, 20),
-    border_width = None,
-    grab_anywhere = False,
-    no_titlebar = False,
-    keep_on_top = None,
-    no_button = False)
-```
-
-Parameter Descriptions:
-
-|Type|Name|Meaning|
-|--|--|--|
-|            str             |     title     | text to display in titlebar of window |
-|            int             | current_value | current value |
-|            int             |   max_value   | max value of progress meter |
-|            Any             |     *args     | stuff to output as text in the window along with the meter |
-| str or int or tuple or object |      key      | Used to differentiate between multiple meters. Used to cancel meter early. Now optional as there is a default value for single meters |
-|            str             |  orientation  | 'horizontal' or 'vertical' ('h' or 'v' work) (Default value = 'vertical' / 'v') |
-|     (str, str) or str      |   bar_color   | The 2 colors that make up a progress bar. Either a tuple of 2 strings or a string. Tuple - (bar, background). A string with 1 color changes the background of the bar only. A string with 2 colors separated by "on" like "red on blue" specifies a red bar on a blue background. |
-|     (str, str) or str      | button_color  | button color (foreground, background) |
-|         (int, int)         |     size      | (w,h) w=characters-wide, h=rows-high (Default value = DEFAULT_PROGRESS_BAR_SIZE) |
-|            int             | border_width  | width of border around element |
-|            bool            | grab_anywhere | If True: can grab anywhere to move the window (Default = False) |
-|            bool            |  no_titlebar  | If True: no titlebar will be shown on the window |
-|            bool            |  keep_on_top  | If True the window will remain above all current windows |
-|            bool            |   no_button   | If True: window will be created without a cancel button |
-| (bool) | **RETURN** | True if updated successfully. False if user closed the meter with the X or Cancel button
 
 Here's the one-line Progress Meter in action!
 
@@ -7521,24 +7109,24 @@ When you are finished with a window, be sure to:
 The sequence looks like this in code:
 
 ```python
-    import gc
+import gc
 
-    # Do all your windows stuff... make a layout... show your window... then when time to exit
-    window.close()
-    layout = None
-    window = None
-    gc.collect()
+# Do all your windows stuff... make a layout... show your window... then when time to exit
+window.close()
+layout = None
+window = None
+gc.collect()
 ```
 
 This will ensure that the tkinter widgets are all deleted in the context of the main-thread and another thread won't accidentally run the Garbage Collect
 
-# Contributing to PySimpleGUI
+# Contributing
 
 ### Open Source License, but Private Development
 
-PySimpleGUI is different than most projects on GitHub.  It is licensed using the "Open Source License" LGPL3.  However, the coding and development of the project is not "open source".
+PySimpleGUI is different than most projects on GitHub.  It is licensed using the "Open Source License" LGPL3.  ~~However, the coding and development of the project is not "open source".~~
 
-This project does not accept user submitted code.
+~~This project does not accept user submitted code.~~
 
 #### Write Applications, Use PySimpleGUI, Write Tutorials, Teach Others
 
@@ -7546,11 +7134,11 @@ These are a few of the ways you can directly contribute to PySimpleGUI.  Using t
 
 #### Pull Requests
 
-Pull requests are *not being accepted* for the project.  This includes sending code changes via other means than "pull requests".  Plainly put, core code you send will not be used.
+Pull requests are being accepted as long as I have time. ~~*not being accepted* for the project.  This includes sending code changes via other means than "pull requests".  Plainly put, core code you send will not be used.~~
 
 #### Bug Fixes
 
-If you file an Issue for a bug, have located the bug, and found a fix in 10 lines of code or less.... and you wish to share your fix with the community, then feel free to include it with the filed Issue.  If it's longer than 10 lines and wish to discuss it, then send an email to help@PySimpleGUI.org.
+If you file an Issue for a bug, have located the bug, and found a fix in 10 lines of code or less.... and you wish to share your fix with the community, then feel free to include it with the filed Issue.
 
 ## Thank You
 
@@ -7560,7 +7148,7 @@ It's understood that this way of development of a Python package is unorthodox. 
 
 ## GitHub Repos
 
-If you've created a GitHub for your project that uses PySimpleGUI then please post screenshots in in the "User's Screenshots" Issue on the PySimpleGUI GitHub.  Say a little something about it and I'll also add it to the announcements. People *love* success stories and showing your GUI's screen visually communicates your success. 
+If you've created a GitHub for your project that uses PySimpleGUI then please post screenshots in in the "User's Screenshots" Issue on the PySimpleGUI GitHub.  Say a little something about it and I'll also add it to the announcements. People *love* success stories and showing your GUI's screen visually communicates your success.
 
 ## Versions
 |Version | Description |

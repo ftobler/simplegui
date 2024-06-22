@@ -50,14 +50,14 @@ def compile_index():
     log_obj = BESTLOG()
 
     main(logger=log_obj,
-         main_md_file='docs_autogen/readme/markdown_source_files/2_readme.md',
+         main_md_file='docs_autogen/manual/markdown_source_files/2_readme.md',
          insert_md_section_for__class_methods=insert_md_section_for__class_methods,
          remove_repeated_sections_classmethods=remove_repeated_sections_classmethods,
          files_to_include=[
-                'docs_autogen/readme/markdown_source_files/1_HEADER_top_part.md',
-                'docs_autogen/readme/markdown_source_files/2_readme.md',
-                'docs_autogen/readme/markdown_source_files/3_FOOTER.md',
-                'docs_autogen/readme/markdown_source_files/4_Release_notes.md'
+                'docs_autogen/manual/markdown_source_files/1_HEADER_top_part.md',
+                'docs_autogen/manual/markdown_source_files/2_readme.md',
+                'docs_autogen/manual/markdown_source_files/3_FOOTER.md',
+                'docs_autogen/manual/markdown_source_files/4_Release_notes.md'
              ],
          output_name='docs/manual.md',
          delete_html_comments=True,
