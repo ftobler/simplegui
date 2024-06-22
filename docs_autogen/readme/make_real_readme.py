@@ -786,11 +786,7 @@ def main(do_full_readme=False,
 
 
     if verbose: timee('''files = []''')
-    files = []
-    if 0 in files_to_include: files.append(readfile('markdown input files/1_HEADER_top_part.md'))
-    if 1 in files_to_include: files.append(readme)
-    if 2 in files_to_include: files.append(readfile('markdown input files/3_FOOTER.md'))
-    if 3 in files_to_include: files.append(readfile('markdown input files/4_Release_notes.md'))
+    files = [readfile(f) for f in files_to_include]
 
     Joined_MARKDOWN = '\n\n'.join(files) if do_full_readme or files else readme
 
@@ -894,36 +890,3 @@ def cli(no_log, delete_log, delete_html_comments, output_name, log_file):
             except Exception as e:
                 logger.error(str(e))
 
-if __name__ == '__main__':
-    # my_mode = 'cli-mode'
-    # my_mode = 'debug-mode'
-    my_mode = 'debug-mode2'
-
-    if my_mode == 'cli-mode':
-        cli()
-    elif my_mode == 'debug-mode':
-        main(files_to_include=[0, 1, 2, 3],
-             output_name='OUTPUT.txt',
-             delete_html_comments=True)
-    elif my_mode == 'debug-mode2':
-        log_file_name = 'usage.log.txt'
-        import logging
-        logger = logging.getLogger(__name__)
-        logger.setLevel(logging.DEBUG)
-
-        my_file = logging.FileHandler(log_file_name, mode='w')
-        my_file.setLevel(logging.DEBUG)
-
-        formatter = logging.Formatter('%(asctime)s>%(levelname)s: %(message)s')
-        my_file.setFormatter(formatter); logger.addHandler(my_file)
-
-        main(logger=logger, files_to_include=[1],
-             output_name='OUTPUT.txt',
-             delete_html_comments=True)
-
-'''
-notes:
-
-Как оказалось, декоратор @property делает из метода вот что:
-- isdatadescriptor(class.method_as_property) вернет True
-'''
