@@ -1,4 +1,4 @@
-[![Python package](https://github.com/ftobler/PySimpleGUI_foss/actions/workflows/python-package.yml/badge.svg)](https://github.com/ftobler/PySimpleGUI_foss/actions/workflows/python-package.yml)
+[![Python package](https://github.com/ftobler/simplegui/actions/workflows/python-package.yml/badge.svg)](https://github.com/ftobler/simplegui/actions/workflows/python-package.yml)
 
 > [!IMPORTANT]
 >

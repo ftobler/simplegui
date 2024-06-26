@@ -1,11 +1,11 @@
-# docs autogen
+# docs_autogen
 
-parts of the documentation are generated using some tools.
+Parts of the documentation are generated using some tools.
 
 These files are:
 
 ```
-simpleui git repository
+simplegui git repository
 ├── docs/
 │   ├── manual.md                   << output file
 │   └── call_reference.md           << output file
