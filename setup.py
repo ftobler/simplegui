@@ -10,7 +10,7 @@ def readme():
 
 setuptools.setup(
     name="simplegui",
-    version="4.60.4",
+    version="5.0.0",
     author="PySimpleGUI",  # alternative maintainer
     author_email="PySimpleGUI@PySimpleGUI.org",  # alternative maintainer_email
     description="Fork of the LGPL3 version of PySimpleGUI",

@@ -1,15 +1,8 @@
 #!/usr/bin/python3
 
-version = __version__ = "4.61.0.206 Unreleased"
-
-
-__version__ = version.split()[0]  # For PEP 396 and PEP 345
-
-# The shortened version of version
-try:
-    ver = version.split(' ')[0]
-except:
-    ver = ''
+version = __version__ = "5.0.0"
+__version__ = version  # For PEP 396 and PEP 345
+ver = version # The shortened version of version
 
 
 
