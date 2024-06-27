@@ -21,3 +21,15 @@
 Other forks worth mentioning are [andor-pierdelacabeza/PySimpleGUI-4-foss](https://github.com/andor-pierdelacabeza/PySimpleGUI-4-foss) and [spyoungtech/FreeSimpleGUI](https://github.com/spyoungtech/FreeSimpleGUI).
 
 
+## installing
+
+installing with pip
+```
+pip install git+https://github.com/ftobler/simplegui@latest
+```
+
+in requirements.txt
+```
+simplegui @ git+https://github.com/ftobler/simplegui@latest
+```
+
