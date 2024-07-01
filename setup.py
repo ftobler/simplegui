@@ -36,6 +36,7 @@ setuptools.setup(
     ),
     install_requires=[
         "psgtray",
+        "pystray",
         "matplotlib"
         # Add your dependencies here.
         # example:
