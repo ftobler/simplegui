@@ -3492,7 +3492,7 @@ class Spin(Element):
     Update = update
 
 
-Sp = Spin  # type: Spin
+Sp : type[Spin] = Spin
 
 
 # ---------------------------------------------------------------------- #
